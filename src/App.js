@@ -1,41 +1,48 @@
 import React, { useState, useEffect }from 'react';
+import { connect } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
-import { aboutPromise, projectsPromise, blogPromise } from './fetch';
+import { initAbout } from './reducers/aboutReducer';
+import { initProjects } from './reducers/projectsReducer';
+import { initBlogs } from './reducers/blogReducer';
 
-const App = () => {
+const App = (props) => {
   const [ about, setAbout ] = useState([]);
   const [ projects, setProjects ] = useState([]);
   const [ blog, setBlog ] = useState([]);
 
-  // Initialize the markdown data
   useEffect(() => {
-    if (about.length === 0) getText(aboutPromise, setAbout);
-    if (projects.length === 0) getText(projectsPromise, setProjects);
-    if (blog.length === 0) getText(blogPromise, setBlog);
-  }, []);
+    props.initAbout();
+    props.initProjects();
+    props.initBlogs();
 
-  // Fetch the text from promise
-  const getText = async (path, callback) => {
-    const posts = await path;
-    callback( posts );
-  };
+    if (props.about) setAbout(props.about);
+    if (props.projects) setProjects(props.projects);
+    if (props.blog) setBlog(props.blog);
+  }, [ props ]);
+     
 
   return (
     <div className="App">
       <header className="App-header">
         <h1>Kek</h1>
       </header>
-      {about.map(m => (
-        <ReactMarkdown source={m}/>
-      ))}
-      {projects.map(m => (
-        <ReactMarkdown source={m}/>
-      ))}
-      {blog.map(m => (
-        <ReactMarkdown source={m}/>
-      ))}
+      {about.map(m => <ReactMarkdown source={m} />)}
+      {projects.map(m => <ReactMarkdown source={m} />)}
+      {blog.map(m => <ReactMarkdown source={m} />)}
     </div>
   );
 };
 
-export default App;
+const state = (state) => {
+  console.log(state);
+  return state;
+};
+
+export default connect(
+  state,
+  {
+    initAbout,
+    initBlogs,
+    initProjects
+  }
+)( App );

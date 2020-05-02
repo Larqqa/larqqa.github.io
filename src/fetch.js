@@ -28,4 +28,5 @@ const blogPromise = getText(importAll(
   require.context('./markdown/blog', false, /\.md$/)
 ));
 
+// Export promises
 export { aboutPromise, projectsPromise, blogPromise };
