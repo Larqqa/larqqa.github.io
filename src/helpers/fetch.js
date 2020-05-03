@@ -16,8 +16,8 @@ const getText = (path) => {
 };
 
 // Get files from paths
-const aboutPromise = getText(importAll(
-  require.context('../markdown/about', false, /\.md$/)
+const pagesPromise = getText(importAll(
+  require.context('../markdown/pages', false, /\.md$/)
 ));
 
 const projectsPromise = getText(importAll(
@@ -29,4 +29,4 @@ const blogPromise = getText(importAll(
 ));
 
 // Export promises
-export { aboutPromise, projectsPromise, blogPromise };
+export { pagesPromise, projectsPromise, blogPromise };

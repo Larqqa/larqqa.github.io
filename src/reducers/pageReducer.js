@@ -1,25 +1,24 @@
-import { projectsPromise } from '../helpers/fetch.js';
+import { pagesPromise } from '../helpers/fetch';
 import parser from '../helpers/parser';
 
 const reducer = (state = [], action) => {
   switch (action.type) {
-  case 'INIT_PROJECTS':
+  case 'INIT_PAGES':
     return action.data;
   default:
     return state;
   }
 };
 
-export const initProjects = () => {
+export const initPages = () => {
   return async dispatch => {
     try {
-
-      const projects = parser(await projectsPromise);
-
+      const pages = parser(await pagesPromise);
+      
       // Initialize app
       dispatch({
-        type: 'INIT_PROJECTS',
-        data: projects,
+        type: 'INIT_PAGES',
+        data: pages,
       });
     } catch (er) {
       console.log(er);

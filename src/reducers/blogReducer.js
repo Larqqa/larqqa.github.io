@@ -1,4 +1,5 @@
 import { blogPromise } from '../helpers/fetch.js';
+import parser from '../helpers/parser';
 
 const reducer = (state = [], action) => {
   switch (action.type) {
@@ -13,12 +14,12 @@ export const initBlogs = () => {
   return async dispatch => {
     try {
 
-      const blogs = await blogPromise;
+      const blog = parser(await blogPromise);
 
       // Initialize app
       dispatch({
         type: 'INIT_BLOG',
-        data: blogs,
+        data: blog,
       });
     } catch (er) {
       console.log(er);

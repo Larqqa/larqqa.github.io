@@ -4,13 +4,13 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import aboutReducer from './reducers/aboutReducer';
+import pageReducer from './reducers/pageReducer';
 import blogReducer  from './reducers/blogReducer';
 import projectsReducer  from './reducers/projectsReducer';
 import App from './App';
 
 const reducer = combineReducers({
-  about: aboutReducer,
+  pages: pageReducer,
   projects: projectsReducer,
   blog: blogReducer
 });

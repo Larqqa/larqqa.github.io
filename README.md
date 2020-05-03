@@ -13,3 +13,12 @@ This will be my portfolio/blog using github pages. The blog will have some cool 
 * work experience
 * blog
 
+
+The markdown files can have a header. This header should be of the format
+```
+---
+"title": "the title"
+"date": "dd-mm-yyyy"
+"categories": ["foo", "bar", "baz"]
+---
+```
