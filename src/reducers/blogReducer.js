@@ -1,4 +1,4 @@
-import { blogPromise } from '../fetch.js';
+import { blogPromise } from '../helpers/fetch.js';
 
 const reducer = (state = [], action) => {
   switch (action.type) {

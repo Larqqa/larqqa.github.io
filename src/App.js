@@ -15,9 +15,9 @@ const App = (props) => {
     props.initProjects();
     props.initBlogs();
 
-    if (props.about) setAbout(props.about);
-    if (props.projects) setProjects(props.projects);
-    if (props.blog) setBlog(props.blog);
+    if (props.about) setAbout([ ...props.about ]);
+    if (props.projects) setProjects([ ...props.projects ]);
+    if (props.blog) setBlog([ ...props.blog ]);
   }, [ props ]);
      
 
@@ -33,13 +33,8 @@ const App = (props) => {
   );
 };
 
-const state = (state) => {
-  console.log(state);
-  return state;
-};
-
 export default connect(
-  state,
+  (state) => state,
   {
     initAbout,
     initBlogs,

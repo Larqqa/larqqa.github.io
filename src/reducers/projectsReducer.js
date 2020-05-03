@@ -1,4 +1,4 @@
-import { projectsPromise } from '../fetch.js';
+import { projectsPromise } from '../helpers/fetch.js';
 
 const reducer = (state = [], action) => {
   switch (action.type) {

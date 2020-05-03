@@ -17,15 +17,15 @@ const getText = (path) => {
 
 // Get files from paths
 const aboutPromise = getText(importAll(
-  require.context('./markdown/about', false, /\.md$/)
+  require.context('../markdown/about', false, /\.md$/)
 ));
 
 const projectsPromise = getText(importAll(
-  require.context('./markdown/projects', false, /\.md$/)
+  require.context('../markdown/projects', false, /\.md$/)
 ));
 
 const blogPromise = getText(importAll(
-  require.context('./markdown/blog', false, /\.md$/)
+  require.context('../markdown/blog', false, /\.md$/)
 ));
 
 // Export promises
