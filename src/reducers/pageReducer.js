@@ -14,7 +14,7 @@ export const initPages = () => {
   return async dispatch => {
     try {
       const pages = parser(await pagesPromise);
-      
+     
       // Initialize app
       dispatch({
         type: 'INIT_PAGES',

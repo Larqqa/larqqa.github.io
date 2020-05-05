@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import { initPages } from './reducers/pageReducer';
 import { initProjects } from './reducers/projectsReducer';
 import { initBlogs } from './reducers/blogReducer';
-import Page from './components/Page';
-import Projects from './components/Projects';
-import Blog from './components/Blog';
+import Routes, { NavLinks } from './Routes';
 
 const App = (props) => {
 
@@ -17,18 +15,16 @@ const App = (props) => {
     };
 
     init();
-  }, []);
+  }, [ props ]);
      
 
   return (
-    <div className="App">
+    <>
       <header className="App-header">
-        <h1>Kek</h1>
+        <NavLinks />
       </header>
-      <Page />
-      <Projects />
-      <Blog />
-    </div>
+      <Routes />
+    </>
   );
 };
 

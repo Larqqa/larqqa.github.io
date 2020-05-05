@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { Switch, Redirect, Link, Route } from 'react-router-dom';
 import Page from './components/Page';
 import Projects from './components/Projects';
@@ -24,7 +25,7 @@ const routes = [
   },
   {
     name: 'Project',
-    path: '/projects/:title',
+    path: '/projects/:name',
     exact: true,
     component: Projects,
     link: false
@@ -38,14 +39,14 @@ const routes = [
   },
   {
     name: 'Blog post',
-    path: '/Blog/:title',
+    path: '/Blog/:name',
     exact: true,
     component: Blog,
     link: false
   },
   {
     name: 'Page',
-    path: '/:title',
+    path: '/:name',
     exact: true,
     component: Page,
     link: false
@@ -59,7 +60,36 @@ const routes = [
 ];
 
 // Make links for use in navBar
-export const NavLinks = () => {
+export const NavLinks = connect(
+  state => ({
+    pages: state.pages
+  })
+)(({ pages }) => {
+
+  // Check if any pages are marked to be displayed in nav
+  // If found, make a page into a Link useable object
+  const pagesFilt = pages.filter(p => p.meta.nav === true).map(p => ({
+    name: p.meta.name,
+    path: `/${p.meta.name}`,
+    exact: true,
+    component: Page,
+    link: true,
+    index: p.meta.index
+  }));
+
+  // Add found pages to nav array
+  if (pagesFilt.length) {
+    pagesFilt.map(p => {
+
+      // If has specific index, add link there
+      if (p.index) {
+        routes.splice(p.index, 0, p);
+      } else {
+        routes.push(p);
+      }
+    });
+  }
+  
   return (
     <nav className="nav nav--primary">
       {routes.map((route, i) =>
@@ -72,7 +102,7 @@ export const NavLinks = () => {
       )}
     </nav>
   );
-};
+});
 
 // Define Routing
 const Routes = () => {
