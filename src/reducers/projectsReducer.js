@@ -1,6 +1,9 @@
 import { projectsPromise } from '../helpers/fetch.js';
 import parser from '../helpers/parser';
 
+/**
+ * Reducer for handling project actions
+ */
 const reducer = (state = [], action) => {
   switch (action.type) {
   case 'INIT_PROJECTS':
@@ -10,6 +13,9 @@ const reducer = (state = [], action) => {
   }
 };
 
+/**
+ * Handler for initializing the projects
+ */
 export const initProjects = () => {
   return async dispatch => {
     try {
@@ -25,6 +31,5 @@ export const initProjects = () => {
     }
   };
 };
-
 
 export default reducer;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Redirect, Link, Route } from 'react-router-dom';
 import Page from './components/Page';
@@ -65,40 +65,47 @@ export const NavLinks = connect(
     pages: state.pages
   })
 )(({ pages }) => {
+  const [ links, setLinks ] = useState([]);
 
-  // Check if any pages are marked to be displayed in nav
-  // If found, make a page into a Link useable object
-  const pagesFilt = pages.filter(p => p.meta.nav === true).map(p => ({
-    name: p.meta.name,
-    path: `/${p.meta.name}`,
-    exact: true,
-    component: Page,
-    link: true,
-    index: p.meta.index
-  }));
+  useEffect(() => {
+    
+    // Check if any pages are marked to be displayed in nav
+    // If found, make a page into a Link useable object
+    const pagesFilt = pages.filter(p => p.meta.nav === true).map(p => ({
+      name: p.meta.name,
+      path: `/${p.meta.name}`,
+      exact: true,
+      component: Page,
+      link: true,
+      index: p.meta.index
+    }));
 
-  // Add found pages to nav array
-  if (pagesFilt.length) {
-    pagesFilt.map(p => {
+    // Add found pages to nav array
+    if (pagesFilt.length) {
+      pagesFilt.map(p => {
 
-      // If has specific index, add link there
-      if (p.index) {
-        routes.splice(p.index, 0, p);
-      } else {
-        routes.push(p);
-      }
-    });
-  }
-  
+        // If has specific index, add link to index
+        if (p.index) {
+          routes.splice(p.index, 0, p);
+        } else {
+          routes.push(p);
+        }
+      });
+    }
+
+    // Save nav list to state for use later
+    setLinks([ ...routes ]);
+  }, [ pages ]);
+
   return (
     <nav className="nav nav--primary">
-      {routes.map((route, i) =>
-        route.link &&
+      {links.map((link, i) =>
+        link.link &&
         <Link
           key={i}
           className="nav__item"
-          to={route.path}
-        >{route.name}</Link>
+          to={link.path}
+        >{link.name}</Link>
       )}
     </nav>
   );

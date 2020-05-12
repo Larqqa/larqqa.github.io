@@ -15,12 +15,8 @@ const reducer = combineReducers({
   blog: blogReducer
 });
 
-const store = () => {
-  return createStore(reducer, applyMiddleware(thunk));
-};
-
 ReactDOM.render(
-  <Provider store={ store() }>
+  <Provider store={ createStore(reducer, applyMiddleware(thunk)) }>
     <BrowserRouter>
       <App />
     </BrowserRouter>

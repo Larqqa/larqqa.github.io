@@ -1,6 +1,9 @@
 import { pagesPromise } from '../helpers/fetch';
 import parser from '../helpers/parser';
 
+/**
+ * Reducer for handling page actions
+ */
 const reducer = (state = [], action) => {
   switch (action.type) {
   case 'INIT_PAGES':
@@ -10,6 +13,9 @@ const reducer = (state = [], action) => {
   }
 };
 
+/**
+ * Handler for initializing the pages
+ */
 export const initPages = () => {
   return async dispatch => {
     try {
@@ -25,6 +31,5 @@ export const initPages = () => {
     }
   };
 };
-
 
 export default reducer;

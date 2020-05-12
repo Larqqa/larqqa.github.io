@@ -15,9 +15,15 @@ const parser = (fileData) => {
     const name = obj.name.replace('.md', '').replace(' ', '-').toLowerCase();
 
     if (header) {
+
+      // Parse header to object notation
       header = `{ ${header[1]} }`;
       header = header.replace(/\n/g, ', ');
+
+      // Parse  header into an object
       header = JSON.parse(header);
+
+      // Add file name to header
       header.name = name;
     } else {
       header = { name: name };

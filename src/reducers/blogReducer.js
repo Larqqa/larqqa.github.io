@@ -1,6 +1,9 @@
 import { blogPromise } from '../helpers/fetch.js';
 import parser from '../helpers/parser';
 
+/**
+ * Reducer for handling blog actions
+ */
 const reducer = (state = [], action) => {
   switch (action.type) {
   case 'INIT_BLOG':
@@ -10,6 +13,9 @@ const reducer = (state = [], action) => {
   }
 };
 
+/**
+ * Handler for initializing the blog
+ */
 export const initBlogs = () => {
   return async dispatch => {
     try {
@@ -25,6 +31,5 @@ export const initBlogs = () => {
     }
   };
 };
-
 
 export default reducer;
