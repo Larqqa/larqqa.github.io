@@ -1,4 +1,8 @@
+/**
+ * Animation lib for making a cool new backgournd canvas, with some swanky particles and lines
+ */
 
+// RequestAnimationFrame prefix checks
 window.requestAnimFrame = (function(){
   return  window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
@@ -19,64 +23,70 @@ window.cancelRequestAnimFrame = ( function() {
     clearTimeout;
 } )();
 
-
 /**
  * Check if two lines intersect
- * 
- * @param {x, y * 4} Coords of two lines
+ *
+ * Resources used:
+ *   http://paulbourke.net/geometry/pointlineplane/
+ *   https://stackoverflow.com/questions/13937782/calculating-the-point-of-intersection-of-two-lines
+ * @param {int} x1 etc: Coordinates of four 2D vectors
  * @return {boolean} if true
  */
 function line_intersect(x1, y1, x2, y2, x3, y3, x4, y4) {
 
-  // Disregard if points are in the same index
-  if (x1 === x3 && y1 === y3) return false;
-  if (x1 === x4 && y1 === y4) return false;
-  if (x2 === x3 && y2 === y3) return false;
-  if (x2 === x4 && y2 === y4) return false;
+  // Disregard if points are in the same location
+  if (
+    (x1 === x3 && y1 === y3 || x1 === x4 && y1 === y4)
+    ||
+    (x2 === x3 && y2 === y3 || x2 === x4 && y2 === y4)
+  ) return false;
   
-  var ua, ub, denom = (y4 - y3)*(x2 - x1) - (x4 - x3)*(y2 - y1);
-  if (denom === 0) {
-    return false;
-  }
-  ua = ((x4 - x3)*(y1 - y3) - (y4 - y3)*(x1 - x3))/denom;
-  ub = ((x2 - x1)*(y1 - y3) - (y2 - y1)*(x1 - x3))/denom;
+  const denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
+  if (denom === 0) return false;
+  
+  let ua, ub = denom;
+  ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denom;
+  ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / denom;
 
-  return {
-    seg1: ua >= 0 && ua <= 1,
-    seg2: ub >= 0 && ub <= 1
-  };
+  return ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1;
 }
 
+// Make All the glorious particles!
 class Particle{
-  constructor(width, height){
-    this.size = 3;
+  constructor(canvasWidth, canvasHeight){
+    this.size = 1;
     this.color =  'rgb(255, 255, 255)';
-
-    this.minvel = 0.5;
-    this.maxvel = 2;
+    this.linewidth = 2;
+    this.region = 50;
+    this.minvel = Math.random(.7) * 1;
+    this.maxvel = 5;
     this.vel = this.minvel;
-    this.heading = (Math.random() * 360);
-    this.x = Math.floor(Math.random() * width);
-    this.y = Math.floor(Math.random() * height);
-    this.headingX = this.x + (Math.cos( this.heading * (Math.PI / 180)) * this.size);
-    this.headingY = this.y + (Math.sin( this.heading * (Math.PI / 180)) * this.size);
-    this.tan = Math.atan2(this.y - this.headingY, this.x - this.headingX);
+    this.angle = (Math.random() * 360);
+    this.newAngle = 0;
+    this.x = Math.floor(Math.random() * canvasWidth);
+    this.y = Math.floor(Math.random() * canvasHeight);
+    this.headingX = this.x + (Math.cos( this.angle * (Math.PI / 180)) * this.size);
+    this.headingY = this.y + (Math.sin( this.angle * (Math.PI / 180)) * this.size);
+    this.heading = Math.atan2(this.y - this.headingY, this.x - this.headingX);
   }
 
   /**
-   * Check if the pixel is outside of the boundaries of the canvas 
+   * Check if the pixel is outside of the boundaries of the canvas.
+   * If it is, move it to the other side of the canvas.
    * 
    * @param {object} canvas: Canvas node
    * @return {void} 
    */
   boundaries(canvas) {
 
+    // Check for X boundaries
     if (this.x < 0 - this.size) {
       this.x = canvas.width + this.size;
     } else if (this.x > canvas.width + this.size) {
       this.x = 0 - this.size;
     }
-    
+
+    // Check for Y boundaries
     if (this.y < 0 - this.size) {
       this.y = canvas.height + this.size;
     } else if (this.y > canvas.height + this.size) {
@@ -85,7 +95,7 @@ class Particle{
   }
 
   /**
-   * Check if the mouse is near. 
+   * Check if the mouse is near a pixel.
    * 
    * @param {object} mouse: Mouse object
    * @return {void}
@@ -95,20 +105,20 @@ class Particle{
     const offsetY = Math.floor(this.y - mouse.y);
 
     // Check for mouse inside a region
-    const region = 50;
-    if ((offsetX < region && offsetX > -region) && (offsetY < region && offsetY > -region)) {
+    const distance = Math.sqrt( offsetX * offsetX + offsetY * offsetY );
+    if (distance < this.region) {
+      
+      // TODO Make mouse interaction BETTER
+      // const newHeading = Math.atan2(mouse.y - this.y, mouse.x - this.x) * 180 / Math.PI;      
+      // this.headingX = this.x + (Math.cos( newHeading * (Math.PI / 180)));
+      // this.headingY = this.y + (Math.sin( newHeading * (Math.PI / 180)));
+      // this.newAngle = Math.atan2(this.y - this.headingY, this.x - this.headingX);
 
-      const newHeading = Math.atan2(mouse.y - this.y, mouse.x - this.x) * 180 / Math.PI;
-
-      this.headingX = this.x + (Math.cos( newHeading * (Math.PI / 180)));
-      this.headingY = this.y + (Math.sin( newHeading * (Math.PI / 180)));
-      this.angle = Math.atan2(this.y - this.headingY, this.x - this.headingX);
-
-      const length = Math.floor(Math.sqrt( offsetX * offsetX + offsetY * offsetY ));
-      const speed = this.vel + ((region - length) / region);
+      // Map the distance to the interaction region, so that the smaller it is, the larger the speed
+      const speed = this.vel + ((this.region - distance) / this.region);
 
       // Make sure speed won't go over min/max
-      this.vel = speed > this.maxvel ? this.maxvel : speed < 0 ? this.minvel : speed;
+      this.vel = speed > this.maxvel ? this.maxvel : speed <  this.minvel ? this.minvel : speed;
     }
   }
 
@@ -118,108 +128,136 @@ class Particle{
    * @return {void} 
    */
   update() {
-    this.x += Math.cos(this.tan) * this.vel;
-    this.y += Math.sin(this.tan) * this.vel;
 
-    // Gradually change the angle to be opposite to the mouse
-    if (Math.floor(this.tan) !== Math.floor(this.angle)) {
-      if (this.angle > this.tan) {
-        this.tan += 0.1;
-      } else if (this.angle < this.tan) {
-        this.tan -= 0.1;
-      }
-    }
+    // Update the position
+    this.x += Math.cos(this.heading) * this.vel;
+    this.y += Math.sin(this.heading) * this.vel;
 
-    // Gradually decrease velocity back to minimum
+    // TODO With mouse interactions
+    // Gradually change the current angle to the new angle
+    // if (Math.floor(this.heading) !== Math.floor(this.newAngle)) {
+
+    //   // Use the shortest path, to change direction
+    //   if (this.newAngle > this.heading) {
+    //     this.heading += 0.1;
+    //   } else if (this.newAngle < this.heading) {
+    //     this.heading -= 0.1;
+    //   }
+    // }
+
+    // Gradually decrease velocity back to minimum velocity
     if (this.vel > this.minvel) {
       this.vel = this.vel - 0.005;
     }
   }
 
   /**
-   * Brief description. Long description. 
+   * Draw the particle
    * 
    * @param {object} ctx: 2D Context of the canvas
    * @return {void}
    */
   draw(ctx) {
-    ctx.strokeStyle = 'rgb(255,255,0)';
-    ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.strokeStyle = this.color;
-    ctx.arc(this.x, this.y, 1, 0, 2 * Math.PI);
-    ctx.stroke();
-  }
-}
-
-/**
- * Draw a line from particle to particle
- * 
- * @param 
- * @return 
- */
-function vertices(particles, ctx) {
-  let count = 0;
-  let lines = [];
-  console.log('yeets');
-  
-  // Check if the particles are close enough to be connected
-  for (var i = particles.length - 1; i > 0; i--) {
-    const p = particles[i];
-    
-    for (var j = i - 1; j >= 0; j--) {
-      const p2= particles[j];
-      let intersects = false;
-
-      // Check if length is larger than treshold
-      const offsetX = p.x - p2.x;
-      const offsetY = p.y - p2.y;
-      const length = Math.floor(Math.sqrt( offsetX * offsetX + offsetY * offsetY ));
-      if (length > 100) continue;
-
-      // Check if this line intersects with existing lines
-      for (var k = 0; k < lines.length; k++) {
-        const p3 = lines[k][0];
-        const p4 = lines[k][1];
-
-        const segs = line_intersect(p.x, p.y, p2.x, p2.y, p3.x, p3.y, p4.x, p4.y);
-        if (segs.seg1 && segs.seg2) {
-          intersects = true;
-          break;
-        }
-      }
-
-      if (!intersects) lines.push([
-        { x: p.x, y: p.y },
-        { x: p2.x, y: p2.y }
-      ]);
-    }
-  }
-  
-  for (var l = 0; l < lines.length; l++) {
-    const p = lines[l][0];
-    const p2 = lines[l][1];
-    
-    // ctx.strokeStyle = 'rgba(0,255,255,0.2)';
-    ctx.strokeStyle = 'rgb(255,255,0)';
-    ctx.lineWidth = 0.1;
-    ctx.beginPath();
-    ctx.moveTo(~~p.x + 0.5, ~~p.y + 0.5);
-    ctx.lineTo(~~p2.x + 0.5, ~~p2.y + 0.5);
+    ctx.lineWidth = this.linewidth;
+    ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
     ctx.stroke();
     ctx.closePath();
   }
 }
 
+/**
+ * Draw a lines between particles
+ * 
+ * @param {array} particles: Array of particles
+ * @param {object} ctx: Canvas context
+ * @param {int} threshold: line length threshold
+ * @param {string} color: line color as rgb numbers
+ * @param {float} lineWidth: the line width
+ * @param {int} maxVertices: Maximum amount of lines from one particle
+ * @return 
+ */
+function vertices(
+  particles,
+  ctx,
+  threshold = 100,
+  color = '255,255,0',
+  lineWidth = 0.5,
+  maxVertices = 5
+) {
+  let lines = [];
 
-let mouseCoords;
-const canvas = document.createElement('canvas');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight / 2;
-document.body.appendChild(canvas);
+  // Check if the particles i & j are close enough to be connected to each other
+  for (let i = particles.length - 1; i > 0; i--) {
+    const p = particles[i];
+    let count = 0;
+    
+    for (let j = i - 1; j >= 0; j--) {
+      if (count > maxVertices) break;
+      const p2= particles[j];
+      let intersects = false;
 
-export const  initDrawing = (amount) => {
-  
+      // Check if distance between points is larger than treshold
+      const offsetX = p.x - p2.x;
+      const offsetY = p.y - p2.y;
+      const distance = Math.floor(Math.sqrt( offsetX * offsetX + offsetY * offsetY ));
+
+      if (distance > threshold) continue; // if too long, abort
+
+      // Check if this line intersects with already existing lines
+      for (let k = 0; k < lines.length; k++) {
+        if (line_intersect(
+          p.x, p.y,
+          p2.x, p2.y,
+          lines[k][0].x, lines[k][0].y,
+          lines[k][1].x, lines[k][1].y
+        )) {
+          intersects = true;
+          break;
+        }
+      }
+
+      // If all is clear, then add line to the draw list
+      if (!intersects) {
+        lines.push([
+          { x: p.x, y: p.y },
+          { x: p2.x, y: p2.y },
+          distance
+        ]);
+        
+        count++;
+      }
+    }
+  }
+
+  // Draw all the lines!
+  for (let l = 0; l < lines.length; l++) {
+
+    // Normalize distance to 0-1
+    const alpha = 1 - (lines[l][2] / threshold);
+
+    ctx.beginPath();
+    ctx.lineWidth = lineWidth;
+    ctx.strokeStyle = `rgb(${color},${alpha})`;
+    ctx.moveTo(~~lines[l][0].x + 0.5, ~~lines[l][0].y + 0.5);
+    ctx.lineTo(~~lines[l][1].x + 0.5, ~~lines[l][1].y + 0.5);
+    ctx.stroke();
+    ctx.closePath();
+  }
+}
+
+// Set some global mouse data
+var mouseCoords;
+
+/**
+ * Add the mouse events to the canvas
+ * 
+ * @param {canvas} object: Canvas object
+ * @return {void}
+ */
+function mouseInit(canvas) {
+
   // Get the mouse position inside of the canvas
   document.addEventListener('mousemove', function(e) {
 
@@ -230,7 +268,7 @@ export const  initDrawing = (amount) => {
       y: e.clientY - rect.top
     };
 
-    // Check mouse positions boundaries
+    // Bind mouse position to the canvas
     if (mouseCoords.x > canvas.width){
       mouseCoords.x = canvas.width;
     } else if (mouseCoords.x < 0) {
@@ -244,33 +282,116 @@ export const  initDrawing = (amount) => {
     }
 
   }, false);
+}
 
-  // Set particles
+/**
+ * Initialize particle field drawing
+ * 
+ * @param {int} amount: Amount of particles
+ * @param {string} id: id of canvas
+ * @param {int} width: width of canvas
+ * @param {int} height: height of canvas
+ * @return {void}
+ */
+export default function initDrawing(
+  amount = 100,
+  id = 'particleField',
+  width = window.innerWidth,
+  height = window.innerHeight / 2
+) {
+
+  // Add canvas to DOM body
+  const canvas = document.createElement('canvas');
+  canvas.id = id;
+  canvas.width = width;
+  canvas.height = height;
+  document.body.appendChild(canvas);
+
+  // Do mouse events
+  mouseInit(canvas);
+
+  // Make particles
   let particles = [];
   for (let i = 0; i < amount; i++) {
     particles.push(new Particle(canvas.width, canvas.height));
   }
-
+  
   // Get 2D context
   const ctx = canvas.getContext('2d', { alpha : false });
 
-  // Loop @ 24 FPS
-  const step = () => {
+  /**
+   * Animation loop function
+   * 
+   * @return {void} 
+   */
+
+  // Setup a simple rendering engine
+  const updateCap = 1.0 / 60.0;
+  let firstTime = 0;
+  let lastTime = window.performance.now() / 1000.0;
+  let passedTime = 0;
+  let unprocessedTime = 0;
+  let frameTime = 0.0;
+  let frames = 0;
+  let fps = 0;
+  let render = true;
+
+  function step() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    render = false;
 
-    particles.map(p => {
-      if (mouseCoords) {
-        p.mouseClose(mouseCoords);
+    // Set timers
+    firstTime = window.performance.now() / 1000.0;
+    passedTime = firstTime - lastTime;
+    lastTime = firstTime;
+    unprocessedTime += passedTime;
+    frameTime += passedTime;
+
+    // If engine skips frames, update untill caught up
+    while (unprocessedTime >= updateCap) {
+      unprocessedTime -= updateCap;
+      render = true;
+
+      // Update particles
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.update();
       }
-      p.boundaries(canvas);
-      p.update();
-      p.draw(ctx);
-    });
 
-    // Draw lines between particles
-    vertices(particles, ctx);
+      // Update FPS
+      if (frameTime >= 1.0) {
+        frameTime = 0;
+        fps = frames;
+        frames = 0;
+        console.log('FPS: ', fps);
+      }
+    }
 
-    window.requestAnimationFrame(step);
-  };
+    // Do render actions
+    if (render) {
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+
+        // If mouse data exists, do mouse proximity checks
+        if (mouseCoords) {
+          p.mouseClose(mouseCoords);
+        }
+        p.boundaries(canvas);
+        p.update();
+        p.draw(ctx);
+      }
+
+      // Draw lines between particles
+      vertices(particles, ctx);
+
+      frames++;
+    } else {
+      setTimeout(1);
+    }
+
+    window.requestAnimFrame(step);
+  }
+
+  // Initialize animation
   step();
-};
+}
