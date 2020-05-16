@@ -23,6 +23,9 @@ window.cancelRequestAnimFrame = ( function() {
     clearTimeout;
 } )();
 
+// Set variables for intersection checker
+var ua, ub, denom = 0;
+
 /**
  * Check if two lines intersect
  *
@@ -41,15 +44,38 @@ function line_intersect(x1, y1, x2, y2, x3, y3, x4, y4) {
     (x2 === x3 && y2 === y3 || x2 === x4 && y2 === y4)
   ) return false;
   
-  const denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
+  denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
   if (denom === 0) return false;
   
-  let ua, ub = denom;
   ua = ((x4 - x3) * (y1 - y3) - (y4 - y3) * (x1 - x3)) / denom;
   ub = ((x2 - x1) * (y1 - y3) - (y2 - y1) * (x1 - x3)) / denom;
 
   return ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1;
 }
+
+/**
+ * Brief description. Long description. 
+ * 
+ * @param {int} x: Starting x position  
+ * @param {int} y: Starting y position  
+ * @param {int} x2: End x position  
+ * @param {int} y2: End y position  
+ * @return {object} Return the vector object
+ */
+function vector(x, y, x2, y2) {
+  return({ x: x, y: y, x2: x2, y2: y2 });
+}
+
+// Set some variables for use in particle calculations
+// Reusing saves a lot on Garbage Collection!
+var lines = [];
+var offsetX = 0;
+var offsetY = 0;
+var distance = 0;
+var intersects = false;
+var count = 0;
+var alpha = 0;
+var speed = 0;
 
 // Make All the glorious particles!
 class Particle{
@@ -63,10 +89,12 @@ class Particle{
     this.vel = this.minvel;
     this.angle = (Math.random() * 360);
     this.newAngle = 0;
+
     this.x = Math.floor(Math.random() * canvasWidth);
     this.y = Math.floor(Math.random() * canvasHeight);
     this.headingX = this.x + (Math.cos( this.angle * (Math.PI / 180)) * this.size);
     this.headingY = this.y + (Math.sin( this.angle * (Math.PI / 180)) * this.size);
+    
     this.heading = Math.atan2(this.y - this.headingY, this.x - this.headingX);
   }
 
@@ -93,7 +121,7 @@ class Particle{
       this.y = 0 - this.size;
     }
   }
-
+  
   /**
    * Check if the mouse is near a pixel.
    * 
@@ -101,21 +129,15 @@ class Particle{
    * @return {void}
    */
   mouseClose(mouse) {
-    const offsetX = Math.floor(this.x - mouse.x);
-    const offsetY = Math.floor(this.y - mouse.y);
+    offsetX = Math.floor(this.x - mouse.x);
+    offsetY = Math.floor(this.y - mouse.y);
 
     // Check for mouse inside a region
-    const distance = Math.sqrt( offsetX * offsetX + offsetY * offsetY );
+    distance = Math.sqrt( offsetX * offsetX + offsetY * offsetY );
     if (distance < this.region) {
-      
-      // TODO Make mouse interaction BETTER
-      // const newHeading = Math.atan2(mouse.y - this.y, mouse.x - this.x) * 180 / Math.PI;      
-      // this.headingX = this.x + (Math.cos( newHeading * (Math.PI / 180)));
-      // this.headingY = this.y + (Math.sin( newHeading * (Math.PI / 180)));
-      // this.newAngle = Math.atan2(this.y - this.headingY, this.x - this.headingX);
 
       // Map the distance to the interaction region, so that the smaller it is, the larger the speed
-      const speed = this.vel + ((this.region - distance) / this.region);
+      speed = this.vel + ((this.region - distance) / this.region);
 
       // Make sure speed won't go over min/max
       this.vel = speed > this.maxvel ? this.maxvel : speed <  this.minvel ? this.minvel : speed;
@@ -132,18 +154,6 @@ class Particle{
     // Update the position
     this.x += Math.cos(this.heading) * this.vel;
     this.y += Math.sin(this.heading) * this.vel;
-
-    // TODO With mouse interactions
-    // Gradually change the current angle to the new angle
-    // if (Math.floor(this.heading) !== Math.floor(this.newAngle)) {
-
-    //   // Use the shortest path, to change direction
-    //   if (this.newAngle > this.heading) {
-    //     this.heading += 0.1;
-    //   } else if (this.newAngle < this.heading) {
-    //     this.heading -= 0.1;
-    //   }
-    // }
 
     // Gradually decrease velocity back to minimum velocity
     if (this.vel > this.minvel) {
@@ -186,22 +196,21 @@ function vertices(
   lineWidth = 0.5,
   maxVertices = 5
 ) {
-  let lines = [];
-
+  
   // Check if the particles i & j are close enough to be connected to each other
   for (let i = particles.length - 1; i > 0; i--) {
     const p = particles[i];
-    let count = 0;
+    count = 0;
     
     for (let j = i - 1; j >= 0; j--) {
       if (count > maxVertices) break;
-      const p2= particles[j];
-      let intersects = false;
+      const p2 = particles[j];
+      intersects = false;
 
       // Check if distance between points is larger than treshold
-      const offsetX = p.x - p2.x;
-      const offsetY = p.y - p2.y;
-      const distance = Math.floor(Math.sqrt( offsetX * offsetX + offsetY * offsetY ));
+      offsetX = p.x - p2.x;
+      offsetY = p.y - p2.y;
+      distance = Math.floor(Math.sqrt( offsetX * offsetX + offsetY * offsetY ));
 
       if (distance > threshold) continue; // if too long, abort
 
@@ -235,7 +244,7 @@ function vertices(
   for (let l = 0; l < lines.length; l++) {
 
     // Normalize distance to 0-1
-    const alpha = 1 - (lines[l][2] / threshold);
+    alpha = 1 - (lines[l][2] / threshold);
 
     ctx.beginPath();
     ctx.lineWidth = lineWidth;
@@ -245,10 +254,14 @@ function vertices(
     ctx.stroke();
     ctx.closePath();
   }
+
+  // Empty out lines array after drawing is finished
+  lines = [];
 }
 
-// Set some global mouse data
+// Set variables for some global mouse data
 var mouseCoords;
+var rect;
 
 /**
  * Add the mouse events to the canvas
@@ -262,7 +275,7 @@ function mouseInit(canvas) {
   document.addEventListener('mousemove', function(e) {
 
     // Initialize coordinates
-    const rect = canvas.getBoundingClientRect();
+    rect = canvas.getBoundingClientRect();
     mouseCoords = {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top
@@ -291,13 +304,15 @@ function mouseInit(canvas) {
  * @param {string} id: id of canvas
  * @param {int} width: width of canvas
  * @param {int} height: height of canvas
+ * @param {object} target: target container for the canvas
  * @return {void}
  */
 export default function initDrawing(
-  amount = 100,
+  amount = 200,
   id = 'particleField',
   width = window.innerWidth,
-  height = window.innerHeight / 2
+  height = window.innerHeight / 2,
+  target = document.body
 ) {
 
   // Add canvas to DOM body
@@ -305,7 +320,7 @@ export default function initDrawing(
   canvas.id = id;
   canvas.width = width;
   canvas.height = height;
-  document.body.appendChild(canvas);
+  target.appendChild(canvas);
 
   // Do mouse events
   mouseInit(canvas);
@@ -317,27 +332,35 @@ export default function initDrawing(
   }
   
   // Get 2D context
-  const ctx = canvas.getContext('2d', { alpha : false });
+  const mainCTX = canvas.getContext('2d', { alpha : false });
+
+  // Make rendering canvas
+  const renderCanvas = document.createElement('canvas');
+  renderCanvas.width = width;
+  renderCanvas.height = height;
+  const ctx = renderCanvas.getContext('2d', { alpha : false });
+  
+  // Setup a simple rendering engine
+  const frameTarget = 60.0;
+  const updateCap = 1.0 / frameTarget;
+  let firstTime = 0.0;
+  let lastTime = window.performance.now() / 1000.0;
+  let passedTime = 0.0;
+  let unprocessedTime = 0.0;
+  let frameTime = 0.0;
+  let frames = 0;
+  let fps = 0;
+  let render = true;
+  let fpsString = '';
+  let missedFrameCount = 0;
+  let missedFramesString = '';
 
   /**
    * Animation loop function
    * 
    * @return {void} 
    */
-
-  // Setup a simple rendering engine
-  const updateCap = 1.0 / 60.0;
-  let firstTime = 0;
-  let lastTime = window.performance.now() / 1000.0;
-  let passedTime = 0;
-  let unprocessedTime = 0;
-  let frameTime = 0.0;
-  let frames = 0;
-  let fps = 0;
-  let render = true;
-
   function step() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
     render = false;
 
     // Set timers
@@ -346,7 +369,7 @@ export default function initDrawing(
     lastTime = firstTime;
     unprocessedTime += passedTime;
     frameTime += passedTime;
-
+    
     // If engine skips frames, update untill caught up
     while (unprocessedTime >= updateCap) {
       unprocessedTime -= updateCap;
@@ -355,6 +378,10 @@ export default function initDrawing(
       // Update particles
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
+        if (mouseCoords) {
+          p.mouseClose(mouseCoords);
+        }
+        p.boundaries(canvas);
         p.update();
       }
 
@@ -363,16 +390,25 @@ export default function initDrawing(
         frameTime = 0;
         fps = frames;
         frames = 0;
-        console.log('FPS: ', fps);
+        fpsString = `FPS: ${fps}`;
+
+        // Check how many frames were missed
+        missedFrameCount = frameTarget - fps;
+        if (missedFrameCount > 0) {
+          missedFramesString = `Missed frames: ${missedFrameCount}`;
+        }
+        console.log(`%c${fpsString} %c${missedFramesString}`, 'color: green', 'color: red');
       }
     }
 
     // Do render actions
     if (render) {
+      ctx.fillStyle = 'rgb(0, 0, 0)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw each particle
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
-
-        // If mouse data exists, do mouse proximity checks
         if (mouseCoords) {
           p.mouseClose(mouseCoords);
         }
@@ -381,12 +417,12 @@ export default function initDrawing(
         p.draw(ctx);
       }
 
-      // Draw lines between particles
+      // Draw lines between the particles
       vertices(particles, ctx);
 
+      mainCTX.drawImage(renderCanvas, 0, 0);
+
       frames++;
-    } else {
-      setTimeout(1);
     }
 
     window.requestAnimFrame(step);
