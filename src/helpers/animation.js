@@ -66,15 +66,37 @@ function vector(x, y, x2, y2) {
   return({ x: x, y: y, x2: x2, y2: y2 });
 }
 
+/**
+ * Check distance between two vectors
+ * 
+ * @param {float} v: vector
+ * @param {float} v2: other vector
+ * @return {float} distance
+ */
+function checkDistance(v, v2) {
+  return Math.sqrt(Math.pow(v.x - v2.x, 2) + Math.pow(v.y - v2.y, 2));
+}
+
+/**
+ * Brief description. Long description. 
+ * 
+ * @param {int} num: Number to map
+ * @param {int} inMin: Range to map from minimum
+ * @param {int} inMax: Range to map from in maximum
+ * @param {int} outMin: Range to map to minimum
+ * @param {int} outMax: Range to map to maximum
+ * @return 
+ */
+function mapNumberToRange(num, inMin, inMax, outMin, outMax) {
+  return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
+}
+
 // Set some variables for use in particle calculations
 // Reusing saves a lot on Garbage Collection!
 var lines = [];
-var offsetX = 0;
-var offsetY = 0;
 var distance = 0;
 var intersects = false;
 var count = 0;
-var alpha = 0;
 var speed = 0;
 
 // Make All the glorious particles!
@@ -90,12 +112,20 @@ class Particle{
     this.angle = (Math.random() * 360);
     this.newAngle = 0;
 
-    this.x = Math.floor(Math.random() * canvasWidth);
-    this.y = Math.floor(Math.random() * canvasHeight);
-    this.headingX = this.x + (Math.cos( this.angle * (Math.PI / 180)) * this.size);
-    this.headingY = this.y + (Math.sin( this.angle * (Math.PI / 180)) * this.size);
+    // Create a new vector for the particle
+    this.vector = vector(
+      Math.random() * canvasWidth,
+      Math.random() * canvasHeight,
+      Math.random() * canvasWidth,
+      Math.random() * canvasHeight
+    );
+
+    // Calculate the new position based on angles,
+    // Usable in different shid
+    // ~~(x + (Math.cos( this.angle * (Math.PI / 180)) * this.region)),
+    // ~~(y + (Math.sin( this.angle * (Math.PI / 180)) * this.region))
     
-    this.heading = Math.atan2(this.y - this.headingY, this.x - this.headingX);
+    this.heading = Math.atan2(this.vector.y - this.vector.y2, this.vector.x - this.vector.x2);
   }
 
   /**
@@ -106,34 +136,32 @@ class Particle{
    * @return {void} 
    */
   boundaries(canvas) {
-
+    
     // Check for X boundaries
-    if (this.x < 0 - this.size) {
-      this.x = canvas.width + this.size;
-    } else if (this.x > canvas.width + this.size) {
-      this.x = 0 - this.size;
+    if (this.vector.x < 0 - this.size) {
+      this.vector.x = canvas.width + this.size;
+    } else if (this.vector.x > canvas.width + this.size) {
+      this.vector.x = 0 - this.size;
     }
 
     // Check for Y boundaries
-    if (this.y < 0 - this.size) {
-      this.y = canvas.height + this.size;
-    } else if (this.y > canvas.height + this.size) {
-      this.y = 0 - this.size;
+    if (this.vector.y < 0 - this.size) {
+      this.vector.y = canvas.height + this.size;
+    } else if (this.vector.y > canvas.height + this.size) {
+      this.vector.y = 0 - this.size;
     }
   }
   
   /**
    * Check if the mouse is near a pixel.
    * 
-   * @param {object} mouse: Mouse object
+   * @param {object} mouse: Mouse position vector
    * @return {void}
    */
-  mouseClose(mouse) {
-    offsetX = Math.floor(this.x - mouse.x);
-    offsetY = Math.floor(this.y - mouse.y);
-
+  mouseRegion(mouse) {
+    
     // Check for mouse inside a region
-    distance = Math.sqrt( offsetX * offsetX + offsetY * offsetY );
+    distance = checkDistance(this.vector, mouse);
     if (distance < this.region) {
 
       // Map the distance to the interaction region, so that the smaller it is, the larger the speed
@@ -152,8 +180,8 @@ class Particle{
   update() {
 
     // Update the position
-    this.x += Math.cos(this.heading) * this.vel;
-    this.y += Math.sin(this.heading) * this.vel;
+    this.vector.x += Math.cos(this.heading) * this.vel;
+    this.vector.y += Math.sin(this.heading) * this.vel;
 
     // Gradually decrease velocity back to minimum velocity
     if (this.vel > this.minvel) {
@@ -171,12 +199,16 @@ class Particle{
     ctx.beginPath();
     ctx.strokeStyle = this.color;
     ctx.lineWidth = this.linewidth;
-    ctx.arc(this.x, this.y, this.size, 0, 2 * Math.PI);
+    ctx.arc(this.vector.x, this.vector.y, this.size, 0, 2 * Math.PI);
     ctx.stroke();
-    ctx.closePath();
   }
 }
 
+// Vertice colors
+var alpha = 0;
+var r = 0;
+var g = 0;
+var b = 0;
 /**
  * Draw a lines between particles
  * 
@@ -192,7 +224,6 @@ function vertices(
   particles,
   ctx,
   threshold = 100,
-  color = '255,255,0',
   lineWidth = 0.5,
   maxVertices = 5
 ) {
@@ -208,19 +239,25 @@ function vertices(
       intersects = false;
 
       // Check if distance between points is larger than treshold
-      offsetX = p.x - p2.x;
-      offsetY = p.y - p2.y;
-      distance = Math.floor(Math.sqrt( offsetX * offsetX + offsetY * offsetY ));
+      distance = checkDistance(p.vector, p2.vector);
 
       if (distance > threshold) continue; // if too long, abort
 
       // Check if this line intersects with already existing lines
       for (let k = 0; k < lines.length; k++) {
+        const line = lines[k];
+
+        // Check if current particle is out of threshold * 2 of vector
+        const distance1 = checkDistance(p.vector, line.p);
+        const distance2 = checkDistance(p.vector, line.p2);
+        if (distance1 > (threshold * 2) && distance2 > (threshold * 2)) continue;
+
+        // Check if lines intersects
         if (line_intersect(
-          p.x, p.y,
-          p2.x, p2.y,
-          lines[k][0].x, lines[k][0].y,
-          lines[k][1].x, lines[k][1].y
+          p.vector.x, p.vector.y,
+          p2.vector.x, p2.vector.y,
+          line.p.x, line.p.y,
+          line.p2.x, line.p2.y
         )) {
           intersects = true;
           break;
@@ -229,11 +266,11 @@ function vertices(
 
       // If all is clear, then add line to the draw list
       if (!intersects) {
-        lines.push([
-          { x: p.x, y: p.y },
-          { x: p2.x, y: p2.y },
-          distance
-        ]);
+        lines.push({
+          p: p.vector,
+          p2: p2.vector,
+          d: distance
+        });
         
         count++;
       }
@@ -242,17 +279,37 @@ function vertices(
 
   // Draw all the lines!
   for (let l = 0; l < lines.length; l++) {
+    const p = lines[l].p;
+    const p2 = lines[l].p2;
+    const width = ctx.canvas.width;
 
-    // Normalize distance to 0-1
-    alpha = 1 - (lines[l][2] / threshold);
+    if (p.x > width - (width / 3) / 2) {
+      r = mapNumberToRange(p.x, width - (width / 3) / 2, width, 0, 255);
+    } else {
+      r = mapNumberToRange(p.x, 0, width / 3 + (width / 3), 255, 0);
+    }
+
+    if (p.x > width / 2) {
+      b =  mapNumberToRange(p.x, width / 2, width - width / 3 + (width / 3), 255, 0);
+    } else {
+      b =  mapNumberToRange(p.x, width / 3 - (width / 3), width / 2, 0, 255);
+    }
+
+    if (p.x < (width / 3) / 2) {
+      g = mapNumberToRange(p.x, 0, (width / 3) / 2, 255, 0);
+    } else{
+      g = mapNumberToRange(p.x, width  - width / 3 - (width / 3), width, 0, 255);
+    }
+
+    alpha = 1 - (lines[l].d / threshold);
 
     ctx.beginPath();
     ctx.lineWidth = lineWidth;
-    ctx.strokeStyle = `rgb(${color},${alpha})`;
-    ctx.moveTo(~~lines[l][0].x + 0.5, ~~lines[l][0].y + 0.5);
-    ctx.lineTo(~~lines[l][1].x + 0.5, ~~lines[l][1].y + 0.5);
+    ctx.strokeStyle = `rgb(${r},${g},${b},${alpha})`;
+
+    ctx.moveTo(~~(p.x + 0.5), ~~(p.y + 0.5));
+    ctx.lineTo(~~(p2.x + 0.5), ~~(p2.y + 0.5));
     ctx.stroke();
-    ctx.closePath();
   }
 
   // Empty out lines array after drawing is finished
@@ -308,7 +365,7 @@ function mouseInit(canvas) {
  * @return {void}
  */
 export default function initDrawing(
-  amount = 200,
+  amount = 400,
   id = 'particleField',
   width = window.innerWidth,
   height = window.innerHeight / 2,
@@ -317,11 +374,18 @@ export default function initDrawing(
 
   // Add canvas to DOM body
   const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d', { alpha : false });
   canvas.id = id;
   canvas.width = width;
   canvas.height = height;
   target.appendChild(canvas);
 
+  // Make rendering canvas
+  const renderCanvas = document.createElement('canvas');
+  const renderContext = renderCanvas.getContext('2d', { alpha : false });
+  renderCanvas.width = width;
+  renderCanvas.height = height;
+  
   // Do mouse events
   mouseInit(canvas);
 
@@ -330,15 +394,6 @@ export default function initDrawing(
   for (let i = 0; i < amount; i++) {
     particles.push(new Particle(canvas.width, canvas.height));
   }
-  
-  // Get 2D context
-  const mainCTX = canvas.getContext('2d', { alpha : false });
-
-  // Make rendering canvas
-  const renderCanvas = document.createElement('canvas');
-  renderCanvas.width = width;
-  renderCanvas.height = height;
-  const ctx = renderCanvas.getContext('2d', { alpha : false });
   
   // Setup a simple rendering engine
   const frameTarget = 60.0;
@@ -379,7 +434,7 @@ export default function initDrawing(
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         if (mouseCoords) {
-          p.mouseClose(mouseCoords);
+          p.mouseRegion(mouseCoords);
         }
         p.boundaries(canvas);
         p.update();
@@ -403,24 +458,26 @@ export default function initDrawing(
 
     // Do render actions
     if (render) {
-      ctx.fillStyle = 'rgb(0, 0, 0)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Not optimal, but clear canvas anyway
+      renderContext.fillStyle = 'rgb(0, 0, 0)';
+      renderContext.fillRect(0, 0, canvas.width, canvas.height);
 
       // Draw each particle
       for (let i = 0; i < particles.length; i++) {
         const p = particles[i];
         if (mouseCoords) {
-          p.mouseClose(mouseCoords);
+          p.mouseRegion(mouseCoords);
         }
         p.boundaries(canvas);
         p.update();
-        p.draw(ctx);
+        p.draw(renderContext);
       }
 
       // Draw lines between the particles
-      vertices(particles, ctx);
+      vertices(particles, renderContext);
 
-      mainCTX.drawImage(renderCanvas, 0, 0);
+      context.drawImage(renderCanvas, 0, 0);
 
       frames++;
     }

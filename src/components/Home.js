@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect }from 'react';
 import Page from './Page';
 import initDrawing from '../helpers/animation';
 
 const Home = () => {
-  initDrawing();
+
+  useEffect(() => {
+    initDrawing();
+  });
+
   
   return (
     <>
