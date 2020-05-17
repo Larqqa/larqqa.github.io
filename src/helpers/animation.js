@@ -39,9 +39,8 @@ function line_intersect(x1, y1, x2, y2, x3, y3, x4, y4) {
 
   // Disregard if points are in the same location
   if (
-    (x1 === x3 && y1 === y3 || x1 === x4 && y1 === y4)
-    ||
-    (x2 === x3 && y2 === y3 || x2 === x4 && y2 === y4)
+    ((x1 === x3 && y1 === y3) || (x1 === x4 && y1 === y4)) ||
+    ((x2 === x3 && y2 === y3) || (x2 === x4 && y2 === y4))
   ) return false;
   
   denom = (y4 - y3) * (x2 - x1) - (x4 - x3) * (y2 - y1);
@@ -224,7 +223,7 @@ function vertices(
   particles,
   ctx,
   threshold = 100,
-  lineWidth = 0.5,
+  lineWidth = 2,
   maxVertices = 5
 ) {
   
@@ -365,7 +364,7 @@ function mouseInit(canvas) {
  * @return {void}
  */
 export default function initDrawing(
-  amount = 400,
+  amount = 300,
   id = 'particleField',
   width = window.innerWidth,
   height = window.innerHeight / 2,
