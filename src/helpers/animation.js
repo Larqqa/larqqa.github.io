@@ -2,8 +2,9 @@
  * Animation lib for making a cool new backgournd canvas, with some swanky particles and lines
  */
 
-// RequestAnimationFrame prefix checks
-window.requestAnimFrame = (function(){
+// RequestAnimationFrame prefix checking
+
+window.requestFrame = (function(){
   return  window.requestAnimationFrame ||
     window.webkitRequestAnimationFrame ||
     window.mozRequestAnimationFrame    ||
@@ -14,7 +15,7 @@ window.requestAnimFrame = (function(){
     };
 })();
 
-window.cancelRequestAnimFrame = ( function() {
+window.cancelRequestFrame = ( function() {
   return window.cancelAnimationFrame         ||
     window.webkitCancelRequestAnimationFrame ||
     window.mozCancelRequestAnimationFrame    ||
@@ -23,8 +24,25 @@ window.cancelRequestAnimFrame = ( function() {
     clearTimeout;
 } )();
 
-// Set variables for intersection checker
-var ua, ub, denom = 0;
+// Set some variables
+// Reusing globals saves resources on Garbage Collection
+var globalLines = [];
+var mouseCoords = {};
+var rect = {};
+var p = {};
+var p2 = {};
+var line = {};
+var intersects = false;
+var ua = 0.0;
+var ub = 0.0;
+var denom = 0.0;
+var distance = 0.0;
+var speed = 0.0;
+var count = 0;
+var alpha = 0.0;
+var r = 0;
+var g = 0;
+var b = 0;
 
 /**
  * Check if two lines intersect
@@ -90,26 +108,19 @@ function mapNumberToRange(num, inMin, inMax, outMin, outMax) {
   return (num - inMin) * (outMax - outMin) / (inMax - inMin) + outMin;
 }
 
-// Set some variables for use in particle calculations
-// Reusing saves a lot on Garbage Collection!
-var lines = [];
-var distance = 0;
-var intersects = false;
-var count = 0;
-var speed = 0;
-
 // Make All the glorious particles!
 class Particle{
   constructor(canvasWidth, canvasHeight){
     this.size = 1;
     this.color =  'rgb(255, 255, 255)';
     this.linewidth = 2;
-    this.region = 50;
+    this.region = 100;
     this.minvel = Math.random(.7) * 1;
     this.maxvel = 5;
     this.vel = this.minvel;
     this.angle = (Math.random() * 360);
     this.newAngle = 0;
+    this.maxVertices = 5;
 
     // Create a new vector for the particle
     this.vector = vector(
@@ -201,59 +212,39 @@ class Particle{
     ctx.arc(this.vector.x, this.vector.y, this.size, 0, 2 * Math.PI);
     ctx.stroke();
   }
-}
 
-// Vertice colors
-var alpha = 0;
-var r = 0;
-var g = 0;
-var b = 0;
-/**
- * Draw a lines between particles
- * 
- * @param {array} particles: Array of particles
- * @param {object} ctx: Canvas context
- * @param {int} threshold: line length threshold
- * @param {string} color: line color as rgb numbers
- * @param {float} lineWidth: the line width
- * @param {int} maxVertices: Maximum amount of lines from one particle
- * @return 
- */
-function vertices(
-  particles,
-  ctx,
-  threshold = 100,
-  lineWidth = 2,
-  maxVertices = 5
-) {
-  
-  // Check if the particles i & j are close enough to be connected to each other
-  for (let i = particles.length - 1; i > 0; i--) {
-    const p = particles[i];
+  updateVertices(particles, index) {
     count = 0;
-    
-    for (let j = i - 1; j >= 0; j--) {
-      if (count > maxVertices) break;
-      const p2 = particles[j];
+    this.lines = [];
+
+    // Loop through all the particles that come after the current particle
+    for (let j = index - 1; j >= 0; j--) {
+
+      // Check if vertice count is over maximum count
+      // if (count > this.maxVertices) break;
+      if (count > 10) break;
+      
+      p2 = particles[j];
       intersects = false;
 
       // Check if distance between points is larger than treshold
-      distance = checkDistance(p.vector, p2.vector);
+      distance = checkDistance(this.vector, p2.vector);
 
-      if (distance > threshold) continue; // if too long, abort
+      if (distance > this.region) continue; // if too long, abort
 
       // Check if this line intersects with already existing lines
-      for (let k = 0; k < lines.length; k++) {
-        const line = lines[k];
+      for (let k = 0; k < globalLines.length; k++) {
+        line = globalLines[k];
 
-        // Check if current particle is out of threshold * 2 of vector
-        const distance1 = checkDistance(p.vector, line.p);
-        const distance2 = checkDistance(p.vector, line.p2);
-        if (distance1 > (threshold * 2) && distance2 > (threshold * 2)) continue;
+        // Check if current particle is farther than threshold * 2 of the already made lines
+        if (
+          checkDistance(this.vector, line.p) > (this.region * 2) &&
+          checkDistance(this.vector, line.p2) > (this.region * 2)
+        ) continue;
 
-        // Check if lines intersects
+        // Check if lines intersect
         if (line_intersect(
-          p.vector.x, p.vector.y,
+          this.vector.x, this.vector.y,
           p2.vector.x, p2.vector.y,
           line.p.x, line.p.y,
           line.p2.x, line.p2.y
@@ -265,59 +256,61 @@ function vertices(
 
       // If all is clear, then add line to the draw list
       if (!intersects) {
-        lines.push({
-          p: p.vector,
+        this.lines.push({
+          p: this.vector,
           p2: p2.vector,
           d: distance
         });
-        
+
         count++;
       }
     }
+    globalLines.push(...this.lines);
   }
 
-  // Draw all the lines!
-  for (let l = 0; l < lines.length; l++) {
-    const p = lines[l].p;
-    const p2 = lines[l].p2;
-    const width = ctx.canvas.width;
+  /**
+   * Draw all the lines between the particles
+   * 
+   * @param {object} ctx: Canvas context
+   * @return {void}
+   */
+  drawVertices(p, p2, distance, ctx, width) {
 
+    // Map a color range based on positional X value:
+    
+    // start to 1/3 and last 1/5 to end
     if (p.x > width - (width / 3) / 2) {
       r = mapNumberToRange(p.x, width - (width / 3) / 2, width, 0, 255);
     } else {
       r = mapNumberToRange(p.x, 0, width / 3 + (width / 3), 255, 0);
     }
 
+    // 1/3 to 2/3
     if (p.x > width / 2) {
       b =  mapNumberToRange(p.x, width / 2, width - width / 3 + (width / 3), 255, 0);
     } else {
       b =  mapNumberToRange(p.x, width / 3 - (width / 3), width / 2, 0, 255);
     }
 
+    // 2/3 to end and start to 1/5
     if (p.x < (width / 3) / 2) {
       g = mapNumberToRange(p.x, 0, (width / 3) / 2, 255, 0);
     } else{
       g = mapNumberToRange(p.x, width  - width / 3 - (width / 3), width, 0, 255);
     }
 
-    alpha = 1 - (lines[l].d / threshold);
+    // The length of the vertice mapped from 0 to 1
+    alpha = 1 - (distance / 100);
 
     ctx.beginPath();
-    ctx.lineWidth = lineWidth;
+    ctx.lineWidth = 2;
     ctx.strokeStyle = `rgb(${r},${g},${b},${alpha})`;
-
     ctx.moveTo(~~(p.x + 0.5), ~~(p.y + 0.5));
     ctx.lineTo(~~(p2.x + 0.5), ~~(p2.y + 0.5));
     ctx.stroke();
   }
-
-  // Empty out lines array after drawing is finished
-  lines = [];
 }
 
-// Set variables for some global mouse data
-var mouseCoords;
-var rect;
 
 /**
  * Add the mouse events to the canvas
@@ -326,24 +319,24 @@ var rect;
  * @return {void}
  */
 function mouseInit(canvas) {
-
+  
   // Get the mouse position inside of the canvas
   document.addEventListener('mousemove', function(e) {
 
     // Initialize coordinates
-    rect = canvas.getBoundingClientRect();
     mouseCoords = {
       x: e.clientX - rect.left,
       y: e.clientY - rect.top
     };
 
-    // Bind mouse position to the canvas
+    // Bind mouse position to the canvas X
     if (mouseCoords.x > canvas.width){
       mouseCoords.x = canvas.width;
     } else if (mouseCoords.x < 0) {
       mouseCoords.x = 0;
     }
-
+    
+    // Bind mouse position to the canvas Y
     if (mouseCoords.y > canvas.height) {
       mouseCoords.y = canvas.height;
     } else if (mouseCoords.y < 0) {
@@ -364,7 +357,7 @@ function mouseInit(canvas) {
  * @return {void}
  */
 export default function initDrawing(
-  amount = 300,
+  amount = 100,
   id = 'particleField',
   width = window.innerWidth,
   height = window.innerHeight / 2,
@@ -386,6 +379,7 @@ export default function initDrawing(
   renderCanvas.height = height;
   
   // Do mouse events
+  rect = canvas.getBoundingClientRect();
   mouseInit(canvas);
 
   // Make particles
@@ -423,15 +417,15 @@ export default function initDrawing(
     lastTime = firstTime;
     unprocessedTime += passedTime;
     frameTime += passedTime;
-    
+
     // If engine skips frames, update untill caught up
     while (unprocessedTime >= updateCap) {
       unprocessedTime -= updateCap;
       render = true;
 
       // Update particles
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
+      for (let i = particles.length - 1; i >= 0; i--) {
+        p = particles[i];
         if (mouseCoords) {
           p.mouseRegion(mouseCoords);
         }
@@ -460,28 +454,36 @@ export default function initDrawing(
 
       // Not optimal, but clear canvas anyway
       renderContext.fillStyle = 'rgb(0, 0, 0)';
-      renderContext.fillRect(0, 0, canvas.width, canvas.height);
+      renderContext.fillRect(0, 0, renderCanvas.width, renderCanvas.height);
 
-      // Draw each particle
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        if (mouseCoords) {
-          p.mouseRegion(mouseCoords);
+      // Make & draw vertices & draw particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        p = particles[i];
+
+        // Make vertices
+        p.updateVertices(particles, i);
+
+        // For each vertice, draw vertice
+        for (let j = 0; j < p.lines.length; j++) {
+          p.drawVertices(
+            p.lines[j].p, p.lines[j].p2, p.lines[j].d,
+            renderContext, renderCanvas.width
+          );
         }
-        p.boundaries(canvas);
-        p.update();
+
+        // Draw particle
         p.draw(renderContext);
       }
+      globalLines = [];
 
-      // Draw lines between the particles
-      vertices(particles, renderContext);
-
+      // Dtaw image on main canvas from render canvas
       context.drawImage(renderCanvas, 0, 0);
 
       frames++;
     }
 
-    window.requestAnimFrame(step);
+    // Ask browser nicely to give us the next frame
+    window.requestFrame(step);
   }
 
   // Initialize animation
