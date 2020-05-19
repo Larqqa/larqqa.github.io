@@ -1,7 +1,3 @@
-/**
- * Mouse interaction event listeners 
- */
-
 // Make mouse coordinates a nice little global
 export var mouseCoords = {};
 

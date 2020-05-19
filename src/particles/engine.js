@@ -1,5 +1,6 @@
-import Particle from './Particle';
+import makeParticles from './Particle';
 import mouseInit, { mouseCoords } from './mouse';
+import { makeVertices, drawVertices } from './interactions';
 
 // RequestAnimationFrame prefix checking
 window.requestFrame = (function(){
@@ -22,20 +23,19 @@ window.cancelRequestFrame = ( function() {
     clearTimeout;
 } )();
 
-/**
- * A simple 2D rendering engine
- */
-
-// Some vars
-var globalLines = [];
-var rect = {};
+// Vars
 var p = {};
+var p2 = {};
+var line = {};
+var lines = [];
+var width = 0;
 
 /**
  * Updating for the particle animations
  * 
- * @param 
- * @return 
+ * @param {array} particles: particles array
+ * @param {object} canvas: canvas object
+ * @return {void}
  */
 function update(particles, canvas) {
   for (let i = particles.length - 1; i >= 0; i--) {
@@ -51,35 +51,40 @@ function update(particles, canvas) {
 /**
  * Rendering for the particle animations
  * 
- * @param 
- * @return 
+ * @param {array} particles: particles array
+ * @param {object} ctx: canvas context
+ * @return {void}
  */
-function render(particles, ctx, canvas) {
-
-  // Make & draw vertices & draw particles
+function render(particles, ctx) {
+  width = ctx.canvas.width;
+  
   for (let i = particles.length - 1; i >= 0; i--) {
     p = particles[i];
+    lines = [];
 
-    // Make & save vertices
-    globalLines.push(...p.updateVertices(particles, i, globalLines));
+    // Make vertices
+    for (let j = i - 1; j >= 0; j--) {
+      p2 = particles[j];
+      line = makeVertices(p.vector, p2.vector, p.region);
+
+      // if false, don't add to list
+      if (line) lines.push(line);
+    }
 
     // For each vertice, draw vertice
-    for (let j = 0; j < p.lines.length; j++) {
-      p.drawVertices(
-        p.lines[j].p, p.lines[j].p2, p.lines[j].d,
-        ctx, canvas.width
-      );
+    for (let j = 0; j < lines.length; j++) {
+      drawVertices(lines[j], p.region, ctx, width);
     }
 
     // Draw particle
     p.draw(ctx);
   }
-  globalLines = [];
 }
 
 /**
  * Initialize particle field drawing
  * 
+ * Params in the settings object:
  * @param {int} amount: Amount of particles
  * @param {string} id: id of canvas
  * @param {int} width: width of canvas
@@ -87,13 +92,15 @@ function render(particles, ctx, canvas) {
  * @param {object} target: target container for the canvas
  * @return {void}
  */
-export default function initEngine(
-  amount = 300,
-  id = 'particleField',
-  width = window.innerWidth,
-  height = window.innerHeight / 2,
-  target = document.body
-) {
+export default function Engine(s = {}) {
+
+  // Settings
+  const amount = s.amount ? s.amount : 100;
+  const id = s.id ? s.id : 'particleField';
+  const width = s.width ? s.width : window.innerWidth;
+  const height = s.height ? s.height : window.innerHeight / 2;
+  const target = s.target ? s.target : document.body;
+  const color = s.color ? s.color : 'rgb(0,0,0)';
 
   // Add canvas to DOM body
   const canvas = document.createElement('canvas');
@@ -104,20 +111,15 @@ export default function initEngine(
   target.appendChild(canvas);
 
   // Make rendering canvas
-  const renderCanvas = document.createElement('canvas');
+  const renderCanvas = canvas;
   const renderContext = renderCanvas.getContext('2d', { alpha : false });
-  renderCanvas.width = width;
-  renderCanvas.height = height;
-  
-  // Do mouse events
-  rect = canvas.getBoundingClientRect();
-  mouseInit(canvas, rect);
 
   // Make particles
-  var particles = [];
-  for (let i = 0; i < amount; i++) {
-    particles.push(new Particle(canvas.width, canvas.height));
-  }
+  const particles = makeParticles(amount, renderCanvas.width, renderCanvas.height);
+  
+  // Do mouse events
+  var rect = canvas.getBoundingClientRect();
+  mouseInit(canvas, rect);
   
   // Setup a simple rendering engine
   const frameTarget = 60.0;
@@ -133,7 +135,6 @@ export default function initEngine(
   var fpsString = '';
   var missedFrameCount = 0;
   var missedFramesString = '';
-  var engine;
   
   /**
    * Animation loop function
@@ -178,11 +179,11 @@ export default function initEngine(
     if (shouldRender) {
 
       // Not optimal, but clear canvas anyway
-      renderContext.fillStyle = 'rgb(0, 0, 0)';
+      renderContext.fillStyle = color;
       renderContext.fillRect(0, 0, renderCanvas.width, renderCanvas.height);
 
       // Do render things
-      render(particles, renderContext, renderCanvas);
+      render(particles, renderContext);
 
       // Draw image on main canvas from render canvas
       context.drawImage(renderCanvas, 0, 0);
@@ -191,22 +192,9 @@ export default function initEngine(
     }
 
     // Ask browser nicely to give us the next frame
-    engine = window.requestFrame(step);
+    window.requestFrame(step);
   }
 
-  // Initialize animation
-  function start() {
-    step();
-  }
-
-  function stop() {
-    window.cancelRequestFrame(engine);
-  }
-
-  function frame() {
-    stop();
-    start();
-  }
-
-  start();
+  // Init
+  step();
 }

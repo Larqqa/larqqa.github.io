@@ -2,10 +2,6 @@
  * Some helpers for the particle calculations
  */
 
-var ua = 0.0;
-var ub = 0.0;
-var denom = 0.0;
-
 /**
  * Check if two lines intersect
  *
@@ -24,11 +20,11 @@ export function lineIntersect(v1, v2, v3, v4) {
   if (v1 === v3 || v1 === v4) return false;
   if (v2 === v3 || v2 === v4) return false;
   
-  denom = (v4.y - v3.y) * (v2.x - v1.x) - (v4.x - v3.x) * (v2.y - v1.y);
+  var denom = (v4.y - v3.y) * (v2.x - v1.x) - (v4.x - v3.x) * (v2.y - v1.y);
   if (denom === 0) return false;
   
-  ua = ((v4.x - v3.x) * (v1.y - v3.y) - (v4.y - v3.y) * (v1.x - v3.x)) / denom;
-  ub = ((v2.x - v1.x) * (v1.y - v3.y) - (v2.y - v1.y) * (v1.x - v3.x)) / denom;
+  var ua = ((v4.x - v3.x) * (v1.y - v3.y) - (v4.y - v3.y) * (v1.x - v3.x)) / denom;
+  var ub = ((v2.x - v1.x) * (v1.y - v3.y) - (v2.y - v1.y) * (v1.x - v3.x)) / denom;
 
   return ua >= 0 && ua <= 1 && ub >= 0 && ub <= 1;
 }
