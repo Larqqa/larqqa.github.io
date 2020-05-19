@@ -1,6 +1,7 @@
 import React, { useEffect }from 'react';
 import Page from './Page';
-import initDrawing from '../helpers/animation';
+// import initDrawing from '../particles/animation';
+import initDrawing from '../particles/engine';
 
 const Home = () => {
 
