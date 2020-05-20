@@ -99,7 +99,7 @@ export default function Engine(s = {}) {
   const id = s.id ? s.id : 'particleField';
   const width = s.width ? s.width : window.innerWidth;
   const height = s.height ? s.height : window.innerHeight / 2;
-  const target = s.target ? s.target : document.body;
+  const target = s.target ? document.getElementById(s.target) : document.body;
   const color = s.color ? s.color : 'rgb(0,0,0)';
 
   // Add canvas to DOM body

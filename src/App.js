@@ -5,7 +5,7 @@ import { initProjects } from './reducers/projectsReducer';
 import { initBlogs } from './reducers/blogReducer';
 import Routes, { NavLinks } from './Routes';
 
-const App = (props) => {
+function App(props) {
 
   useEffect(() => {
     const init = async () => {

@@ -22,6 +22,7 @@ const parser = (fileData) => {
 
       // Parse  header into an object
       header = JSON.parse(header);
+      header.date = new Date(header.date);
 
       // Add file name to header
       header.name = name;

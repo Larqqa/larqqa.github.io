@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { Switch, Redirect, Link, Route } from 'react-router-dom';
 import Page from './components/Page';
 import Projects from './components/Projects';
+import Project from './components/Project';
 import Blog from './components/Blog';
+import Post from './components/Post';
 import Home from './components/Home';
 import NotFound from './components/NotFound';
 
@@ -27,21 +29,21 @@ const routes = [
     name: 'Project',
     path: '/projects/:name',
     exact: true,
-    component: Projects,
+    component: Project,
     link: false
   },
   {
     name: 'Blog',
-    path: '/Blog',
+    path: '/blog',
     exact: true,
     component: Blog,
     link: true
   },
   {
     name: 'Blog post',
-    path: '/Blog/:name',
+    path: '/blog/:name',
     exact: true,
-    component: Blog,
+    component: Post,
     link: false
   },
   {
@@ -72,7 +74,7 @@ export const NavLinks = connect(
     // Check if any pages are marked to be displayed in nav
     // If found, make a page into a Link useable object
     const pagesFilt = pages.filter(p => p.meta.nav === true).map(p => ({
-      name: p.meta.name,
+      name: p.meta.title,
       path: `/${p.meta.name}`,
       exact: true,
       component: Page,
@@ -112,7 +114,7 @@ export const NavLinks = connect(
 });
 
 // Define Routing
-const Routes = () => {
+function Routes() {
   return (
     <Switch>
       {routes.map((route, i) =>
@@ -126,6 +128,6 @@ const Routes = () => {
       {/*<Redirect to="/404" />*/}
     </Switch>
   );
-};
+}
 
 export default Routes;

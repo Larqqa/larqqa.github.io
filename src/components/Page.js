@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 
-const Page = ({ page }) => {
+function Page({ page }) {
   return (<ReactMarkdown source={page && page.content} />);
-};
+}
 
 export default connect(
   
