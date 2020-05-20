@@ -4,22 +4,22 @@ import { Link } from 'react-router-dom';
 import { getLanguage } from '../helpers/misc';
 import { sortByDate, sortByName } from '../helpers/sorts';
 
-function Projects({ projects, link, children }) {
+function Posts({ children, blog, link }) {
   const [ sorting, setSorting ] = useState('date');
   const [ order, setOrder ] = useState(true);
-  const [ sortedProjects, setSortedProjects ] = useState([]);
+  const [ sortedPosts, setSortedPosts ] = useState([]);
 
   useEffect(() => {
-    setSortedProjects(sortByDate(projects, order));
-  }, [ projects ]);
+    setSortedPosts(sortByDate(blog, order));
+  }, [ blog ]);
 
   function sortNames() {
     if (sorting !== 'name') {
       setSorting('name');
-      setSortedProjects(sortByName(projects, true));
+      setSortedPosts(sortByName(blog, true));
       setOrder(true);
     } else {
-      setSortedProjects(sortByName(projects, !order));
+      setSortedPosts(sortByName(blog, !order));
       setOrder(!order);
     }
   }
@@ -27,28 +27,28 @@ function Projects({ projects, link, children }) {
   function sortDates() {
     if (sorting !== 'date') {
       setSorting('date');
-      setSortedProjects(sortByDate(projects, true));
+      setSortedPosts(sortByDate(blog, true));
       setOrder(true);
     } else {
-      setSortedProjects(sortByDate(projects, !order));
+      setSortedPosts(sortByDate(blog, !order));
       setOrder(!order);
     }
   }
   
-  return (
+  return(
     <div className={link}>
       {children}
       <button onClick={sortNames}>Sort by Name</button>
       <button onClick={sortDates}>Sort by date</button>
       <ul>
-        {sortedProjects.map((project, i) => {
+        {sortedPosts.map((post, i) => {
           return (
             <li key={i}>
-              <img src={project.meta.image}/>
-              <Link to={`/${link}/${project.meta.name}`}>
-                {project.meta.title}
+              <Link to={`/${link}/${post.meta.name}`}>
+                {post.meta.title}
               </Link>
-              <p>{project.meta.date.toLocaleDateString(getLanguage())}</p>
+              <p>{post.meta.date.toLocaleDateString(getLanguage())}</p>
+              {post.meta.excerpt && <p>{post.meta.excerpt}</p>}
             </li>
           );
         })}
@@ -59,12 +59,12 @@ function Projects({ projects, link, children }) {
 
 export default connect(
   (state, props) => {
-    if (!props.projects) {
+    if (!props.blog) {
       return {
-        projects: state.projects,
-        link: 'projects',
-        children: (<h1>Projects</h1>)
+        blog: sortByDate(state.blog),
+        link: 'blog',
+        children: (<h1>Blog posts</h1>)
       };
     } else return {};
   }
-)( Projects );
+)( Posts );

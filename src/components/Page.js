@@ -3,7 +3,14 @@ import { connect } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 
 function Page({ page }) {
-  return (<ReactMarkdown source={page && page.content} />);
+  if (!page) return null;
+  
+  return (
+    <>
+      <h1>{page.meta.title}</h1>
+      <ReactMarkdown source={page && page.content} />
+    </>
+  );
 }
 
 export default connect(
@@ -19,7 +26,7 @@ export default connect(
     }
 
     return {
-      page: page[0] ? page[0] : []
+      page: page[0] ? page[0] : false
     };
   }
 )( Page );

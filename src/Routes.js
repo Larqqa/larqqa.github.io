@@ -4,7 +4,7 @@ import { Switch, Redirect, Link, Route } from 'react-router-dom';
 import Page from './components/Page';
 import Projects from './components/Projects';
 import Project from './components/Project';
-import Blog from './components/Blog';
+import Posts from './components/Posts';
 import Post from './components/Post';
 import Home from './components/Home';
 import NotFound from './components/NotFound';
@@ -36,7 +36,7 @@ const routes = [
     name: 'Blog',
     path: '/blog',
     exact: true,
-    component: Blog,
+    component: Posts,
     link: true
   },
   {

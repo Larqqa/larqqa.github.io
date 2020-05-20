@@ -1,8 +1,9 @@
 import React, { useEffect }from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { sortByDate } from '../helpers/sorts';
+import Posts from './Posts';
 import Page from './Page';
+import Projects from './Projects';
+import { sortByDate } from '../helpers/sorts';
 import Engine from '../particles/engine';
 
 function Home({ blog, projects }) {
@@ -17,35 +18,17 @@ function Home({ blog, projects }) {
     }
   });
 
-  function Posts({ children, array, link }) {
-    return(
-      <div className={link}>
-        {children}
-        <ul>
-          {array.map((a, i) => {
-            return (
-              <li key={i}>
-                <Link to={`/${link}/${a.meta.name}`}>{a.meta.title}</Link>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    );
-  }
-
   return (
     <>
       <header id="header">
-        <h1>Home</h1>
       </header>
       <div className="main">
         <Page content="home" />
-        <Posts array={projects} link="projects">
-          <h1>Projects</h1>
-        </Posts>
-        <Posts array={blog} link="blog">
-          <h1>Blogposts</h1>
+        <Projects projects={projects} link="projects">
+          <h2>Recent projects</h2>
+        </Projects>
+        <Posts blog={blog} link="blog">
+          <h2>Recent posts</h2>
         </Posts>
       </div>
     </>
