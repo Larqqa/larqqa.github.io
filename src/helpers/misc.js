@@ -8,7 +8,7 @@
  * @return {string} Locale string 
  */
 export function getLanguage() {
-  if (navigator.languages != undefined) {
+  if (navigator.languages !== undefined) {
     return navigator.languages[0];
   } else if (navigator.language) {
     return navigator.language;

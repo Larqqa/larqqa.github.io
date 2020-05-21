@@ -24,10 +24,10 @@ function Home({ blog, projects }) {
       </header>
       <div className="main">
         <Page content="home" />
-        <Projects projects={projects} link="projects">
+        <Projects projects={projects} link="projects" sortable={false}>
           <h2>Recent projects</h2>
         </Projects>
-        <Posts blog={blog} link="blog">
+        <Posts blog={blog} link="blog" sortable={false}>
           <h2>Recent posts</h2>
         </Posts>
       </div>

@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import { getLanguage } from '../helpers/misc';
 import { sortByDate, sortByName } from '../helpers/sorts';
 
-function Projects({ projects, link, children }) {
+function Projects({ projects, link, children, sortable }) {
   const [ sorting, setSorting ] = useState('date');
   const [ order, setOrder ] = useState(true);
   const [ sortedProjects, setSortedProjects ] = useState([]);
 
   useEffect(() => {
     setSortedProjects(sortByDate(projects, order));
-  }, [ projects ]);
+  }, [ projects, order ]);
 
   function sortNames() {
     if (sorting !== 'name') {
@@ -38,13 +38,18 @@ function Projects({ projects, link, children }) {
   return (
     <div className={link}>
       {children}
-      <button onClick={sortNames}>Sort by Name</button>
-      <button onClick={sortDates}>Sort by date</button>
+
+      {sortable &&
+        <>
+          <button onClick={sortNames}>Sort by Name {order ? '↑' : '↓'}</button>
+          <button onClick={sortDates}>Sort by date {order ? '↑' : '↓'}</button>
+        </>
+      }
       <ul>
         {sortedProjects.map((project, i) => {
           return (
             <li key={i}>
-              <img src={project.meta.image}/>
+              <img alt="" src={project.meta.image}/>
               <Link to={`/${link}/${project.meta.name}`}>
                 {project.meta.title}
               </Link>
@@ -63,7 +68,8 @@ export default connect(
       return {
         projects: state.projects,
         link: 'projects',
-        children: (<h1>Projects</h1>)
+        children: (<h1>Projects</h1>),
+        sortable: true
       };
     } else return {};
   }

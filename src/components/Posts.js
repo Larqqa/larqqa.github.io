@@ -4,14 +4,14 @@ import { Link } from 'react-router-dom';
 import { getLanguage } from '../helpers/misc';
 import { sortByDate, sortByName } from '../helpers/sorts';
 
-function Posts({ children, blog, link }) {
+function Posts({ children, blog, link, sortable }) {
   const [ sorting, setSorting ] = useState('date');
   const [ order, setOrder ] = useState(true);
   const [ sortedPosts, setSortedPosts ] = useState([]);
 
   useEffect(() => {
     setSortedPosts(sortByDate(blog, order));
-  }, [ blog ]);
+  }, [ blog, order ]);
 
   function sortNames() {
     if (sorting !== 'name') {
@@ -38,8 +38,12 @@ function Posts({ children, blog, link }) {
   return(
     <div className={link}>
       {children}
-      <button onClick={sortNames}>Sort by Name</button>
-      <button onClick={sortDates}>Sort by date</button>
+      {sortable &&
+        <>
+          <button onClick={sortNames}>Sort by Name {order ? '↑' : '↓'}</button>
+          <button onClick={sortDates}>Sort by date {order ? '↑' : '↓'}</button>
+        </>
+      }
       <ul>
         {sortedPosts.map((post, i) => {
           return (
@@ -63,7 +67,8 @@ export default connect(
       return {
         blog: sortByDate(state.blog),
         link: 'blog',
-        children: (<h1>Blog posts</h1>)
+        children: (<h1>Blog posts</h1>),
+        sortable: true
       };
     } else return {};
   }

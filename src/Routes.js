@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { Switch, Redirect, Link, Route } from 'react-router-dom';
 import Page from './components/Page';
 import Projects from './components/Projects';
-import Project from './components/Project';
+// import Project from './components/Project';
 import Posts from './components/Posts';
+import Categories from './components/Categories';
 import Post from './components/Post';
 import Home from './components/Home';
 import NotFound from './components/NotFound';
@@ -29,7 +30,7 @@ const routes = [
     name: 'Project',
     path: '/projects/:name',
     exact: true,
-    component: Project,
+    component: Post,
     link: false
   },
   {
@@ -47,16 +48,30 @@ const routes = [
     link: false
   },
   {
-    name: 'Page',
-    path: '/:name',
+    name: 'Categories',
+    path: '/categories',
     exact: true,
-    component: Page,
+    component: Categories,
+    link: true
+  },
+  {
+    name: 'Categories',
+    path: '/categories/:categories',
+    exact: true,
+    component: Categories,
     link: false
   },
   {
     name: '404 not found',
     path: '/404',
     component: NotFound,
+    link: false
+  },
+  {
+    name: 'Page',
+    path: '/:name',
+    exact: true,
+    component: Page,
     link: false
   }
 ];

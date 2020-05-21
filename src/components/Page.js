@@ -1,14 +1,18 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
+import { Redirect } from 'react-router-dom';
 
 function Page({ page }) {
   if (!page) return null;
   
   return (
     <>
-      <h1>{page.meta.title}</h1>
-      <ReactMarkdown source={page && page.content} />
+      <header>
+        {page.meta.image && <img alt="" src={page.meta.image}></img>}
+        <h1>{page.meta.title}</h1>
+      </header>
+      <ReactMarkdown source={page.content} />
     </>
   );
 }
