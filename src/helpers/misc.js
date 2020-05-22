@@ -16,3 +16,27 @@ export function getLanguage() {
     return 'fi-FI';
   }
 }
+
+/**
+ * Get all categories from all posts in array
+ * 
+ * @param {array} cats: categories of posts
+ * @return {array} Array of categories
+ */
+export function getCategories(array) {
+  let categories = [];
+
+  // Filter out empty lists
+  array = array.filter(a => a.meta.categories);
+
+  // Add each non duplicate to list
+  for (let a of array) {
+    for (let cat of a.meta.categories) {
+      if (!categories.includes(cat)) {
+        categories.push(cat);
+      }
+    }
+  }
+
+  return categories;
+}

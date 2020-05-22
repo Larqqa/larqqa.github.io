@@ -99,7 +99,7 @@ export const NavLinks = connect(
 
     // Add found pages to nav array
     if (pagesFilt.length) {
-      pagesFilt.map(p => {
+      for (let p of pagesFilt) {
 
         // If has specific index, add link to index
         if (p.index) {
@@ -107,7 +107,7 @@ export const NavLinks = connect(
         } else {
           routes.push(p);
         }
-      });
+      }
     }
 
     // Save nav list to state for use later
@@ -140,7 +140,7 @@ function Routes() {
           component={route.component}
         />
       )}
-      {/*<Redirect to="/404" />*/}
+      <Redirect to="/404" />
     </Switch>
   );
 }
