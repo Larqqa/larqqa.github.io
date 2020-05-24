@@ -5,7 +5,7 @@
  *
  * @return {Array} Array of objects containing parsed Meta header & markdown scontent
  */
-const parser = (fileData) => {
+const parser = (fileData, urlPath) => {
   return fileData.map(obj=> {
     
     // Extract & format the meta header
@@ -13,7 +13,7 @@ const parser = (fileData) => {
 
     // Sanitize filename for use as path
     const name = obj.name.replace('.md', '').replace(' ', '-').toLowerCase();
-
+    
     if (header) {
 
       // Parse header to object notation
@@ -24,10 +24,15 @@ const parser = (fileData) => {
       header = JSON.parse(header);
       header.date = new Date(header.date);
 
+      header.baseURL = urlPath;
+      
       // Add file name to header
       header.name = name;
     } else {
-      header = { name: name };
+      header = {
+        name: name,
+        baseURL: urlPath,
+      };
     }
 
     // Remove header from the content

@@ -19,7 +19,7 @@ const reducer = (state = [], action) => {
 export const initBlogs = () => {
   return async dispatch => {
     try {
-      const blog = parser(await blogPromise);
+      const blog = parser(await blogPromise, 'post');
 
       // Initialize app
       dispatch({

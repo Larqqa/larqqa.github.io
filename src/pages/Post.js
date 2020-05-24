@@ -39,9 +39,27 @@ export default connect(
   // Get page content from prop of URL
   (state, props) => {
     const url = props.match.url.match('/(.*)/')[1];
-    const posts = state[url];
-    const post = posts.filter(b => b.meta.name === props.match.params.name)[0];
 
+    let post = {};
+    let posts = [];
+
+    function getPost(posts) {
+      return posts.filter(b => b.meta.name === props.match.params.name)[0];
+    }
+
+    // Get post and state that has this current post
+    posts = state.projects;
+    post = getPost(posts);
+
+    // If post was not in projects, try blogs
+    if (!post) {
+      posts = state.blog;
+      post = getPost(posts);
+    }
+
+    // If still found nothing, return nothing as no post with this name is available
+    if (!post) return {};
+ 
     let next;
     let previous;
     for (let i = 0; i < posts.length; i++) {

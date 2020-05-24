@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Switch, Redirect, Link, Route } from 'react-router-dom';
-import Page from './components/Page';
-import Projects from './components/Projects';
-// import Project from './components/Project';
-import Posts from './components/Posts';
-import Categories from './components/Categories';
-import Post from './components/Post';
-import Home from './components/Home';
-import NotFound from './components/NotFound';
+import Page from './pages/Page';
+import Projects from './pages/Projects';
+import Posts from './pages/Posts';
+import Categories from './pages/Categories';
+import Post from './pages/Post';
+import Home from './pages/Home';
+import NotFound from './pages/NotFound';
 
 // Routes are defined in this array for automated rendering
 const routes = [
@@ -27,22 +26,36 @@ const routes = [
     link: true
   },
   {
+    name: 'Projects',
+    path: '/projects/:options',
+    exact: false,
+    component: Projects,
+    link: false
+  },
+  {
     name: 'Project',
-    path: '/projects/:name',
+    path: '/project/:name',
     exact: true,
     component: Post,
     link: false
   },
   {
     name: 'Blog',
-    path: '/blog',
+    path: '/posts/',
     exact: true,
     component: Posts,
     link: true
   },
   {
+    name: 'Blog',
+    path: '/posts/:options',
+    exact: false,
+    component: Posts,
+    link: false
+  },
+  {
     name: 'Blog post',
-    path: '/blog/:name',
+    path: '/post/:name',
     exact: true,
     component: Post,
     link: false
@@ -56,7 +69,7 @@ const routes = [
   },
   {
     name: 'Categories',
-    path: '/categories/:categories',
+    path: '/categories/:options',
     exact: false,
     component: Categories,
     link: false

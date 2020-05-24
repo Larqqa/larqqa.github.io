@@ -19,12 +19,12 @@ function Project({ project, next, previous }) {
       </div>
       <div>
         {previous &&
-         <Link to={`/projects/${previous.meta.name}`}>
+         <Link to={`/project/${previous.meta.name}`}>
            Previous: {previous.meta.title}
          </Link>}
 
         {next &&
-         <Link to={`/projects/${next.meta.name}`}>
+         <Link to={`/project/${next.meta.name}`}>
            Next: {next.meta.title}
          </Link>}
       </div>

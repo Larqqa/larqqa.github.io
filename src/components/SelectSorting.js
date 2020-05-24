@@ -48,7 +48,7 @@ function SelectSorting({ posts, setPosts }) {
     <div>
       <button onClick={sortNames}>Sort by Name</button>
       <button onClick={sortDates}>Sort by date</button>
-      <button onClick={switchOrder}>Order: {order ? 'ascending' : 'descending'}</button>
+      <button onClick={switchOrder}>Order: {order ? 'descending' : 'ascending'}</button>
     </div>
   );
 }

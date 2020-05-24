@@ -21,6 +21,7 @@ const importAll = (r) => {
   
   // Combine corresponding name & path
   return fileName.map((file, i) => {
+
     return {
       name: file,
       content: filePath[i]

@@ -19,7 +19,7 @@ const reducer = (state = [], action) => {
 export const initPages = () => {
   return async dispatch => {
     try {
-      const pages = parser(await pagesPromise);
+      const pages = parser(await pagesPromise, '');
      
       // Initialize app
       dispatch({

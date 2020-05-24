@@ -1,14 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import SelectSorting from './SelectSorting';
-import Pagination from './Pagination';
-import { connectPagination } from '../helpers/misc';
+import SelectSorting from '../components/SelectSorting';
+import Pagination from '../components/Pagination';
+import { connectPagination } from '../helpers/connects';
 import { sortByDate, sortByCategory } from '../helpers/sorts';
 
 function Categories({ categories, page, amount, posts }) {
   const [ selectedPosts, setSelectedPosts ] = useState([]);
   const [ selected, setSelected ] = useState([]);
-  
+
+  /**
+   * Sort posts by selection
+   * If nothing selected default to all posts sorted by date
+   * 
+   * @return {void}
+   */
   function setSelection() {
     if (selected.length) {
       setSelectedPosts(sortByCategory(posts, selected));
@@ -16,9 +22,9 @@ function Categories({ categories, page, amount, posts }) {
       setSelectedPosts(sortByDate(posts, true));
     }
   }
-
+  
   useEffect(() => {
-    setSelection();
+    setSelectedPosts(sortByDate(posts, true));
   }, [ posts ]);
 
   /**
@@ -47,18 +53,10 @@ function Categories({ categories, page, amount, posts }) {
       {categories && categories.map((c, i) => {
         return (
           <span key={i}>
-            <input
-              type="checkbox"
-              id={`cat-${c}`}
-              value={c}
-              key={'input'+i}
-              checked={selected.includes(c)}
-              onChange={sortBySelected}
-            />
-            <label
-              htmlFor={`cat-${c}`}
-              key={'label'+i}
-            >{c}</label>
+            <input type="checkbox" id={`cat-${c}`} value={c} key={'input'+i}
+              checked={selected.includes(c)} onChange={sortBySelected}/>
+
+            <label htmlFor={`cat-${c}`} key={'label'+i}>{c}</label>
           </span>);
       })}
       <SelectSorting posts={selectedPosts} setPosts={setSelectedPosts} />
