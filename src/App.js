@@ -17,7 +17,6 @@ function App(props) {
     init();
   }, [ props ]);
      
-
   return (
     <>
       <header className="App-header">
@@ -26,7 +25,7 @@ function App(props) {
       <Routes />
     </>
   );
-};
+}
 
 export default connect(
   null,

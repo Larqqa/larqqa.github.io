@@ -12,7 +12,7 @@ import App from './App';
 const reducer = combineReducers({
   pages: pageReducer,
   projects: projectsReducer,
-  blog: blogReducer
+  blog: blogReducer,
 });
 
 ReactDOM.render(

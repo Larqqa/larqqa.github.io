@@ -57,7 +57,7 @@ const routes = [
   {
     name: 'Categories',
     path: '/categories/:categories',
-    exact: true,
+    exact: false,
     component: Categories,
     link: false
   },
@@ -140,9 +140,9 @@ function Routes() {
           component={route.component}
         />
       )}
-      <Redirect to="/404" />
     </Switch>
   );
+      // <Redirect to="/404" />
 }
 
 export default Routes;

@@ -6,15 +6,15 @@
  * @param {int} length: the length of the new array, default to array length
  * @return {array} Return new sorted array 
  */
-export function sortByDate(array, order = true, length = array.length) {
+export function sortByDate(array, order = true) {
 
   // Make posts alphabetical first
   array = sortByName(array);
 
   if (order) {
-    return array.slice(0, length).sort((a, b) => b.meta.date - a.meta.date);
+    return array.sort((a, b) => b.meta.date - a.meta.date);
   } else {
-    return array.slice(0, length).sort((a, b) => a.meta.date - b.meta.date);
+    return array.sort((a, b) => a.meta.date - b.meta.date);
   }
 }
 
@@ -26,11 +26,11 @@ export function sortByDate(array, order = true, length = array.length) {
  * @param {int} length: the length of the new array, default to array length
  * @return {array} Return new sorted array 
  */
-export function sortByName(array, order = true, length = array.length) {
+export function sortByName(array, order = true) {
   if (order) {
-    return array.slice(0, length).sort((a, b) => a.meta.title.localeCompare(b.meta.title));
+    return array.sort((a, b) => a.meta.title.localeCompare(b.meta.title));
   } else {
-    return array.slice(0, length).sort((a, b) => b.meta.title.localeCompare(a.meta.title));
+    return array.sort((a, b) => b.meta.title.localeCompare(a.meta.title));
   }
 }
 
@@ -51,3 +51,14 @@ export function sortByCategory(array, categories = []) {
   });
 }
 
+/**
+ * Slice array based on the limiting values
+ * 
+ * @param {array} array: array of posts
+ * @param {int} limiter: starting index
+ * @param {int} length: ending index
+ * @return {array} Sliced array
+ */
+export function sliceArray(array, limiter = 0, length = array.length) {
+  return array.slice(limiter, length);
+}

@@ -1,50 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import SelectSorting from './SelectSorting';
 import { getLanguage } from '../helpers/misc';
-import { sortByDate, sortByName } from '../helpers/sorts';
+import { sortByDate } from '../helpers/sorts';
 
 function Projects({ projects, link, children, sortable }) {
-  const [ sorting, setSorting ] = useState('date');
-  const [ order, setOrder ] = useState(true);
   const [ sortedProjects, setSortedProjects ] = useState([]);
 
   useEffect(() => {
-    setSortedProjects(sortByDate(projects, order));
-  }, [ projects, order ]);
-
-  function sortNames() {
-    if (sorting !== 'name') {
-      setSorting('name');
-      setSortedProjects(sortByName(projects, true));
-      setOrder(true);
-    } else {
-      setSortedProjects(sortByName(projects, !order));
-      setOrder(!order);
-    }
-  }
-
-  function sortDates() {
-    if (sorting !== 'date') {
-      setSorting('date');
-      setSortedProjects(sortByDate(projects, true));
-      setOrder(true);
-    } else {
-      setSortedProjects(sortByDate(projects, !order));
-      setOrder(!order);
-    }
-  }
+    setSortedProjects(sortByDate(projects));
+  }, [ projects ]);
   
   return (
     <div className={link}>
       {children}
-
-      {sortable &&
-        <>
-          <button onClick={sortNames}>Sort by Name {order ? '↑' : '↓'}</button>
-          <button onClick={sortDates}>Sort by date {order ? '↑' : '↓'}</button>
-        </>
-      }
+      {sortable && <SelectSorting posts={sortedProjects} setPosts={setSortedProjects}/>}
       <ul>
         {sortedProjects.map((project, i) => {
           return (
