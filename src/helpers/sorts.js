@@ -41,14 +41,20 @@ export function sortByName(array, order = true) {
  * @param {array} categories: array of categories
  * @return {array} sorted array
  */
-export function sortByCategory(array, categories = []) {
-  return array.filter(a => {
-    if (!a.meta.categories) {
-      if (categories.includes('none')) return true;
-      return false;
-    } else if (a.meta.categories.some(c => categories.includes(c))) return true;
-    return false;
-  });
+export function sortByCategory(array, categories = [], exclusive = true) {
+  if (exclusive) {
+    return array.filter(a => {
+      if (a.meta.categories && categories.every(c => a.meta.categories.includes(c))) {
+        return true;
+      } else return false;
+    });
+  } else {
+    return array.filter(a => {
+      if (a.meta.categories && a.meta.categories.some(c => categories.includes(c))) {
+        return true;
+      } else return false;
+    });
+  }
 }
 
 /**

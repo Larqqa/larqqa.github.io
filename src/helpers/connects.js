@@ -68,9 +68,6 @@ export function connectPagination(state, props, all = []) {
 
   } else {
     categories = getCategories(all); // Use all posts if no params
-
-    // Add a nothing category, if using all categories
-    categories.push('none');
   }
   
   return {

@@ -8,7 +8,7 @@ import { sortByDate, sortByCategory } from '../helpers/sorts';
 function Categories({ categories, page, amount, posts }) {
   const [ selectedPosts, setSelectedPosts ] = useState([]);
   const [ selected, setSelected ] = useState([]);
-
+  const [ exclusive, setExclusive ] = useState(true);
   /**
    * Sort posts by selection
    * If nothing selected default to all posts sorted by date
@@ -17,15 +17,15 @@ function Categories({ categories, page, amount, posts }) {
    */
   function setSelection() {
     if (selected.length) {
-      setSelectedPosts(sortByCategory(posts, selected));
+      setSelectedPosts(sortByCategory(posts, selected, exclusive));
     } else {
       setSelectedPosts(sortByDate(posts, true));
     }
   }
   
   useEffect(() => {
-    setSelectedPosts(sortByDate(posts, true));
-  }, [ posts ]);
+    setSelection();
+  }, [ posts, selected, exclusive ]);
 
   /**
    * Toggle checkboxes and sort posts
@@ -59,6 +59,7 @@ function Categories({ categories, page, amount, posts }) {
             <label htmlFor={`cat-${c}`} key={'label'+i}>{c}</label>
           </span>);
       })}
+      <button onClick={()=>setExclusive(!exclusive)}>{exclusive ? 'Exclusive' : 'Inclusive'}</button>
       <SelectSorting posts={selectedPosts} setPosts={setSelectedPosts} />
       <hr/>
       <Pagination posts={selectedPosts} page={page} amount={amount} />

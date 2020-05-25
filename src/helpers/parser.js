@@ -24,6 +24,10 @@ const parser = (fileData, urlPath) => {
       header = JSON.parse(header);
       header.date = new Date(header.date);
 
+      // Set categories to none if there are none
+      header.categories = header.categories ? header.categories : [ 'none' ];
+
+      // Set a base url for type of post
       header.baseURL = urlPath;
       
       // Add file name to header
@@ -32,6 +36,7 @@ const parser = (fileData, urlPath) => {
       header = {
         name: name,
         baseURL: urlPath,
+        categories: [ 'none' ],
       };
     }
 
