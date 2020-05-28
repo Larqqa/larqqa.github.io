@@ -26,8 +26,6 @@ function Pagination({ posts, page, amount }) {
 
   /**
    * Add pagination navigation for navigating pagination pages
-   * 
-   * @return {void} 
    */
   function PaginationNav() {
     if (maxPage <= 1) return null; // If only one page, dont show pagination nav
@@ -43,6 +41,12 @@ function Pagination({ posts, page, amount }) {
         {pageNumber < maxPage && <button onClick={()=>changePage(1)}>NEXT</button>}
         {pageNumber < maxPage && <button onClick={()=>setPageNumber(maxPage)}>Last</button>}
       </>
+    );
+  }
+
+  if (!paginatedPosts.length) {
+    return (
+      <h3>Nothing was found</h3>
     );
   }
 

@@ -91,10 +91,22 @@ const routes = [
 
 // Make links for use in navBar
 export const NavLinks = connect(
-  state => ({
-    pages: state.pages
-  })
+  state => {
+    if (!state.pages.length) {
+      return {
+        pages: 'waiting'
+      };
+    } else {
+      return {
+        pages: state.pages
+      };
+    }
+  }
 )(({ pages }) => {
+
+  // Wait until store is fully initialized
+  if (pages === 'waiting') return <p>Loading</p>;
+  
   const [ links, setLinks ] = useState([]);
 
   useEffect(() => {
@@ -118,12 +130,12 @@ export const NavLinks = connect(
         if (p.index) {
           routes.splice(p.index, 0, p);
         } else {
-          routes.push(p);
+          routes.push(p); // Else add to end
         }
       }
     }
 
-    // Save nav list to state for use later
+    // Save nav list to state for rendering
     setLinks([ ...routes ]);
   }, [ pages ]);
 
@@ -153,9 +165,9 @@ function Routes() {
           component={route.component}
         />
       )}
+      <Redirect to="/404" />
     </Switch>
   );
-      // <Redirect to="/404" />
 }
 
 export default Routes;

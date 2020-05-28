@@ -3,23 +3,21 @@ import { connect } from 'react-redux';
 import { initPages } from './reducers/pageReducer';
 import { initProjects } from './reducers/projectsReducer';
 import { initBlogs } from './reducers/blogReducer';
+import { initCategories } from './reducers/categoriesReducer';
 import Routes, { NavLinks } from './Routes';
 
 function App(props) {
 
   useEffect(() => {
-    const init = async () => {
-      await props.initPages();
-      await props.initProjects();
-      await props.initBlogs();
-    };
-
-    init();
+    props.initPages();
+    props.initProjects();
+    props.initBlogs();
+    props.initCategories();
   }, [ props ]);
      
   return (
     <>
-      <header className="App-header">
+      <header className="app-header">
         <NavLinks />
       </header>
       <Routes />
@@ -32,6 +30,7 @@ export default connect(
   {
     initPages,
     initBlogs,
-    initProjects
+    initProjects,
+    initCategories
   }
 )( App );

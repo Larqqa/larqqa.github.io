@@ -5,7 +5,9 @@ import { Link, Redirect } from 'react-router-dom';
 import { getLanguage } from '../helpers/misc';
 
 function Project({ project, next, previous }) {
-  if (!project) return null;
+  if (project === 'waiting') return null;
+  if (!project) return (<Redirect to="/404" />);
+
   
   return (
     <>
@@ -36,6 +38,14 @@ export default connect(
   
   // Get page content from prop of URL
   (state, props) => {
+
+    // If Store not initialized, wait
+    if (!state.projects.length) {
+      return {
+        project: 'waiting'
+      };
+    }
+    
     const projects = state.projects;
     const project = projects.filter(p => p.meta.name === props.match.params.name)[0];
 

@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 import { Link, Redirect } from 'react-router-dom';
 import { getLanguage } from '../helpers/misc';
-
+import Loader from '../components/Loader';
 
 function Post({ url, post, next, previous }) {
-  if (!post) return null;
+  if (post === 'waiting') return <Loader />;
+  if (!post) return (<Redirect to="/404" />);
   
   return (
     <article>
@@ -38,6 +39,14 @@ export default connect(
   
   // Get page content from prop of URL
   (state, props) => {
+
+    // If Store not initialized, wait
+    if (!state.pages.length) {
+      return {
+        post: 'waiting'
+      };
+    }
+    
     const url = props.match.url.match('/(.*)/')[1];
 
     let post = {};

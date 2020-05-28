@@ -9,6 +9,7 @@ function Categories({ categories, page, amount, posts }) {
   const [ selectedPosts, setSelectedPosts ] = useState([]);
   const [ selected, setSelected ] = useState([]);
   const [ exclusive, setExclusive ] = useState(true);
+  
   /**
    * Sort posts by selection
    * If nothing selected default to all posts sorted by date
