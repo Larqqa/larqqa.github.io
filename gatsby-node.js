@@ -6,9 +6,11 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   // Define a template for blog post
   const blogPost = path.resolve('./src/templates/blog-post.js');
+  const blogList = path.resolve('./src/templates/blog-list.js');
+  const projectList = path.resolve('./src/templates/project-list.js');
 
   // Get all markdown blog posts sorted by date
-  const result = await graphql(
+  const allPosts = await graphql(
     `
       {
         allMarkdownRemark(
@@ -28,19 +30,18 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     `
   );
 
-  if (result.errors) {
+  if (allPosts.errors) {
     reporter.panicOnBuild(
       'There was an error loading your blog posts',
-      result.errors
+      allPosts.errors
     );
     return;
   }
 
-  const posts = result.data.allMarkdownRemark.nodes;
-
   // Create blog posts pages
   // But only if there's at least one markdown file found at "content/blog" (defined in gatsby-config.js)
   // `context` is available in the template as a prop and as a variable in GraphQL
+  const posts = allPosts.data.allMarkdownRemark.nodes;
 
   if (posts.length > 0) {
     posts.forEach((post, index) => {
@@ -58,6 +59,110 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       });
     });
   }
+
+
+  const allBlogs = await graphql(
+    `
+      {
+        allMarkdownRemark(
+          filter: { fields: { collection: { eq: "blog" } }}
+          sort: { fields: [frontmatter___date], order: DESC }
+          limit: 1000
+        ) {
+          nodes {
+            fields {
+              slug
+            }
+            frontmatter {
+              title
+            }
+          }
+        }
+      }
+    `
+  );
+
+  if (allBlogs.errors) {
+    reporter.panicOnBuild(
+      'There was an error loading your blog posts',
+      allBlogs.errors
+    );
+    return;
+  }
+
+  // Create blog posts pages
+  // But only if there's at least one markdown file found at "content/blog" (defined in gatsby-config.js)
+  // `context` is available in the template as a prop and as a variable in GraphQL
+  const blogs = allBlogs.data.allMarkdownRemark.nodes;
+
+  // Create blog posts pages
+  // But only if there's at least one markdown file found at "content/blog" (defined in gatsby-config.js)
+  // `context` is available in the template as a prop and as a variable in GraphQL
+  let postsPerPage = 2;
+  let numPages = Math.ceil(blogs.length / postsPerPage);
+
+  Array.from({ length: numPages }).forEach((_, i) => {
+    createPage({
+      path: i === 0 ? '/blog' : `/blog/${i + 1}`,
+      component: blogList,
+      context: {
+        limit: postsPerPage,
+        skip: i * postsPerPage,
+        numPages,
+        currentPage: i + 1
+      },
+    });
+  });
+
+
+  const allProjects = await graphql(
+    `
+      {
+        allMarkdownRemark(
+          filter: { fields: { collection: { eq: "projects" } }}
+          sort: { fields: [frontmatter___date], order: DESC }
+          limit: 1000
+        ) {
+          nodes {
+            fields {
+              slug
+            }
+            frontmatter {
+              title
+            }
+          }
+        }
+      }
+    `
+  );
+
+  if (allProjects.errors) {
+    reporter.panicOnBuild(
+      'There was an error loading your blog posts',
+      allProjects.errors
+    );
+    return;
+  }
+
+  // Create blog posts pages
+  // But only if there's at least one markdown file found at "content/blog" (defined in gatsby-config.js)
+  // `context` is available in the template as a prop and as a variable in GraphQL
+  const projects = allProjects.data.allMarkdownRemark.nodes;
+
+  postsPerPage = 2;
+  numPages = Math.ceil(projects.length / postsPerPage);
+  Array.from({ length: numPages }).forEach((_, i) => {
+    createPage({
+      path: i === 0 ? '/portfolio' : `/portfolio/${i + 1}`,
+      component: projectList,
+      context: {
+        limit: postsPerPage,
+        skip: i * postsPerPage,
+        numPages,
+        currentPage: i + 1
+      },
+    });
+  });
 };
 
 exports.onCreateNode = ({ node, actions, getNode }) => {
