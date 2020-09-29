@@ -11,6 +11,25 @@ module.exports = {
     social: {
       twitter: 'kylemathews',
     },*/
+
+    menuLinks:[
+      {
+        name:'Home',
+        link:'/'
+      },
+      {
+        name:'Blog',
+        link:'/blog'
+      },
+      {
+        name:'Portfolio',
+        link:'/portfolio'
+      },
+      {
+        name:'About',
+        link:'/about'
+      },
+    ]
   },
   plugins: [
     {

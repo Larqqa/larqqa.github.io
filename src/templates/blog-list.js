@@ -6,14 +6,18 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 
 const BlogList = ({ data, pageContext, location }) => {
-  const siteTitle = data.site.siteMetadata?.title || `Title`
+  const siteTitle = data.site.siteMetadata?.title || 'Title'
+
+  console.log(location);
 
   const { currentPage, numPages } = pageContext
   const isFirst = currentPage === 1
   const isLast = currentPage === numPages
-  const prevPage = currentPage - 1 === 1 ? "/blog" : (currentPage - 1).toString()
+  const prevPage = currentPage - 1 === 1 ? location.pathname : (currentPage - 1).toString()
   const nextPage = (currentPage + 1).toString()
   const posts = data.allMarkdownRemark.nodes
+
+  console.log(data);
 
 
   return (
@@ -71,14 +75,14 @@ const BlogList = ({ data, pageContext, location }) => {
 export default BlogList;
 
 export const pageQuery = graphql`
-  query blogPageQuery($skip: Int!, $limit: Int!) {
+  query blogPageQuery($skip: Int!, $limit: Int!, $type: String!) {
     site {
       siteMetadata {
         title
       }
     }
     allMarkdownRemark(
-      filter: { fields: { collection: { eq: "blog" } }}
+      filter: { fields: { collection: { eq: $type } }}
       sort: { fields: [frontmatter___date], order: DESC }
       limit: $limit
       skip: $skip

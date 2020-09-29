@@ -106,6 +106,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       path: i === 0 ? '/blog' : `/blog/${i + 1}`,
       component: blogList,
       context: {
+        type: 'blog',
         limit: postsPerPage,
         skip: i * postsPerPage,
         numPages,
@@ -154,8 +155,9 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   Array.from({ length: numPages }).forEach((_, i) => {
     createPage({
       path: i === 0 ? '/portfolio' : `/portfolio/${i + 1}`,
-      component: projectList,
+      component: blogList,
       context: {
+        type: 'projects',
         limit: postsPerPage,
         skip: i * postsPerPage,
         numPages,

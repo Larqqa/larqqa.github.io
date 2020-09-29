@@ -1,81 +1,48 @@
-import React from "react"
-import { Link, graphql } from "gatsby"
+import React from "react";
+import { Link, graphql } from "gatsby";
 
-import Bio from "../components/bio"
-import Layout from "../components/layout"
-import SEO from "../components/seo"
+import Bio from "../components/bio";
+import Layout from "../components/layout";
+import SEO from "../components/seo";
 
 const BlogIndex = ({ data, location }) => {
-  const siteTitle = data.site.siteMetadata?.title || `Title`
-  const blog = data.blog.nodes
-  const projects = data.projects.nodes
+  const siteTitle = data.site.siteMetadata?.title || 'Title';
+  const blog = data.blog.nodes;
+  const projects = data.projects.nodes;
+  
+  const Posts = ({ postData, link }) => {
+    return (
+      <>
+        <Link to={link.link}><h2>{link.name}</h2></Link>
+        {postData.map(post => {
+          const title = post.frontmatter.title || post.fields.slug;
 
-
+          return (
+            <article key={post.fields.slug}>
+              <header>
+                <Link to={post.fields.slug} itemProp="url"><h2>{title}</h2></Link>
+                <p>{post.frontmatter.date}</p>
+              </header>
+              <section>
+                <p dangerouslySetInnerHTML={{
+                    __html: post.frontmatter.description || post.excerpt,
+                  }}
+                  itemProp="description"
+                />
+              </section>
+            </article>
+          );
+        })}
+      </>
+    );
+  };
+  
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="All posts" />
       <Bio />
-      <h1>index</h1>
-
-      <Link to="/blog"><h2>blog</h2></Link>
-      {blog.map(post => {
-        const title = post.frontmatter.title || post.fields.slug
-        return (
-          <article
-            key={post.fields.slug}
-            className="post-list-item"
-            itemScope
-            itemType="http://schema.org/Article"
-          >
-            <header>
-              <h2>
-                <Link to={post.fields.slug} itemProp="url">
-                  <span itemProp="headline">{title}</span>
-                </Link>
-              </h2>
-              <small>{post.frontmatter.date}</small>
-            </header>
-            <section>
-              <p
-                dangerouslySetInnerHTML={{
-                  __html: post.frontmatter.description || post.excerpt,
-                }}
-                itemProp="description"
-              />
-            </section>
-          </article>
-        )
-      })}
-
-      <Link to="/portfolio"><h2>projects</h2></Link>
-      {projects.map(post => {
-        const title = post.frontmatter.title || post.fields.slug
-        return (
-          <article
-            key={post.fields.slug}
-            className="post-list-item"
-            itemScope
-            itemType="http://schema.org/Article"
-          >
-            <header>
-              <h2>
-                <Link to={post.fields.slug} itemProp="url">
-                  <span itemProp="headline">{title}</span>
-                </Link>
-              </h2>
-              <small>{post.frontmatter.date}</small>
-            </header>
-            <section>
-              <p
-                dangerouslySetInnerHTML={{
-                  __html: post.frontmatter.description || post.excerpt,
-                }}
-                itemProp="description"
-              />
-            </section>
-          </article>
-        )
-      })}
+      <Posts postData={blog} link={ {name: 'Blog', link: '/blog'} } />
+      <Posts postData={projects} link={ {name: 'Portfolio', link: '/portfolio'} } />
     </Layout>
   )
 }
@@ -91,7 +58,7 @@ export const pageQuery = graphql`
     }
 
     blog: allMarkdownRemark(
-      limit: 3
+      limit: 5
       filter: { fields: { collection: { eq: "blog" } }}
       sort: { fields: [frontmatter___date], order: DESC }
     ) {
@@ -109,7 +76,7 @@ export const pageQuery = graphql`
     }
 
     projects: allMarkdownRemark(
-      limit: 3
+      limit: 5
       filter: { fields: { collection: { eq: "projects" } }}
       sort: { fields: [frontmatter___date], order: DESC }
     ) {

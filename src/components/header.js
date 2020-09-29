@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'gatsby';
+import Navigation from './Navigation';
 
 const Header = ({ isRootPath, title }) => {
   
@@ -7,21 +7,18 @@ const Header = ({ isRootPath, title }) => {
     if (isRootPath) {
       return (
         <h1 className="main-heading">
-          <Link to="/">{title}</Link>
+          {title}
         </h1>
       );
     } else {
-      return (
-        <Link className="header-link-home" to="/">
-          {title}
-        </Link>
-      );
+      return false;
     }
   };
 
   return (
     <header className="global-header">
       <RootPath />
+      <Navigation />
     </header>
   );
 };
