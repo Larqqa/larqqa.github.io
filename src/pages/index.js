@@ -13,14 +13,14 @@ const BlogIndex = ({ data, location }) => {
   const Posts = ({ postData, link }) => {
     return (
       <>
-        <Link to={link.link}><h2>{link.name}</h2></Link>
+        <h2><Link to={link.link}>{link.name}</Link></h2>
         {postData.map(post => {
           const title = post.frontmatter.title || post.fields.slug;
 
           return (
             <article key={post.fields.slug}>
               <header>
-                <Link to={post.fields.slug} itemProp="url"><h2>{title}</h2></Link>
+                <h2><Link to={post.fields.slug} itemProp="url">{title}</Link></h2>
                 <p>{post.frontmatter.date}</p>
               </header>
               <section>
@@ -77,7 +77,7 @@ export const pageQuery = graphql`
 
     projects: allMarkdownRemark(
       limit: 5
-      filter: { fields: { collection: { eq: "projects" } }}
+      filter: { fields: { collection: { eq: "portfolio" } }}
       sort: { fields: [frontmatter___date], order: DESC }
     ) {
       nodes {

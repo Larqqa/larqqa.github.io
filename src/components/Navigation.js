@@ -20,8 +20,9 @@ const Navigation = () => {
 
   return (
     <nav>
-      {site.siteMetadata.menuLinks.map(
-        link => <Link to={link.link}>{link.name}</Link>
+      {site.siteMetadata.menuLinks.map(link => {
+        return (<Link to={link.link} activeClassName="active">{link.name}</Link>);
+      }
       )}
     </nav>
   );

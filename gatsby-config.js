@@ -29,6 +29,10 @@ module.exports = {
         name:'About',
         link:'/about'
       },
+      {
+        name:'Asteroids',
+        link:'/Asteroids'
+      },
     ]
   },
   plugins: [
@@ -42,8 +46,8 @@ module.exports = {
     {
       resolve: 'gatsby-source-filesystem',
       options: {
-        path: `${__dirname}/content/projects`,
-        name: 'projects',
+        path: `${__dirname}/content/portfolio`,
+        name: 'portfolio',
       },
     },
     {

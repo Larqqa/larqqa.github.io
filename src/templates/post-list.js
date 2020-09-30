@@ -7,24 +7,18 @@ import SEO from "../components/seo"
 
 const BlogList = ({ data, pageContext, location }) => {
   const siteTitle = data.site.siteMetadata?.title || 'Title'
-
-  console.log(location);
-
   const { currentPage, numPages } = pageContext
   const isFirst = currentPage === 1
   const isLast = currentPage === numPages
   const prevPage = currentPage - 1 === 1 ? location.pathname : (currentPage - 1).toString()
   const nextPage = (currentPage + 1).toString()
   const posts = data.allMarkdownRemark.nodes
-
-  console.log(data);
-
+  const type = pageContext.type;
 
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="All posts" />
-      <h1>BLOG</h1>
-      <Bio />
+      <h1 style={{textTransform: 'capitalize'}}>{type}</h1>
       {posts.map(post => {
         const title = post.frontmatter.title || post.fields.slug
         return (
@@ -59,7 +53,7 @@ const BlogList = ({ data, pageContext, location }) => {
         </Link>
       )}
       {Array.from({ length: numPages }, (_, i) => (
-        <Link key={`pagination-number${i + 1}`} to={`/blog/${i === 0 ? "" : i + 1}`}>
+        <Link key={`pagination-number${i + 1}`} to={`/${type}/${i === 0 ? "" : i + 1}`}>
           {i + 1}
         </Link>
       ))}
