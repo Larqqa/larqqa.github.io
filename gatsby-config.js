@@ -1,9 +1,10 @@
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby Starter Blog',
+    title: 'Larqqa\'s amazing blogfolio',
     author: {
       name: 'Larqqa',
       summary: 'who lives and works in Finland doing web stuff.',
+      current: 'Currently employed as a web developer / web admin, working with Wordpress.',
     },
     description: 'valid and great description',
 
@@ -22,7 +23,7 @@ module.exports = {
         link:'/blog'
       },
       {
-        name:'Portfolio',
+        name:'Projects',
         link:'/portfolio'
       },
       {

@@ -1,8 +1,9 @@
 import React from 'react';
 import Navigation from './Navigation';
+import '../styles/components/header.scss';
 
 const Header = ({ isRootPath, title }) => {
-  
+
   const RootPath = () => {
     if (isRootPath) {
       return (

@@ -1,0 +1,56 @@
+// COLORS
+$colors: (
+  bg: (
+    base: rgba(56, 173, 169,1.0),
+    light: lighten(rgba(56, 173, 169,1.0), 52%),
+    ultraLight: lighten(rgba(56, 173, 169,1.0), 54%),
+  ),
+  font: (
+    base: rgba(10, 61, 98,1.0),
+    dark: rgba(10, 61, 98,0.5),
+    light: rgba(239,248,255,1.0),
+  ),
+  link: (
+    base: rgba(10, 61, 98,1.0),
+    dark: rgba(10, 61, 98,0.5),
+    light: rgba(239,248,255,1.0),
+  ),
+  message: (
+    base: rgba(120, 224, 143,1.0),
+    error: rgba(229, 80, 57,1.0),
+    alert: rgba(246, 185, 59,1.0),
+  ),
+);
+
+@function color($color, $tone: 'base') {
+  @return map-get(map-get($colors, $color), $tone);
+}
+
+// SPACING
+$spacing: (
+  base: 1rem,
+  small: .5rem,
+  large: 2rem,
+);
+
+// Function to get paddings
+@function pad($pad: 'base') {
+  @return map-get($spacing, $pad);
+}
+
+// Function to get margins
+@function mar($pad: 'base') {
+  @return map-get($spacing, $pad);
+}
+
+// MEDIA
+$media: (
+  mobile: 400px,
+  tablet: 650px,
+  desktop: 1240px,
+);
+
+// Function to get paddings
+@function media($med: 'mobile') {
+  @return map-get($media, $med);
+}

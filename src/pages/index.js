@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, graphql } from "gatsby";
+import '../styles/pages/index.scss';
 
 import Bio from "../components/bio";
 import Layout from "../components/layout";
@@ -9,11 +10,11 @@ const BlogIndex = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata?.title || 'Title';
   const blog = data.blog.nodes;
   const projects = data.projects.nodes;
-  
+
   const Posts = ({ postData, link }) => {
     return (
-      <>
-        <h2><Link to={link.link}>{link.name}</Link></h2>
+      <div className={`post-list ${link.name.toLowerCase()}`}>
+        <h2 className="heading"><Link to={link.link}>{link.name}</Link></h2>
         {postData.map(post => {
           const title = post.frontmatter.title || post.fields.slug;
 
@@ -33,16 +34,18 @@ const BlogIndex = ({ data, location }) => {
             </article>
           );
         })}
-      </>
+      </div>
     );
   };
-  
+
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="All posts" />
       <Bio />
-      <Posts postData={blog} link={ {name: 'Blog', link: '/blog'} } />
-      <Posts postData={projects} link={ {name: 'Portfolio', link: '/portfolio'} } />
+      <div className="posts">
+        <Posts postData={blog} link={ {name: 'Blog', link: '/blog'} } />
+        <Posts postData={projects} link={ {name: 'Projects', link: '/portfolio'} } />
+      </div>
     </Layout>
   )
 }

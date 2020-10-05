@@ -1,0 +1,25 @@
+@import './mixed/variables.scss';
+@import './mixed/functions.scss';
+
+h1 {
+  font-family: $heading;
+}
+
+h2, h3, h4, h5, h6 {
+  font-family: $heading2;
+}
+
+p, a, li, div, span, i, strong {
+  font-family: $paragraph;
+}
+
+a {
+  color: color(link);
+}
+
+
+// GLOBALS
+.global-wrapper {
+  margin: 0 auto;
+  max-width: 1500px;
+}

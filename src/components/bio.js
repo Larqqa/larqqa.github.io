@@ -7,6 +7,7 @@
 
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
+import '../styles/components/bio.scss';
 
 const Bio = () => {
   const data = useStaticQuery(graphql`
@@ -16,6 +17,7 @@ const Bio = () => {
           author {
             name
             summary
+            current
           }
         }
       }
@@ -24,12 +26,14 @@ const Bio = () => {
 
   // Set these values by editing "siteMetadata" in gatsby-config.js
   const author = data.site.siteMetadata?.author
-  const social = data.site.siteMetadata?.social
 
   return (
     <div className="bio">
       {author?.name && (
-        <p>Written by <strong>{author.name}</strong> {author?.summary || null}</p>
+        <>
+          <p>Written by <span className="author">{author.name}</span> {author?.summary || null}</p>
+          <p>{author.current}</p>
+        </>
       )}
     </div>
   )
