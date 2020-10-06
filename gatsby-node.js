@@ -7,6 +7,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   // Define a template for blog post
   const singlePost = path.resolve('./src/templates/single-post.js');
   const listPosts = path.resolve('./src/templates/post-list.js');
+  const tagPosts = path.resolve('./src/templates/post-tags.js');
 
   // Get all markdown blog posts sorted by date
   const allPosts = await graphql(
@@ -25,6 +26,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
             }
           }
         },
+
         blog: allMarkdownRemark(
           filter: { fields: { collection: { eq: "blog" } }}
           sort: { fields: [frontmatter___date], order: DESC }
@@ -39,6 +41,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
             }
           }
         },
+
         portfolio: allMarkdownRemark(
           filter: { fields: { collection: { eq: "portfolio" } }}
           sort: { fields: [frontmatter___date], order: DESC }
@@ -51,6 +54,12 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
             frontmatter {
               title
             }
+          }
+        },
+
+        tagsGroup: allMarkdownRemark(limit: 2000) {
+          group(field: frontmatter___tags) {
+            fieldValue
           }
         }
       }
@@ -104,7 +113,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
 
   const postsPerPage = 2;
-  
+
   const blogs = allPosts.data.blog.nodes;
   let numPages = Math.ceil(blogs.length / postsPerPage);
   Array.from({ length: numPages }).forEach((_, i) => {
@@ -133,6 +142,40 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
         skip: i * postsPerPage,
         numPages,
         currentPage: i + 1
+      },
+    });
+  });
+
+  function kebabCase(string) {
+    var result = string;
+
+    // Convert camelCase capitals to kebab-case.
+    result = result.replace(/([a-z][A-Z])/g, function (match) {
+      return match.substr(0, 1) + '-' + match.substr(1, 1).toLowerCase();
+    });
+
+    // Convert non-camelCase capitals to lowercase.
+    result = result.toLowerCase();
+
+    // Convert non-alphanumeric characters to hyphens
+    result = result.replace(/[^-a-z0-9]+/g, '-');
+
+    // Remove hyphens from both ends
+    result = result.replace(/^-+/, '').replace(/-+$/, '');
+
+    return result;
+  }
+
+  const tags = allPosts.data.tagsGroup.group;
+
+
+  tags.forEach(tag => {
+    const tagName = kebabCase(tag.fieldValue);
+    createPage({
+      path:`/tags/${tagName}`,
+      component: tagPosts,
+      context: {
+        tag: tag.fieldValue,
       },
     });
   });

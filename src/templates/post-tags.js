@@ -6,7 +6,7 @@ import Bio from "../components/bio"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-const BlogList = ({ data, pageContext, location }) => {
+const TagList = ({ data, pageContext, location }) => {
   const siteTitle = data.site.siteMetadata?.title || 'Title'
   const { currentPage, numPages } = pageContext
   const isFirst = currentPage === 1
@@ -69,20 +69,18 @@ const BlogList = ({ data, pageContext, location }) => {
   )
 }
 
-export default BlogList;
+export default TagList;
 
 export const pageQuery = graphql`
-  query blogPageQuery($skip: Int!, $limit: Int!, $type: String!) {
+  query tagPageQuery($tag: String!) {
     site {
       siteMetadata {
         title
       }
     }
     allMarkdownRemark(
-      filter: { fields: { collection: { eq: $type } }}
+      filter: { frontmatter: { tags: { in: [$tag] } } }
       sort: { fields: [frontmatter___date], order: DESC }
-      limit: $limit
-      skip: $skip
     ) {
       nodes {
         excerpt
