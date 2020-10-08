@@ -40,15 +40,8 @@ module.exports = {
     {
       resolve: 'gatsby-source-filesystem', // Create File nodes from files
       options: {
-        path: `${__dirname}/content/blog`,
+        path: `${__dirname}/content/posts`,
         name: 'blog',
-      },
-    },
-    {
-      resolve: 'gatsby-source-filesystem',
-      options: {
-        path: `${__dirname}/content/portfolio`,
-        name: 'portfolio',
       },
     },
     {

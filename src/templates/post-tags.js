@@ -72,7 +72,7 @@ const TagList = ({ data, pageContext, location }) => {
 export default TagList;
 
 export const pageQuery = graphql`
-  query tagPageQuery($tag: String!) {
+  query tagPageQuery($skip: Int!, $limit: Int!, $tag: String!) {
     site {
       siteMetadata {
         title
@@ -81,6 +81,8 @@ export const pageQuery = graphql`
     allMarkdownRemark(
       filter: { frontmatter: { tags: { in: [$tag] } } }
       sort: { fields: [frontmatter___date], order: DESC }
+      limit: $limit
+      skip: $skip
     ) {
       nodes {
         excerpt
