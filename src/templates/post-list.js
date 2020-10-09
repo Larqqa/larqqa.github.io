@@ -1,28 +1,36 @@
 import React from 'react'
 import { Link, graphql } from 'gatsby'
 import '../styles/templates/postlist.scss';
+import { kebabCase } from '../../helpers';
 
 import Bio from "../components/bio"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
 const BlogList = ({ data, pageContext, location }) => {
-  const siteTitle = data.site.siteMetadata?.title || 'Title'
-  const { currentPage, numPages } = pageContext
-  const isFirst = currentPage === 1
-  const isLast = currentPage === numPages
-  const prevPage = currentPage - 1 === 1 ? location.pathname : (currentPage - 1).toString()
-  const nextPage = (currentPage + 1).toString()
-  const posts = data.allMarkdownRemark.nodes
-  const type = pageContext.type;
+  const siteTitle = data.site.siteMetadata?.title || 'Title';
+  const { currentPage, numPages } = pageContext;
+  const isFirst = currentPage === 1;
+  const isLast = currentPage === numPages;
+  const prevPage = currentPage - 1 === 1 ? '/blog' : `/blog/${currentPage - 1}`;
+  const nextPage = `/blog/${currentPage + 1}`;
+  const posts = data.allMarkdownRemark.nodes;
+  const tags = data.tags.group.map(tag => tag.fieldValue);
 
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="All posts" />
-      <h1 style={{textTransform: 'capitalize'}}>{type}</h1>
-      {posts.map(post => {
-        console.log(post.frontmatter.categories);
+      <h1>Posts</h1>
 
+      {tags.map((tag, i) => {
+        return (
+          <Link key={i} to={`/tags/${kebabCase(tag)}`} itemProp="url">
+            <span itemProp="headline">{tag}</span>
+          </Link>
+        );
+      })}
+
+      {posts.map(post => {
         const title = post.frontmatter.title || post.fields.slug
         return (
           <article
@@ -56,7 +64,7 @@ const BlogList = ({ data, pageContext, location }) => {
         </Link>
       )}
       {Array.from({ length: numPages }, (_, i) => (
-        <Link key={`pagination-number${i + 1}`} to={`/${type}/${i === 0 ? "" : i + 1}`}>
+        <Link className={(currentPage - 1) === i ? 'active' : ''} key={`pagination-number${i + 1}`} to={`/blog/${i === 0 ? "" : i + 1}`}>
           {i + 1}
         </Link>
       ))}
@@ -72,14 +80,14 @@ const BlogList = ({ data, pageContext, location }) => {
 export default BlogList;
 
 export const pageQuery = graphql`
-  query blogPageQuery($skip: Int!, $limit: Int!, $type: String!) {
+  query blogPageQuery($skip: Int!, $limit: Int!) {
     site {
       siteMetadata {
         title
       }
     }
     allMarkdownRemark(
-      filter: { fields: { collection: { eq: $type } }}
+      filter: { frontmatter: { tags: { nin: ["project"] } } }
       sort: { fields: [frontmatter___date], order: DESC }
       limit: $limit
       skip: $skip
@@ -93,7 +101,13 @@ export const pageQuery = graphql`
           date(formatString: "MMMM DD, YYYY")
           title
           description
+          tags
         }
+      }
+    }
+    tags: allMarkdownRemark(limit: 2000) {
+      group(field: frontmatter___tags) {
+        fieldValue
       }
     }
   }

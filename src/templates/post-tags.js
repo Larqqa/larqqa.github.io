@@ -7,22 +7,22 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 
 const TagList = ({ data, pageContext, location }) => {
-  const siteTitle = data.site.siteMetadata?.title || 'Title'
-  const { currentPage, numPages } = pageContext
-  const isFirst = currentPage === 1
-  const isLast = currentPage === numPages
-  const prevPage = currentPage - 1 === 1 ? location.pathname : (currentPage - 1).toString()
-  const nextPage = (currentPage + 1).toString()
-  const posts = data.allMarkdownRemark.nodes
-  const type = pageContext.type;
+  const siteTitle = data.site.siteMetadata?.title || 'Title';
+  const { currentPage, numPages, tag } = pageContext;
+  const isFirst = currentPage === 1;
+  const isLast = currentPage === numPages;
+  const prevPage = currentPage - 1 === 1 ? `/tags/${tag}` : `/tags/${tag}/${currentPage - 1}`;
+  const nextPage = `/tags/${tag}/${currentPage + 1}`;
+  const posts = data.allMarkdownRemark.nodes;
 
   return (
     <Layout location={location} title={siteTitle}>
       <SEO title="All posts" />
-      <h1 style={{textTransform: 'capitalize'}}>{type}</h1>
+      <h1>{tag}</h1>
+      <Link to="/blog" itemProp="url">
+        <span itemProp="headline">Back to all posts</span>
+      </Link>
       {posts.map(post => {
-        console.log(post.frontmatter.categories);
-
         const title = post.frontmatter.title || post.fields.slug
         return (
           <article
@@ -56,7 +56,7 @@ const TagList = ({ data, pageContext, location }) => {
         </Link>
       )}
       {Array.from({ length: numPages }, (_, i) => (
-        <Link key={`pagination-number${i + 1}`} to={`/${type}/${i === 0 ? "" : i + 1}`}>
+        <Link key={`pagination-number${i + 1}`} to={`/tags/${tag}/${i === 0 ? "" : i + 1}`}>
           {i + 1}
         </Link>
       ))}

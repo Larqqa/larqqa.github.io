@@ -34,8 +34,8 @@ const Navigation = () => {
     <>
       <Hamburger />
       <nav id="top-nav">
-        {site.siteMetadata.menuLinks.map(link => {
-          return (<Link to={link.link} activeClassName="active">{link.name}</Link>);
+        {site.siteMetadata.menuLinks.map((link, i) => {
+          return (<Link key ={i} to={link.link} activeClassName="active">{link.name}</Link>);
         }
         )}
       </nav>

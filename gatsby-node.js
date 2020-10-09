@@ -1,25 +1,6 @@
 const path = require('path');
 const { createFilePath } = require('gatsby-source-filesystem');
-
-function kebabCase(string) {
-  var result = string;
-
-  // Convert camelCase capitals to kebab-case.
-  result = result.replace(/([a-z][A-Z])/g, function (match) {
-    return match.substr(0, 1) + '-' + match.substr(1, 1).toLowerCase();
-  });
-
-  // Convert non-camelCase capitals to lowercase.
-  result = result.toLowerCase();
-
-  // Convert non-alphanumeric characters to hyphens
-  result = result.replace(/[^-a-z0-9]+/g, '-');
-
-  // Remove hyphens from both ends
-  result = result.replace(/^-+/, '').replace(/-+$/, '');
-
-  return result;
-}
+const { kebabCase } = require('./helpers');
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
   const { createPage } = actions;
@@ -47,12 +28,6 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
             }
           }
         },
-
-        tagsGroup: allMarkdownRemark(limit: 2000) {
-          group(field: frontmatter___tags) {
-            fieldValue
-          }
-        }
       }
     `
   );
@@ -75,6 +50,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       path: post.fields.slug,
       component: singlePost,
       context: {
+        tag: post.frontmatter.tags,
         slug: post.fields.slug,
         previous,
         next,
@@ -82,14 +58,16 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     });
   });
 
+  // Make blog list pages
   const postsPerPage = 2;
-  let numPages = Math.ceil(blog.length / postsPerPage);
+  const count = blog.filter(post => !post.frontmatter.tags.find(tag => tag === 'project')).length;
+
+  let numPages = Math.ceil(count / postsPerPage);
   Array.from({ length: numPages }).forEach((_, i) => {
     createPage({
       path: i === 0 ? '/blog' : `/blog/${i + 1}`,
       component: listPosts,
       context: {
-        type: 'blog',
         limit: postsPerPage,
         skip: i * postsPerPage,
         numPages,
@@ -98,8 +76,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     });
   });
 
-  const tags = allPosts.data.tagsGroup.group;
-
+  // Count amount of tags used in all pages
   let counts = {};
   blog.forEach(post => {
     post.frontmatter.tags.forEach(tag => {
@@ -111,14 +88,15 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
     });
   });
 
-  console.log(counts);
+  // console.log(counts);
 
+  // Make tag pages
   for (const tag in counts){
     const numPages = Math.ceil(counts[tag] / postsPerPage);
-
+    const kebabTag = kebabCase(tag);
     Array.from({ length: numPages }).forEach((_, i) => {
       createPage({
-        path: i === 0 ? `/tags/${tag}` : `/tags/${tag}/${i + 1}`,
+        path: i === 0 ? `/tags/${kebabTag}` : `/tags/${kebabTag}/${i + 1}`,
         component: tagPosts,
         context: {
           tag: tag,

@@ -8,8 +8,12 @@ import SEO from "../components/seo";
 
 const BlogPostTemplate = ({ data, pageContext, location }) => {
   const post = data.markdownRemark;
+  const otherPosts = data.morePosts.nodes;
   const siteTitle = data.site.siteMetadata?.title || 'Title';
-  const { previous, next } = pageContext;
+  const { previous, next, tag } = pageContext;
+
+  console.log(data.morePosts);
+  console.log(tag);
 
   return (
     <Layout location={location} title={siteTitle}>
@@ -17,6 +21,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
         title={post.frontmatter.title}
         description={post.frontmatter.description || post.excerpt}
       />
+      <div className="post">
       <article
         className="blog-post"
         itemScope
@@ -24,6 +29,9 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
       >
         <header>
           <h1 itemProp="headline">{post.frontmatter.title}</h1>
+          <ul>
+            {tag.map((tag, i) => <li key={i}>{tag}</li>)}
+          </ul>
           <p>{post.frontmatter.date}</p>
         </header>
         <section
@@ -62,6 +70,15 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
           </li>
         </ul>
       </nav>
+      </div>
+      <div className="post-nav">
+        <h2>More posts</h2>
+        {otherPosts.length
+        ? otherPosts.map((post, i) =>
+          <Link key={i} to={post.fields.slug}>{post.frontmatter.title}</Link>)
+        : <p>No related posts</p>
+        }
+      </div>
     </Layout>
   )
 }
@@ -69,7 +86,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
 export default BlogPostTemplate
 
 export const pageQuery = graphql`
-  query BlogPostBySlug($slug: String!) {
+  query BlogPostBySlug($slug: String!, $tag: [String]) {
     site {
       siteMetadata {
         title
@@ -83,6 +100,22 @@ export const pageQuery = graphql`
         title
         date(formatString: "MMMM DD, YYYY")
         description
+      }
+    }
+    morePosts: allMarkdownRemark(
+      filter: {
+        frontmatter: { tags: { in: $tag } },
+        fields: { slug: { ne: $slug } }
+      }
+      sort: { fields: [frontmatter___date], order: DESC }
+    ) {
+      nodes {
+        fields {
+          slug
+        }
+        frontmatter {
+          title
+        }
       }
     }
   }

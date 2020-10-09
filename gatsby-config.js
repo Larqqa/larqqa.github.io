@@ -24,7 +24,7 @@ module.exports = {
       },
       {
         name:'Projects',
-        link:'/portfolio'
+        link:'/tags/project'
       },
       {
         name:'About',
