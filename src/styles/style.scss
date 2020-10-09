@@ -1,6 +1,14 @@
 @import './mixed/variables.scss';
 @import './mixed/functions.scss';
 
+html {
+  background-image: url('../../content/assets/bg6.png');
+  background-repeat: repeat;
+  background-size: contain;
+  background-position: center;
+  background-attachment: fixed;
+}
+
 h1 {
   font-family: $heading;
 }
@@ -22,4 +30,6 @@ a {
 .global-wrapper {
   margin: 0 auto;
   max-width: 1500px;
+  padding: 0 pad();
+  background-color: white;
 }

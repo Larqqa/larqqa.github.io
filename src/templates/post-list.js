@@ -22,13 +22,18 @@ const BlogList = ({ data, pageContext, location }) => {
       <SEO title="All posts" />
       <h1>Posts</h1>
 
+      <h2>tags</h2>
+      <ul>
       {tags.map((tag, i) => {
         return (
-          <Link key={i} to={`/tags/${kebabCase(tag)}`} itemProp="url">
-            <span itemProp="headline">{tag}</span>
-          </Link>
+          <li key={i}>
+            <Link to={`/tags/${kebabCase(tag)}`} itemProp="url">
+              <span itemProp="headline">{tag}</span>
+            </Link>
+          </li>
         );
       })}
+      </ul>
 
       {posts.map(post => {
         const title = post.frontmatter.title || post.fields.slug
@@ -87,7 +92,7 @@ export const pageQuery = graphql`
       }
     }
     allMarkdownRemark(
-      filter: { frontmatter: { tags: { nin: ["project"] } } }
+      filter: { frontmatter: { tags: { nin: ["projects"] } } }
       sort: { fields: [frontmatter___date], order: DESC }
       limit: $limit
       skip: $skip

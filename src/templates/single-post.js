@@ -16,7 +16,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
   console.log(tag);
 
   return (
-    <Layout location={location} title={siteTitle}>
+    <Layout location={location} title={siteTitle} className="single-post">
       <SEO
         title={post.frontmatter.title}
         description={post.frontmatter.description || post.excerpt}
@@ -71,7 +71,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
         </ul>
       </nav>
       </div>
-      <div className="post-nav">
+      <div className="side-bar">
         <h2>More posts</h2>
         {otherPosts.length
         ? otherPosts.map((post, i) =>

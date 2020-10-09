@@ -1,0 +1,27 @@
+@import '../mixed/functions.scss';
+
+.single-post {
+  display: flex;
+
+  .post {
+    flex: 60%;
+    padding-right: pad();
+  }
+
+  .side-bar {
+    flex: 1;
+    padding-left: pad();
+  }
+
+  @media screen and (max-width: media()) {
+    flex-direction: column;
+
+    .post {
+      padding-right: 0;
+    }
+
+    .side-bar {
+      padding-left: 0;
+    }
+  }
+}

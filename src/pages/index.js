@@ -44,7 +44,7 @@ const BlogIndex = ({ data, location }) => {
       <Bio />
       <div className="posts">
         <Posts postData={blog} link={ {name: 'Blog', link: '/blog'} } />
-        <Posts postData={projects} link={ {name: 'Projects', link: '/tags/project'} } />
+        <Posts postData={projects} link={ {name: 'Projects', link: '/tags/projects'} } />
       </div>
     </Layout>
   )
@@ -62,7 +62,7 @@ export const pageQuery = graphql`
 
     blog: allMarkdownRemark(
       limit: 3
-      filter: { frontmatter: { tags: { nin: ["project"] } } }
+      filter: { frontmatter: { tags: { nin: ["projects"] } } }
       sort: { fields: [frontmatter___date], order: DESC }
     ) {
       nodes {
@@ -80,7 +80,7 @@ export const pageQuery = graphql`
 
     projects: allMarkdownRemark(
       limit: 3
-      filter: { frontmatter: { tags: { in: ["project"] } } }
+      filter: { frontmatter: { tags: { in: ["projects"] } } }
       sort: { fields: [frontmatter___date], order: DESC }
     ) {
       nodes {

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, graphql } from 'gatsby'
-import '../styles/templates/postlist.scss';
+import '../styles/templates/taglist.scss';
 
 import Bio from "../components/bio"
 import Layout from "../components/layout"
