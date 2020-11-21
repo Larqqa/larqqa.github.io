@@ -1,20 +1,22 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'gatsby';
 import { useStaticQuery, graphql } from 'gatsby';
 import '../styles/components/navigation.scss';
 
-function toggleNav () {
-  const nav = document.getElementById('top-nav');
-  nav.classList.toggle('active');
-}
 
-function Hamburger () {
+function Hamburger ({ nav }) {
+  function toggleNav () {
+    nav.current.classList.toggle('active');
+  }
+
   return (
     <button id="hamburger" onClick={toggleNav}></button>
   );
 }
 
 const Navigation = () => {
+  const navEl = useRef(null);
+
   const { site } = useStaticQuery(
     graphql`
       query {
@@ -32,12 +34,14 @@ const Navigation = () => {
 
   return (
     <>
-      <Hamburger />
-      <nav id="top-nav">
-        {site.siteMetadata.menuLinks.map((link, i) => {
-          return (<Link key ={i} to={link.link} activeClassName="active">{link.name}</Link>);
-        }
+      <Hamburger nav={navEl} />
+      <nav id="top-nav" className="nav nav--top" ref={navEl}>
+        {site.siteMetadata.menuLinks.map(link =>
+          <Link key={link.name} to={link.link} activeClassName="active">
+            {link.name}
+          </Link>
         )}
+
       </nav>
     </>
   );

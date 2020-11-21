@@ -2,7 +2,7 @@
 @import './mixed/functions.scss';
 
 html {
-  background-image: url('../../content/assets/bg6.png');
+  background-image: url('../../content/assets/bg.png');
   background-repeat: repeat;
   background-size: contain;
   background-position: center;
@@ -15,21 +15,22 @@ h1 {
 
 h2, h3, h4, h5, h6 {
   font-family: $heading2;
+  color: color(font);
 }
 
 p, a, li, div, span, i, strong {
   font-family: $paragraph;
+  color: color(font);
 }
 
 a {
   color: color(link);
 }
 
-
 // GLOBALS
 .global-wrapper {
   margin: 0 auto;
-  max-width: 1500px;
-  padding: 0 pad();
+  max-width: 1200px;
+  padding: 0 pad(large);
   background-color: white;
 }

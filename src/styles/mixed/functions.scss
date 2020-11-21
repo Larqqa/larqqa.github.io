@@ -1,14 +1,15 @@
 // COLORS
 $colors: (
   bg: (
-    base: rgba(56, 173, 169,1.0),
-    light: lighten(rgba(56, 173, 169,1.0), 52%),
-    ultraLight: lighten(rgba(56, 173, 169,1.0), 54%),
+    base: #00112B,
+    blue: #DEEBFF,
+    orange: #FFF2D4
   ),
   font: (
-    base: rgba(10, 61, 98,1.0),
+    base: #00112B,
     dark: rgba(10, 61, 98,0.5),
     light: rgba(239,248,255,1.0),
+    orange: #FF8400
   ),
   link: (
     base: rgba(10, 61, 98,1.0),

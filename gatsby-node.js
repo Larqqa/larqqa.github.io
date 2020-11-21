@@ -60,7 +60,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
 
   // Make blog list pages
   const postsPerPage = 2;
-  const count = blog.filter(post => !post.frontmatter.tags.find(tag => tag === 'project')).length;
+  const count = blog.filter(post => !post.frontmatter.tags.find(tag => tag === 'projects')).length;
 
   let numPages = Math.ceil(count / postsPerPage);
   Array.from({ length: numPages }).forEach((_, i) => {

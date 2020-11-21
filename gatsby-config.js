@@ -1,9 +1,9 @@
 module.exports = {
   siteMetadata: {
-    title: 'Larqqa\'s amazing blogfolio',
+    title: 'Larqqa\'s blogfolio',
     author: {
       name: 'Larqqa',
-      summary: 'who lives and works in Finland doing web stuff.',
+      summary: 'Hello and welcome to my half blog half portfolio. This is a place where i share some of my favourite projects and some thoughts about developer stuff i have found to be helpful or interesting.',
       current: 'Currently employed as a web developer / web admin, working with Wordpress.',
     },
     description: 'valid and great description',
@@ -30,10 +30,10 @@ module.exports = {
         name:'About',
         link:'/about'
       },
-      {
-        name:'Asteroids',
-        link:'/Asteroids'
-      },
+      // {
+      //   name:'Asteroids',
+      //   link:'/Asteroids'
+      // },
     ]
   },
   plugins: [

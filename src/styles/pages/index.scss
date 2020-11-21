@@ -7,14 +7,47 @@
 
   .post-list {
     flex: 50%;
-    padding: 0 pad(large);
+    padding: pad(large);
+    border-radius: 5px;
+    margin: pad();
+    background-color: color(bg);
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+      .post-list-item {
+        background-color: color(bg, orange);
+      }
+
+      .heading a {
+        color: color(bg, orange);
+      }
+    }
 
     .heading {
       text-align: center;
+
+      a {
+        color: color(bg, blue);
+      }
     }
 
-    &:first-child {
-      border-right: 1px solid color(bg);
+    .post-list-item {
+      border-radius: 5px;
+      background-color: color(bg, blue);
+      padding: pad();
+      margin: pad() 0;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      h2 {
+        font-size: 1.2rem;
+      }
     }
   }
 }

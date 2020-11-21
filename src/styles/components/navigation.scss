@@ -3,13 +3,24 @@
 #top-nav {
   display: flex;
   justify-content: center;
+  padding: pad() 0;
 
   &.active {
     display: flex;
   }
 
   a {
-    padding: pad() pad(large);
+    padding: 0 pad(large);
+    border-left: 1px solid black;
+    font-weight: normal;
+
+    &:first-child {
+      border-left: none;
+    }
+
+    &.active {
+      color: color(font, orange);
+    }
   }
 
   @media screen and (max-width: media(tablet)) {
@@ -20,6 +31,11 @@
     bottom: 0;
     width: 100%;
     background-color: color(bg);
+
+    a {
+      border: none;
+      color: color(bg, blue);
+    }
   }
 }
 

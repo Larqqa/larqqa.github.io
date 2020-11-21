@@ -29,12 +29,10 @@ const Bio = () => {
 
   return (
     <div className="bio">
-      {author?.name && (
-        <>
-          <p>Written by <span className="author">{author.name}</span> {author?.summary || null}</p>
-          <p>{author.current}</p>
-        </>
-      )}
+      <>
+        <p>{author?.summary || null}</p>
+        <p>{author?.current || null}</p>
+      </>
     </div>
   )
 }

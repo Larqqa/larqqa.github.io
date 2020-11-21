@@ -4,6 +4,7 @@ import '../styles/components/header.scss';
 
 const Header = ({ isRootPath, title }) => {
 
+  /*
   const RootPath = () => {
     if (isRootPath) {
       return (
@@ -15,6 +16,7 @@ const Header = ({ isRootPath, title }) => {
       return false;
     }
   };
+  */
 
   return (
     <header className="global-header">

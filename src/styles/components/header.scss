@@ -1,7 +1,13 @@
+@import '../mixed/functions.scss';
+
 .global-header {
   text-align: center;
+  padding: pad(large) 0;
+  padding-bottom: pad(small);
 
   .main-heading {
-
+    margin: 0;
+    font-size: 3rem;
+    font-weight: normal;
   }
 }

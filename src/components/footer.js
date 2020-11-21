@@ -3,8 +3,8 @@ import '../styles/components/footer.scss';
 
 const Footer = () => {
   return(
-    <footer>
-      <p>Made with ☕ & ❤️ <strong>Larqqa</strong> ©️ {new Date().getFullYear()}</p>
+    <footer className="footer footer--main">
+      <p>Made with ☕ & ❤️ | <strong>Larqqa</strong> ©️ {new Date().getFullYear()}</p>
     </footer>
   );
 };
