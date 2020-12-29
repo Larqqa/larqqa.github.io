@@ -1,0 +1,44 @@
+@import '../mixed/functions.scss';
+
+.projects {
+  background-color: color(bg);
+  border-radius: 5px;
+  padding: pad(large);
+  border-radius: 5px;
+  margin: pad();
+
+  h1 {
+    color: color(bg, orange);
+    font-weight: normal;
+  }
+
+  a {
+    color: color(bg, orange);
+  }
+
+  .tags {
+    border-radius: 5px;
+    background-color: color(bg, orange);
+    padding: pad();
+    margin: pad() 0;
+  }
+
+  .post-list-item {
+    border-radius: 5px;
+    background-color: color(bg, orange);
+    padding: pad();
+    margin: pad() 0;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    h2 {
+      font-size: 1.2rem;
+
+      a {
+        color: color(font);
+      }
+    }
+  }
+}

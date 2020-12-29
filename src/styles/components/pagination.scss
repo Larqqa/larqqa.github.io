@@ -1,0 +1,29 @@
+.pagination {
+  display: flex;
+  position: relative;
+  justify-content: center;
+
+  a {
+    text-decoration: none;
+  }
+
+  .num-wrap {
+    a {
+      padding: .5rem;
+
+      .active {
+        font-weight: bold;
+      }
+    }
+  }
+
+  .previous {
+    left: 0;
+    position: absolute;
+  }
+
+  .next {
+    right: 0;
+    position: absolute;
+  }
+}

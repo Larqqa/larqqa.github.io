@@ -39,9 +39,9 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
           itemProp="articleBody"
         />
         <hr />
-        <footer>
+        {/* <footer>
           <Bio />
-        </footer>
+        </footer> */}
       </article>
 
       <nav className="blog-post-nav">
@@ -72,7 +72,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
       </nav>
       </div>
       <div className="side-bar">
-        <h2>More posts</h2>
+        <h2>Similar posts</h2>
         {otherPosts.length
         ? otherPosts.map((post, i) =>
           <Link key={i} to={post.fields.slug}>{post.frontmatter.title}</Link>)

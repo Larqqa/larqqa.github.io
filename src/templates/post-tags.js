@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link, graphql } from 'gatsby'
 import '../styles/templates/taglist.scss';
+import '../styles/templates/postlist.scss';
 
 import Layout from "../components/layout"
 import SEO from "../components/seo"
@@ -17,8 +18,8 @@ const TagList = ({ data, pageContext, location }) => {
   const posts = data.allMarkdownRemark.nodes;
 
   return (
-    <Layout location={location} title={siteTitle}>
-      <SEO title={tag} />
+    <Layout location={location} title={siteTitle} className={`post-list ${tag}`}>
+      <SEO title={tag}/>
       <h1>{tag}</h1>
       <Link to="/blog" itemProp="url">Back to all posts</Link>
 
