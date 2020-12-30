@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'gatsby';
-
 import { kebabCase } from '../../helpers';
+import '../styles/components/tags.scss';
 
 function Tags ({ tags }) {
   return (
     <div className="tags">
-      <h2>Tags</h2>
+      <h3 className="heading">Categories:</h3>
       <ul>
         {tags.map(tag => {
           return (

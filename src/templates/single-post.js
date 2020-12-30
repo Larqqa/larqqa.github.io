@@ -5,15 +5,19 @@ import '../styles/templates/singlepost.scss';
 import Bio from "../components/bio";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
+import Tags from '../components/tags';
 
 const BlogPostTemplate = ({ data, pageContext, location }) => {
   const post = data.markdownRemark;
   const otherPosts = data.morePosts.nodes;
   const siteTitle = data.site.siteMetadata?.title || 'Title';
   const { previous, next, tag } = pageContext;
+  const date = post.frontmatter.date;
+  const update = post.frontmatter.update;
 
-  console.log(data.morePosts);
-  console.log(tag);
+  console.log(update);
+  // console.log(data.morePosts);
+  // console.log(tag);
 
   return (
     <Layout location={location} title={siteTitle} className="single-post">
@@ -22,62 +26,62 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
         description={post.frontmatter.description || post.excerpt}
       />
       <div className="post">
-      <article
-        className="blog-post"
-        itemScope
-        itemType="http://schema.org/Article"
-      >
-        <header>
-          <h1 itemProp="headline">{post.frontmatter.title}</h1>
-          <ul>
-            {tag.map((tag, i) => <li key={i}>{tag}</li>)}
-          </ul>
-          <p>{post.frontmatter.date}</p>
-        </header>
-        <section
-          dangerouslySetInnerHTML={{ __html: post.html }}
-          itemProp="articleBody"
-        />
-        <hr />
-        {/* <footer>
-          <Bio />
-        </footer> */}
-      </article>
-
-      <nav className="blog-post-nav">
-        <ul
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-between',
-            listStyle: 'none',
-            padding: 0,
-          }}
+        <article
+          className="blog-post"
+          itemScope
+          itemType="http://schema.org/Article"
         >
-          <li>
-            {previous && (
-              <Link to={previous.fields.slug} rel="prev">
-                ← {previous.frontmatter.title}
-              </Link>
-            )}
-          </li>
-          <li>
-            {next && (
-              <Link to={next.fields.slug} rel="next">
-                {next.frontmatter.title} →
-              </Link>
-            )}
-          </li>
-        </ul>
-      </nav>
-      </div>
-      <div className="side-bar">
-        <h2>Similar posts</h2>
-        {otherPosts.length
-        ? otherPosts.map((post, i) =>
-          <Link key={i} to={post.fields.slug}>{post.frontmatter.title}</Link>)
-        : <p>No related posts</p>
-        }
+          <header>
+            <h1 itemProp="headline">{post.frontmatter.title}</h1>
+            {date && <p className="date"><b>Posted on:</b> {date}</p>}
+            {update && <p className="date update"><b>Updated on:</b> {update}</p>}
+          </header>
+          <section
+            dangerouslySetInnerHTML={{ __html: post.html }}
+            itemProp="articleBody"
+          />
+        </article>
+
+        <hr />
+
+        <footer>
+          <Tags tags={tag} />
+
+          <div className="related-posts">
+            <h3>Similar posts</h3>
+            {otherPosts.length
+            ? otherPosts.map((post, i) =>
+              <Link key={i} to={post.fields.slug}>{post.frontmatter.title}</Link>)
+            : <p>No related posts</p>
+            }
+          </div>
+        </footer>
+        <hr />
+
+        <nav className="blog-post-nav">
+          <ul>
+            <li>
+              {previous && (
+                <>
+                  <span>Previous post: </span>
+                  <Link to={previous.fields.slug} rel="prev">
+                    {previous.frontmatter.title}
+                  </Link>
+                </>
+              )}
+            </li>
+            <li>
+              {next && (
+                <>
+                  <span>Next post: </span>
+                  <Link to={next.fields.slug} rel="next">
+                    {next.frontmatter.title}
+                  </Link>
+                </>
+              )}
+            </li>
+          </ul>
+        </nav>
       </div>
     </Layout>
   )
@@ -99,6 +103,7 @@ export const pageQuery = graphql`
       frontmatter {
         title
         date(formatString: "MMMM DD, YYYY")
+        update(formatString: "MMMM DD, YYYY")
         description
       }
     }
@@ -107,6 +112,7 @@ export const pageQuery = graphql`
         frontmatter: { tags: { in: $tag } },
         fields: { slug: { ne: $slug } }
       }
+      limit: 5
       sort: { fields: [frontmatter___date], order: DESC }
     ) {
       nodes {

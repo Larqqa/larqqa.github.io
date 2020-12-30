@@ -1,5 +1,14 @@
 @import '../mixed/functions.scss';
 
-footer {
-  padding: pad(large) pad(small);
+.footer--main {
+  padding: pad(large) pad(large);
+  margin: 0 auto;
+  max-width: 1200px;
+  background-color: white;
+
+  p {
+    margin: 0;
+    font-size: 12px;
+    text-align: center;
+  }
 }

@@ -1,27 +1,61 @@
 @import '../mixed/functions.scss';
 
 .single-post {
-  display: flex;
+  header {
+    margin-bottom: 2rem;
 
-  .post {
-    flex: 60%;
-    padding-right: pad();
-  }
-
-  .side-bar {
-    flex: 1;
-    padding-left: pad();
-  }
-
-  @media screen and (max-width: media()) {
-    flex-direction: column;
-
-    .post {
-      padding-right: 0;
+    h1 {
+      margin : 0;
+      font-size: 2.5rem;
     }
 
-    .side-bar {
-      padding-left: 0;
+    .date {
+      margin-top: .3rem;
+      font-size: .9rem;
+    }
+  }
+
+  footer {
+    margin: 2rem 0;
+  }
+
+  .related-posts {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+
+    h3 {
+      margin: 1rem 0;
+    }
+
+    a {
+      margin: .3rem 0;
+    }
+  }
+
+  .tags {
+    list-style-type: none;
+    padding: 0;
+    display: block;
+
+    .heading {
+      color: color(font);
+      margin: 1rem 0;
+    }
+
+    li {
+      padding-right: .7rem;
+    }
+  }
+
+  .blog-post-nav {
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
     }
   }
 }

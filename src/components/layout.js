@@ -7,11 +7,13 @@ const Layout = ({ location, title, children, className }) => {
   const isRootPath = location.pathname === rootPath;
 
   return (
-    <div className="global-wrapper" data-is-root-path={isRootPath}>
-      <Header title={title} isRootPath={isRootPath} />
-      <main className={className}>{children}</main>
+    <>
+      <div className="global-wrapper" data-is-root-path={isRootPath}>
+        <Header title={title} isRootPath={isRootPath} />
+        <main className={className}>{children}</main>
+      </div>
       <Footer />
-    </div>
+    </>
   );
 };
 

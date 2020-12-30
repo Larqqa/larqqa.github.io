@@ -9,7 +9,7 @@ function Pagination ({ isFirst, isLast, prevPage, nextPage, numPages, currentPag
     <div className="pagination">
       {!isFirst && (
         <Link className="previous" to={prevPage} rel="prev">
-          ← Previous Page
+          Previous Page
         </Link>
       )}
       <div className="num-wrap">
@@ -21,7 +21,7 @@ function Pagination ({ isFirst, isLast, prevPage, nextPage, numPages, currentPag
       </div>
       {!isLast && (
         <Link className="next" to={nextPage} rel="next">
-          Next Page →
+          Next Page
         </Link>
       )}
     </div>

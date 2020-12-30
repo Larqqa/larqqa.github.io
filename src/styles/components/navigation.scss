@@ -13,6 +13,7 @@
     padding: 0 pad(large);
     border-left: 1px solid black;
     font-weight: normal;
+    text-decoration: none;
 
     &:first-child {
       border-left: none;
@@ -20,6 +21,7 @@
 
     &.active {
       color: color(font, orange);
+      text-decoration: underline;
     }
   }
 

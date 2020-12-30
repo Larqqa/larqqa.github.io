@@ -3,13 +3,12 @@
 .posts {
   display: flex;
   flex-direction: row;
-  padding: pad(large) 0;
 
   .post-list {
     flex: 50%;
     padding: pad(large);
     border-radius: 5px;
-    margin: pad();
+    margin: 0 pad();
     background-color: color(bg);
 
     &:first-child {

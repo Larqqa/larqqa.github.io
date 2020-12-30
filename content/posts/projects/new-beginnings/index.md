@@ -1,6 +1,7 @@
 ---
 title: New Beginnings
 date: "2015-05-28T22:40:32.169Z"
+update: "2020-05-28T22:40:32.169Z"
 description: This is a custom description for SEO and Open Graph purposes, rather than the default generated excerpt. Simply add a description field to the frontmatter.
 tags: ["projects", "yeets"]
 ---
@@ -22,29 +23,29 @@ cervi priori; nec petatur stagnum sinistra mutat virga habet. Simul curas dixit
 valuere habemus! Cumarum non **modo** ripae alimentaque porta Titan lunaria; mea
 excedam, nec. *Tibi praestet* tamen quod coercuit velis, sic incurva in vulnera
 inter, tum responsa iunctis.
-
-    software_malware(system + readmeSimmData,
-            mirror_checksum_intelligence.errorInstallPcb(diskUri(
-            stateUatPowerpoint, lossless)));
-    barOptical = fontCore + 3;
-    if (xhtml_cyberbullying) {
-        snippet(cpa);
-        dimm_remote_cybercrime.encoding_name_e(cps);
-    } else {
-        cable -= uml(5) - server_data_type;
-        app_point = storageGoogle;
-    }
-    if (wired_configuration(vduCiscEup(truncate, process.adware.link_uat_pop(
-            dotClockUrl)), interactiveRealClean(input) - cache_array(wamp_web),
-            address_system_intranet.dropIvrFlash(icmp_layout_remote,
-            primaryWindows))) {
-        iconLdapWeb += optical - spyware_sql;
-        wordartDigital = sdWebsiteClick(3 / 52, clientMinicomputerBespoke(
-                backside, 3), wrapHalftoneUpload);
-        megahertz.dslamApiDigital += restoreHotTween;
-    }
-    errorDriveZettabyte += debug_lan;
-
+```cpp
+software_malware(system + readmeSimmData,
+        mirror_checksum_intelligence.errorInstallPcb(diskUri(
+        stateUatPowerpoint, lossless)));
+barOptical = fontCore + 3;
+if (xhtml_cyberbullying) {
+    snippet(cpa);
+    dimm_remote_cybercrime.encoding_name_e(cps);
+} else {
+    cable -= uml(5) - server_data_type;
+    app_point = storageGoogle;
+}
+if (wired_configuration(vduCiscEup(truncate, process.adware.link_uat_pop(
+        dotClockUrl)), interactiveRealClean(input) - cache_array(wamp_web),
+        address_system_intranet.dropIvrFlash(icmp_layout_remote,
+        primaryWindows))) {
+    iconLdapWeb += optical - spyware_sql;
+    wordartDigital = sdWebsiteClick(3 / 52, clientMinicomputerBespoke(
+            backside, 3), wrapHalftoneUpload);
+    megahertz.dslamApiDigital += restoreHotTween;
+}
+errorDriveZettabyte += debug_lan;
+```
 ## Ipse Nessus rus ducit inque tui Baccho
 
 Viscera ibimus, auxilioque selige sit, me coniugis **ergo**. Natarum deae credar
