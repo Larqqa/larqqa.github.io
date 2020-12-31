@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link, graphql } from 'gatsby';
-import '../styles/pages/index.scss';
-
 import Bio from '../components/bio';
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 import Posts from '../components/Posts';
+import '../styles/pages/index.scss';
 
 const BlogIndex = ({ data, location }) => {
 
@@ -19,7 +18,7 @@ const BlogIndex = ({ data, location }) => {
       <Bio />
       <div className="posts">
 
-        <div className={`post-list blog`}>
+        <div className="post-list blog">
           <h2 className="heading"><Link to="/blog">Blog</Link></h2>
           <Posts postData={blog} />
         </div>

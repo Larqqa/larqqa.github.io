@@ -1,12 +1,11 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import '../styles/templates/postlist.scss';
-
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import Posts from '../components/Posts';
 import Tags from '../components/tags';
 import Pagination from '../components/Pagination';
+import '../styles/templates/postlist.scss';
 
 const BlogList = ({ data, pageContext, location }) => {
   const siteTitle = data.site.siteMetadata?.title || 'Title';
@@ -22,7 +21,6 @@ const BlogList = ({ data, pageContext, location }) => {
     <Layout location={location} title={siteTitle} className="post-list">
       <SEO title="Blog" />
       <h1>Posts</h1>
-
       <Tags tags={tags} />
       <Posts postData={posts} />
       <Pagination
@@ -34,7 +32,6 @@ const BlogList = ({ data, pageContext, location }) => {
         currentPage={currentPage}
         link="/blog/"
       />
-
     </Layout>
   )
 }

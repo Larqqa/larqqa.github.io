@@ -23,6 +23,8 @@
         padding: .2rem .7rem;
         display: block;
         margin: .5rem 0;
+        transition: background-color .2s ease-in-out;
+
 
         &:hover {
           background-color: color(bg, orange);

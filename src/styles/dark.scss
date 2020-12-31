@@ -1,0 +1,48 @@
+@import './mixed/functions.scss';
+
+.dark {
+  background-color: #0c0c0c;
+
+  h1, h2, h3, h4, h5, h6 {
+    color: white;
+  }
+
+  p, li, div, span, i, strong {
+    color: white
+  }
+
+  a {
+    color: color(bg, blue);
+
+    &:hover {
+      color: color(font, orange);
+    }
+  }
+
+  #top-nav a {
+    border-color: white;
+  }
+
+  .post-list {
+    background-color: transparent !important;
+
+    .post-list-item h2 a, p, small {
+      color: color(bg, blue);
+    }
+
+    .post-list-item {
+      background-color: color(bg) !important;
+    }
+
+  }
+
+  .projects {
+    .post-list-item h2 a, p, small {
+      color: color(bg, orange);
+    }
+  }
+
+  .single-post .tags .heading {
+    color: white;
+  }
+}

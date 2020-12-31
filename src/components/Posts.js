@@ -5,6 +5,7 @@ function Posts ({ postData }) {
   return (
     postData.map(post => {
       const title = post.frontmatter.title || post.fields.slug;
+
       return (
         <article
           key={post.fields.slug}
@@ -16,6 +17,7 @@ function Posts ({ postData }) {
             <h2><Link to={post.fields.slug} itemProp="url">{title}</Link></h2>
             <small>{post.frontmatter.date}</small>
           </header>
+
           <section>
             <p
               dangerouslySetInnerHTML={{
@@ -24,6 +26,7 @@ function Posts ({ postData }) {
               itemProp="description"
             />
           </section>
+
         </article>
       );
     })

@@ -9,4 +9,4 @@ import './src/styles/normalize.css';
 import './src/styles/style.scss';
 
 // Highlighting for code blocks
-import 'prismjs/themes/prism.css';
+import 'prismjs/themes/prism-tomorrow.css';

@@ -1,9 +1,8 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-import '../styles/pages/about.scss';
-
 import Layout from '../components/layout';
 import SEO from '../components/seo';
+import '../styles/pages/about.scss';
 
 const About = ({ data, location }) => {
   const siteTitle = data.site.siteMetadata.title;

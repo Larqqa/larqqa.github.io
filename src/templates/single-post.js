@@ -1,11 +1,9 @@
 import React from "react";
 import { Link, graphql } from "gatsby";
-import '../styles/templates/singlepost.scss';
-
-import Bio from "../components/bio";
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import Tags from '../components/tags';
+import '../styles/templates/singlepost.scss';
 
 const BlogPostTemplate = ({ data, pageContext, location }) => {
   const post = data.markdownRemark;
@@ -15,9 +13,71 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
   const date = post.frontmatter.date;
   const update = post.frontmatter.update;
 
-  console.log(update);
-  // console.log(data.morePosts);
-  // console.log(tag);
+  const Article = () => {
+    return (
+      <article
+        className="blog-post"
+        itemScope
+        itemType="http://schema.org/Article"
+      >
+
+        <header>
+          <h1 itemProp="headline">{post.frontmatter.title}</h1>
+          {date && <small className="date"><b>Posted on:</b> {date}</small>}
+          {update && <small className="date update"><b>Updated on:</b> {update}</small>}
+        </header>
+
+        <section
+          dangerouslySetInnerHTML={{ __html: post.html }}
+          itemProp="articleBody"
+        />
+
+      </article>
+    );
+  }
+
+  const Footer = () => {
+    return(
+      <footer>
+        <Tags tags={tag} />
+
+        <div className="related-posts">
+          <h3>Similar posts</h3>
+          {otherPosts.length
+            ? otherPosts.map((post, i) =>
+              <Link key={i} to={post.fields.slug}>{post.frontmatter.title}</Link>)
+            : <p>No related posts</p>
+          }
+        </div>
+
+      </footer>
+    );
+  }
+
+  const PostNav = () => {
+
+    const PostLink = ({link, linkText, rel}) => {
+      return (
+        link && (
+          <li>
+            <span>{linkText} </span>
+            <Link to={link.fields.slug} rel={rel} >
+              {link.frontmatter.title}
+            </Link>
+          </li>
+        )
+      );
+    }
+
+    return(
+      <nav className="blog-post-nav">
+        <ul>
+          <PostLink link={previous} linkText="Previous post:" rel="prev" />
+          <PostLink link={next} linkText="Next post:" rel="next" />
+        </ul>
+      </nav>
+    );
+  }
 
   return (
     <Layout location={location} title={siteTitle} className="single-post">
@@ -26,62 +86,11 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
         description={post.frontmatter.description || post.excerpt}
       />
       <div className="post">
-        <article
-          className="blog-post"
-          itemScope
-          itemType="http://schema.org/Article"
-        >
-          <header>
-            <h1 itemProp="headline">{post.frontmatter.title}</h1>
-            {date && <p className="date"><b>Posted on:</b> {date}</p>}
-            {update && <p className="date update"><b>Updated on:</b> {update}</p>}
-          </header>
-          <section
-            dangerouslySetInnerHTML={{ __html: post.html }}
-            itemProp="articleBody"
-          />
-        </article>
-
+        <Article />
         <hr />
-
-        <footer>
-          <Tags tags={tag} />
-
-          <div className="related-posts">
-            <h3>Similar posts</h3>
-            {otherPosts.length
-            ? otherPosts.map((post, i) =>
-              <Link key={i} to={post.fields.slug}>{post.frontmatter.title}</Link>)
-            : <p>No related posts</p>
-            }
-          </div>
-        </footer>
+        <Footer />
         <hr />
-
-        <nav className="blog-post-nav">
-          <ul>
-            <li>
-              {previous && (
-                <>
-                  <span>Previous post: </span>
-                  <Link to={previous.fields.slug} rel="prev">
-                    {previous.frontmatter.title}
-                  </Link>
-                </>
-              )}
-            </li>
-            <li>
-              {next && (
-                <>
-                  <span>Next post: </span>
-                  <Link to={next.fields.slug} rel="next">
-                    {next.frontmatter.title}
-                  </Link>
-                </>
-              )}
-            </li>
-          </ul>
-        </nav>
+        <PostNav />
       </div>
     </Layout>
   )

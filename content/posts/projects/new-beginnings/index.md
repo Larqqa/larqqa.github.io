@@ -23,28 +23,29 @@ cervi priori; nec petatur stagnum sinistra mutat virga habet. Simul curas dixit
 valuere habemus! Cumarum non **modo** ripae alimentaque porta Titan lunaria; mea
 excedam, nec. *Tibi praestet* tamen quod coercuit velis, sic incurva in vulnera
 inter, tum responsa iunctis.
-```cpp
-software_malware(system + readmeSimmData,
-        mirror_checksum_intelligence.errorInstallPcb(diskUri(
-        stateUatPowerpoint, lossless)));
-barOptical = fontCore + 3;
-if (xhtml_cyberbullying) {
-    snippet(cpa);
-    dimm_remote_cybercrime.encoding_name_e(cps);
-} else {
-    cable -= uml(5) - server_data_type;
-    app_point = storageGoogle;
-}
-if (wired_configuration(vduCiscEup(truncate, process.adware.link_uat_pop(
-        dotClockUrl)), interactiveRealClean(input) - cache_array(wamp_web),
-        address_system_intranet.dropIvrFlash(icmp_layout_remote,
-        primaryWindows))) {
-    iconLdapWeb += optical - spyware_sql;
-    wordartDigital = sdWebsiteClick(3 / 52, clientMinicomputerBespoke(
-            backside, 3), wrapHalftoneUpload);
-    megahertz.dslamApiDigital += restoreHotTween;
-}
-errorDriveZettabyte += debug_lan;
+```js
+import React from 'react';
+import Header from './header';
+import Footer from './footer';
+import '../styles/dark.scss';
+
+const Layout = ({ location, title, children, className }) => {
+  const rootPath = `${__PATH_PREFIX__}/`;
+  const isRootPath = location.pathname === rootPath;
+
+  return (
+    <>
+      <div className="global-wrapper" data-is-root-path={isRootPath}>
+        <Header title={title} isRootPath={isRootPath} />
+        <main className={className}>{children}</main>
+      </div>
+      <Footer />
+    </>
+  );
+};
+
+export default Layout;
+
 ```
 ## Ipse Nessus rus ducit inque tui Baccho
 

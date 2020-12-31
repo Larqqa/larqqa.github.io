@@ -1,12 +1,11 @@
 import React from 'react'
 import { Link, graphql } from 'gatsby'
-import '../styles/templates/taglist.scss';
-import '../styles/templates/postlist.scss';
-
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import Posts from '../components/Posts';
 import Pagination from '../components/Pagination';
+import '../styles/templates/taglist.scss';
+import '../styles/templates/postlist.scss';
 
 const TagList = ({ data, pageContext, location }) => {
   const siteTitle = data.site.siteMetadata?.title || 'Title';
@@ -22,7 +21,6 @@ const TagList = ({ data, pageContext, location }) => {
       <SEO title={tag}/>
       <h1>{tag}</h1>
       <Link to="/blog" itemProp="url">Back to all posts</Link>
-
       <Posts postData={posts} />
       <Pagination
         isFirst={isFirst}
@@ -33,7 +31,6 @@ const TagList = ({ data, pageContext, location }) => {
         currentPage={currentPage}
         link={`/tags/${tag}/`}
       />
-
     </Layout>
   )
 }

@@ -1,6 +1,5 @@
 import React from 'react';
 import { graphql } from 'gatsby';
-
 import Layout from '../components/layout';
 import SEO from '../components/seo';
 
@@ -11,6 +10,7 @@ const Asteroids = ({ data, location }) => {
     <Layout location={location} title={siteTitle}>
       <SEO title="Asteroids" />
       <h1>Asteroids</h1>
+      <p>WIP: asteroids</p>
     </Layout>
   );
 };

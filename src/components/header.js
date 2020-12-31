@@ -20,9 +20,7 @@ const Header = ({ isRootPath, title }) => {
 
   return (
     <header className="global-header">
-      <h1 className="main-heading">
-        {title}
-      </h1>
+      <h1 className="main-heading">{title}</h1>
       <Navigation />
     </header>
   );

@@ -3,15 +3,12 @@ import { Link } from 'gatsby';
 import { useStaticQuery, graphql } from 'gatsby';
 import '../styles/components/navigation.scss';
 
-
 function Hamburger ({ nav }) {
   function toggleNav () {
     nav.current.classList.toggle('active');
   }
 
-  return (
-    <button id="hamburger" onClick={toggleNav}></button>
-  );
+  return <button id="hamburger" onClick={toggleNav}></button>;
 }
 
 const Navigation = () => {
@@ -41,7 +38,6 @@ const Navigation = () => {
             {link.name}
           </Link>
         )}
-
       </nav>
     </>
   );

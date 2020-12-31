@@ -9,11 +9,14 @@
 
   h1 {
     color: color(bg, blue);
-    font-weight: normal;
   }
 
   a {
     color: color(bg, blue);
+
+    &:hover {
+      color: color(bg, orange);
+    }
   }
 
   .post-list-item {
@@ -31,6 +34,10 @@
 
       a {
         color: color(font);
+
+        &:hover {
+          color: color(font, orange);
+        }
       }
     }
   }
