@@ -1,14 +1,16 @@
 @import './mixed/functions.scss';
 
+$col: #eee;
+
 .dark {
   background-color: #0c0c0c;
 
   h1, h2, h3, h4, h5, h6 {
-    color: white;
+    color:$col;
   }
 
   p, li, div, span, i, strong {
-    color: white
+    color: $col;
   }
 
   a {
@@ -20,7 +22,7 @@
   }
 
   #top-nav a {
-    border-color: white;
+    border-color: $col;
   }
 
   .post-list {
@@ -43,6 +45,6 @@
   }
 
   .single-post .tags .heading {
-    color: white;
+    color: $col;
   }
 }
