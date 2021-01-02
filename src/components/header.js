@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'gatsby';
 import Navigation from './Navigation';
 import '../styles/components/header.scss';
 
@@ -20,7 +21,9 @@ const Header = ({ isRootPath, title }) => {
 
   return (
     <header className="global-header">
-      <h1 className="main-heading">{title}</h1>
+      <Link to="/">
+        <h1 className="main-heading">{title}</h1>
+      </Link>
       <Navigation />
     </header>
   );

@@ -1,0 +1,17 @@
+#___loader {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 1;
+  margin-right: 16px;
+
+  &.hide {
+    transition: opacity .3s ease-in-out;
+    opacity: 0;
+  }
+}

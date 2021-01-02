@@ -60,3 +60,23 @@
     }
   }
 }
+
+@media only screen and (max-width: media(tablet)) {
+  .bio {
+    margin: 0;
+  }
+
+  .posts {
+    flex-direction: column;
+
+    .post-list {
+      flex: 100%;
+      margin: 1rem 0;
+      padding: pad();
+
+      .heading {
+        margin-top: 0;
+      }
+    }
+  }
+}

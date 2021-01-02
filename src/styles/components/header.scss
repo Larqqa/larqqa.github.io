@@ -5,9 +5,18 @@
   padding: pad(large) 0;
   padding-bottom: pad(small);
 
-  .main-heading {
-    margin: 0;
-    font-size: 3rem;
-    font-weight: normal;
+  a {
+    text-decoration: none;
+
+    &:hover .main-heading {
+      color: color(font, orange);
+    }
+
+    .main-heading {
+      margin: 0;
+      font-size: 3rem;
+      font-weight: normal;
+      transition: color .2s ease-in-out;
+    }
   }
 }

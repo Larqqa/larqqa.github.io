@@ -15,7 +15,7 @@
   }
 
   footer {
-    margin: 2rem 0;
+    margin: pad(large) 0;
   }
 
   .related-posts {
@@ -24,6 +24,7 @@
     margin-top: 1rem;
 
     h3 {
+      font-weight: normal;
       margin: 1rem 0;
     }
 
@@ -55,6 +56,28 @@
       list-style-type: none;
       padding: 0;
       margin: 0;
+    }
+  }
+}
+
+@media only screen and (max-width: media(tablet)) {
+  .single-post {
+    footer {
+      margin: pad() 0;
+
+      h3 {
+        margin-bottom: .5rem !important;
+      }
+    }
+
+    .related-posts {
+      margin: 0;
+    }
+
+    .blog-post-nav {
+      li:first-child {
+        margin-bottom: pad();
+      }
     }
   }
 }
