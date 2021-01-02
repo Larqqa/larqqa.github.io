@@ -1,0 +1,160 @@
+@import '../mixed/functions.scss';
+
+#hamburger {
+  display: none;
+  z-index: 10001;
+  background: transparent;
+  outline: none;
+  border: none;
+  position: relative;
+  padding: 0;
+
+  span {
+    width: 35px;
+    height: 5px;
+    display: block;
+    position: relative;
+  }
+
+  &.active {
+    #top-wrap {
+      transform:
+        rotate(10deg)
+        translateY(-30%);
+    }
+  }
+
+  #top-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+    position: relative;
+    transform:
+      rotate(0deg)
+      translateY(0%);
+  }
+
+  #top-bun {
+    height: 10px;
+    border-top-right-radius: 120%;
+    border-top-left-radius: 120%;
+    border-bottom-right-radius: 50%;
+    border-bottom-left-radius: 50%;
+    background: linear-gradient(90deg, #ff712b  0% 10%, #fbb63e 35% 65%, #ff712b  90% 100%);
+    z-index: 4;
+    transform: translateY(10%);
+
+    span {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: #ce761c;
+      border-radius: 100%;
+
+      &:nth-child(1) {
+        left: 10%;
+        top: 55%;
+      }
+      &:nth-child(2) {
+        left: 45%;
+        top: 55%;
+      }
+      &:nth-child(3) {
+        left: 80%;
+        top: 55%;
+      }
+      &:nth-child(4) {
+        left: 30%;
+        top: 20%;
+      }
+      &:nth-child(5) {
+        left: 60%;
+        top: 20%;
+      }
+    }
+  }
+
+  #tomato {
+    height: 5px;
+    width: 35px;
+    background: red;
+    z-index: 4;
+  }
+
+  #cheese {
+    position: absolute;
+
+    span {
+      height: 10px;
+      width: 10px;
+      transform:
+        rotate(45deg)
+        translateX(-50%)
+        translateY(40%);
+      left: 30%;
+      background: linear-gradient(135deg, #ca8600 0% 60%, yellow 80% 100%);
+      z-index: 3;
+    }
+  }
+
+  #patty {
+    height: 5px;
+    width: 37px;
+    z-index: 2;
+    border-radius: 5px;
+    background: linear-gradient(90deg, #54291c 0% 10%, #954c35 20% 80%, #54291c 90% 100%);
+  }
+
+  #lettuce {
+    width: 37px;
+    display: flex;
+    position: absolute;
+    transform: translateY(100%);
+    z-index: 1;
+
+    span {
+      height: 4px;
+      width: 33%;
+      // background: #619e15;
+      background: linear-gradient(160deg, #619e15 0% 40%, #92ff0b  80% 100%);
+      border-bottom-right-radius: 50px;
+      border-bottom-left-radius: 50px;
+
+      &:first-child {
+        transform:
+          rotate(10deg)
+          translateY(-30%);
+      }
+      &:last-child {
+        transform:
+          rotate(-10deg)
+          translateY(-30%);
+      }
+      &:nth-child(2) {
+        height: 5px;
+      }
+    }
+  }
+
+  #bottom-bun {
+    height: 10px;
+    border-top-right-radius: 50%;
+    border-top-left-radius: 50%;
+    border-bottom-right-radius: 100%;
+    border-bottom-left-radius: 100%;
+    background: linear-gradient(90deg, #ff712b  0% 10%, #fbb63e 40% 60%, #ff712b  90% 100%);
+  }
+
+  @media screen and (max-width: media(tablet)) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-direction: column;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+  }
+}

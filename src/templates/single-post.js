@@ -42,7 +42,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
         <Tags tags={tag} />
 
         <div className="related-posts">
-          <h3>Similar posts</h3>
+          <h3>Similar posts:</h3>
           {otherPosts.length
             ? otherPosts.map((post, i) =>
               <Link key={i} to={post.fields.slug}>{post.frontmatter.title}</Link>)
