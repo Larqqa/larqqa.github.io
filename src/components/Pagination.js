@@ -12,7 +12,10 @@ function Pagination ({ isFirst, isLast, prevPage, nextPage, numPages, currentPag
       )}
 
       <div className="num-wrap">
-        {currentPage > 2 && <Link to={`${link}`}>1..</Link>}
+        {currentPage > 2 &&
+          <Link to={`${link}`}>
+            1{currentPage > 3 && '..'}
+          </Link>}
 
         {numPages > 1 && Array.from([ -1, 0, 1 ], i => {
           if (currentPage + i < 1) {
@@ -32,7 +35,10 @@ function Pagination ({ isFirst, isLast, prevPage, nextPage, numPages, currentPag
           }
         })}
 
-        {currentPage < numPages - 1 && <Link to={`${link}${numPages}`}>..{numPages}</Link>}
+        {currentPage < numPages - 1 &&
+          <Link to={`${link}${numPages}`}>
+            {numPages - 1 != currentPage + 1 && '..'}{numPages}
+          </Link>}
       </div>
 
       {!isLast && (

@@ -118,7 +118,7 @@ export const pageQuery = graphql`
     }
     morePosts: allMarkdownRemark(
       filter: {
-        frontmatter: { tags: { in: $tag } },
+        frontmatter: { tags: { ne: "projects", in: $tag } },
         fields: { slug: { ne: $slug } }
       }
       limit: 5

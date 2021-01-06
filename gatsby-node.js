@@ -59,7 +59,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   });
 
   // Make blog list pages
-  const postsPerPage = 2;
+  const postsPerPage = 1;
   const count = blog.filter(post => !post.frontmatter.tags.find(tag => tag === 'projects')).length;
 
   let numPages = Math.ceil(count / postsPerPage);
@@ -165,6 +165,7 @@ exports.createSchemaCustomization = ({ actions }) => {
       title: String
       description: String
       date: Date @dateformat
+      update: Date @dateformat
     }
 
     type Fields {
