@@ -25,6 +25,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
             frontmatter {
               title
               tags
+              date
             }
           }
         },
@@ -41,7 +42,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   }
 
   // Create single pages for each post
-  const blog = allPosts.data.posts.nodes;
+  const blog = allPosts.data.posts.nodes.filter(s => new Date(s.frontmatter.date) < new Date());
+
   blog.forEach((post, index) => {
     const previous = index === blog.length - 1 ? null : blog[index + 1];
     const next = index === 0 ? null : blog[index - 1];
@@ -50,7 +52,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
       path: post.fields.slug,
       component: singlePost,
       context: {
-        tag: post.frontmatter.tags,
+        tags: post.frontmatter.tags,
         slug: post.fields.slug,
         previous,
         next,
@@ -59,8 +61,8 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   });
 
   // Make blog list pages
-  const postsPerPage = 1;
-  const count = blog.filter(post => !post.frontmatter.tags.find(tag => tag === 'projects')).length;
+  const postsPerPage = 3;
+  const count = blog.filter(post => !post.frontmatter.tags.find(tag => tag === 'Projects')).length;
 
   let numPages = Math.ceil(count / postsPerPage);
   Array.from({ length: numPages }).forEach((_, i) => {
@@ -131,8 +133,21 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   }
 };
 
-exports.createSchemaCustomization = ({ actions }) => {
+exports.createSchemaCustomization = ({ actions, schema }) => {
   const { createTypes } = actions;
+
+  actions.createTypes([
+    schema.buildObjectType({
+      name: 'MarkdownRemark',
+      interfaces: [ 'Node' ],
+      fields: {
+        isFuture: {
+          type: 'Boolean!',
+          resolve: (s) => new Date(s.frontmatter.date) > new Date(),
+        },
+      },
+    }),
+  ]);
 
   // Explicitly define the siteMetadata {} object
   // This way those will always be defined even if removed from gatsby-config.js

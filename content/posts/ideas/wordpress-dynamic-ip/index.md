@@ -1,7 +1,7 @@
 ---
 title: Dynamic Wordpress IP
-date: "2021-01-05"
-tags: ["PHP"]
+date: "2021-01-10"
+tags: ["PHP", "Wordpress"]
 ---
 
 I was going to start using Vagrant as my development environment for work with Wordpress. I ran into issues with dynamic IP addresses, as this would require a reset of Wordpresse's settings everytime the virtual machine gets a new IP. Which meant either editing the database, or the config by hand. For some reason, Vagrant didn't like running on a subnet with a static IP either, so the only option was to have a dynamic IP.

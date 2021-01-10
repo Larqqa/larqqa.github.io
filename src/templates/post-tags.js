@@ -17,7 +17,7 @@ const TagList = ({ data, pageContext, location }) => {
   const posts = data.allMarkdownRemark.nodes;
 
   return (
-    <Layout location={location} title={siteTitle} className={`post-list ${tag}`}>
+    <Layout location={location} title={siteTitle} className={`post-list ${tag.toLowerCase()}`}>
       <SEO title={tag}/>
       <h1>{tag}</h1>
       <Link to="/blog" itemProp="url">Back to all posts</Link>
@@ -29,7 +29,7 @@ const TagList = ({ data, pageContext, location }) => {
         nextPage={nextPage}
         numPages={numPages}
         currentPage={currentPage}
-        link={`/tags/${tag}/`}
+        link={`/tags/${tag.toLowerCase()}/`}
       />
     </Layout>
   )
@@ -45,7 +45,9 @@ export const pageQuery = graphql`
       }
     }
     allMarkdownRemark(
-      filter: { frontmatter: { tags: { in: [$tag] } } }
+      filter: {
+        isFuture: { eq: false }
+        frontmatter: { tags: { in: [$tag] } } }
       sort: { fields: [frontmatter___date], order: DESC }
       limit: $limit
       skip: $skip

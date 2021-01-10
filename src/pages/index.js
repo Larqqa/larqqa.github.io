@@ -45,7 +45,9 @@ export const pageQuery = graphql`
 
     blog: allMarkdownRemark(
       limit: 3
-      filter: { frontmatter: { tags: { nin: ["projects"] } } }
+      filter: {
+        isFuture: { eq: false }
+        frontmatter: { tags: { nin: ["Projects"] } } }
       sort: { fields: [frontmatter___date], order: DESC }
     ) {
       nodes {
@@ -63,7 +65,7 @@ export const pageQuery = graphql`
 
     projects: allMarkdownRemark(
       limit: 3
-      filter: { frontmatter: { tags: { in: ["projects"] } } }
+      filter: { frontmatter: { tags: { in: ["Projects"] } } }
       sort: { fields: [frontmatter___date], order: DESC }
     ) {
       nodes {

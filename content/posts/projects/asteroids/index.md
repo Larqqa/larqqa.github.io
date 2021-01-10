@@ -1,16 +1,17 @@
 ---
 title: Asteroids
-date: "2015-05-01T22:12:03.284Z"
+date: "2018-05-30"
 description: "Asteroids game made in vanilla JavaScript"
-tags: ["projects", "gamedev", "javascript"]
+tags: ["Projects", "Gamedev", "JavaScript"]
 ---
+
+[github](https://github.com/Larqqa/Electron-asteroids)
+[website](https://those-asteroids.web.app/)
 
 ![asteroids](./asteroids.png)
 
-My interpretation of the classic game, asteroids. This was made using vanilla JavaScript.
-There is also an electron based desktop version in the repo!
+My interpretation of the classic asteroids game. This game was made using vanilla JavaScript.
 
-This is one of my earlier projects using JavaScript. The most difficulty I had with this project was the positioning and movements of all the game elements, and the interactions between these elements.
+This is one of my earlier projects using JavaScript. I decided to heavily rely on objects in JavaScript, which made handling the game state much easier. The basis for this very simple game engine was the HTML `canvas` element and `setInterval` to control the game loop.
 
-https://github.com/Larqqa/Electron-asteroids
-https://those-asteroids.web.app/
+The most difficulty I had with this project was the positioning and movements of all the game pieces, and the interactions between these pieces. I had to study implementing 2D coordinate systems in Javascript and implementing simple physics-esque calculations for the game. For example the ship uses a drag system for the movement. You apply a force when you want to move the ship, and it slows down with a constant drag every loop.

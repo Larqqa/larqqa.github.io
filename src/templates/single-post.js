@@ -9,7 +9,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
   const post = data.markdownRemark;
   const otherPosts = data.morePosts.nodes;
   const siteTitle = data.site.siteMetadata?.title || 'Title';
-  const { previous, next, tag } = pageContext;
+  const { previous, next, tags } = pageContext;
   const date = post.frontmatter.date;
   const update = post.frontmatter.update;
 
@@ -39,7 +39,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
   const Footer = () => {
     return(
       <footer>
-        <Tags tags={tag} />
+        <Tags tags={tags} />
 
         <div className="related-posts">
           <h3>Similar posts:</h3>
@@ -99,7 +99,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
 export default BlogPostTemplate
 
 export const pageQuery = graphql`
-  query BlogPostBySlug($slug: String!, $tag: [String]) {
+  query BlogPostBySlug($slug: String!) {
     site {
       siteMetadata {
         title
@@ -118,7 +118,6 @@ export const pageQuery = graphql`
     }
     morePosts: allMarkdownRemark(
       filter: {
-        frontmatter: { tags: { ne: "projects", in: $tag } },
         fields: { slug: { ne: $slug } }
       }
       limit: 5
@@ -135,3 +134,7 @@ export const pageQuery = graphql`
     }
   }
 `
+
+// Add:
+// $tag: [String] to BlogPostBySlug variables
+// frontmatter: { tags: { ne: "Projects", in: $tag } } to morePosts filter to remove projects from the listing

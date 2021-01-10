@@ -46,7 +46,9 @@ export const pageQuery = graphql`
       }
     }
     allMarkdownRemark(
-      filter: { frontmatter: { tags: { nin: ["projects"] } } }
+      filter: {
+        isFuture: { eq: false }
+        frontmatter: { tags: { nin: ["Projects"] } } }
       sort: { fields: [frontmatter___date], order: DESC }
       limit: $limit
       skip: $skip
@@ -64,7 +66,9 @@ export const pageQuery = graphql`
         }
       }
     }
-    tags: allMarkdownRemark(limit: 2000) {
+    tags: allMarkdownRemark(
+      filter: { isFuture: { eq: false } }
+        limit: 2000) {
       group(field: frontmatter___tags) {
         fieldValue
       }
