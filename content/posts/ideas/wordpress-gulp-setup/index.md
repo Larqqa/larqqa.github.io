@@ -24,7 +24,7 @@ package.json
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },
-  "author": "teemu nurmi",
+  "author": "larqqa",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.6.4",
