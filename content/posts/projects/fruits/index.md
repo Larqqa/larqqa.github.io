@@ -4,8 +4,14 @@ date: "2019-07-27"
 description: "Connect three game made in vanilla JavaScript"
 tags: ["Projects", "Gamedev", "JavaScript"]
 ---
-[github](https://github.com/Larqqa/Fruits/tree/game-maybe)
-[website](https://fruits-game.netlify.com/)
+
+<a href="https://github.com/Larqqa/Fruits/tree/game-maybe" class="icon">
+  <i class="fab fa-github"></i>
+</a>
+
+<a href="https://fruits-game.netlify.com/" class="icon">
+  <i class="fas fa-laptop"></i>
+</a>
 
 ![Fruits](./Fruits.png)
 

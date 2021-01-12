@@ -32,10 +32,13 @@ define('DOMAIN_CURRENT_SITE',$siteurl);
 
 It uses PHP's functionality to get server and execution environment information with `$_SERVER['SERVER_ADDR']`, like for example the server's IP address.
 Then with `$_SERVER['SCRIPT_NAME']` we get the current script's full path and filename.
-Some regex is used to clean up the script's path for use in the URL.
 
-Then we can add the cleaned IP to Wordpress's constants, that handle the site URL in the wp-config file.
+Explanations for the Regexes:
+* `@/+$@` is used to strip the file name from the path
+* `/\/wp.+/` is used to strip the wordpress folder names from the path, for example wp-admin
 
-And thus we have setup Wordpress to use a dynamic server IP address!
+The `$currentpath` is relevant if you want to install Wordpress in a sub folder. Without it you wouldn't get the folder added to the path, which would result in the URL being just the IP, which isn't enough for the URL to work.
 
-I have implemented this snippet into this [automation tool for making new Vagrant VMs](/blog/projects/vagrant-cli-tool/), which I use for Wordpress development.
+Then we can add the cleaned IP to the Wordpress's constants that handle the site URL in the wp-config file. And thus we have setup Wordpress to use a dynamic server IP address!
+
+I have also implemented this snippet into this [automation tool for making new Vagrant VMs](/blog/projects/vagrant-cli-tool/), which I use for Wordpress development.

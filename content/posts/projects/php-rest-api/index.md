@@ -5,9 +5,18 @@ description: "Simple REST API, for user handling."
 tags: ["Projects", "PHP", "React"]
 ---
 
-[github](https://github.com/Larqqa/PHP-REST-API)
-[website](https://larqqa.github.io/PHP-REST-API/)
-[API](https://login-backend-rest-api.herokuapp.com/)
+<a href="https://github.com/Larqqa/PHP-REST-API" class="icon">
+  <i class="fab fa-github"></i>
+</a>
+
+<a href="https://larqqa.github.io/PHP-REST-API/" class="icon">
+  <i class="fas fa-laptop"></i>
+</a>
+
+<a href="https://login-backend-rest-api.herokuapp.com/" class="icon">
+  <i class="fas fa-server"></i>
+</a>
+
 
 ![RESTAPI](./RESTAPI.png)
 

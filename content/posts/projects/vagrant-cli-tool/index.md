@@ -5,7 +5,9 @@ description: "A command line tool for making Wordpress development environments 
 tags: ["Projects", "Vagrant", "PHP", "Bash", "Wordpress"]
 ---
 
-[github](https://github.com/Larqqa/Vagrant-Lamp-stack)
+<a href="https://github.com/Larqqa/Vagrant-Lamp-stack" class="icon">
+  <i class="fab fa-github"></i>
+</a>
 
 This tool allows you to quickly and easily make new virtual machines with [Vagrant](https://www.vagrantup.com/) and [VirtualBox](https://www.virtualbox.org/), for developing and testing Wordpress websites. The tool is written in Bash, but is only tested to work on windows 10 (I know, what a weird mishmash). I like using Git BASH from [git for windows](https://gitforwindows.org/) which allowed me to build this tool using Bash. With some tweaking this could be made to work with other operating systems, which I might do in the future.
 

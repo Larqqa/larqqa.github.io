@@ -5,8 +5,13 @@ description: "Asteroids game made in vanilla JavaScript"
 tags: ["Projects", "Gamedev", "JavaScript"]
 ---
 
-[github](https://github.com/Larqqa/Electron-asteroids)
-[website](https://those-asteroids.web.app/)
+<a href="https://github.com/Larqqa/Electron-asteroids" class="icon">
+  <i class="fab fa-github"></i>
+</a>
+
+<a href="https://those-asteroids.web.app/" class="icon">
+  <i class="fas fa-laptop"></i>
+</a>
 
 ![asteroids](./asteroids.png)
 

@@ -5,7 +5,9 @@ description: "Color Picker app"
 tags: ["Projects", "Java"]
 ---
 
-[github](https://github.com/Larqqa/Color-Picker)
+<a href="https://github.com/Larqqa/Color-Picker" class="icon">
+  <i class="fab fa-github"></i>
+</a>
 
 ![ColorPicker](./ColorPicker.png)
 

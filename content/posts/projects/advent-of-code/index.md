@@ -5,7 +5,9 @@ description: "Advent Of Code, done with a new language for every day."
 tags: ["Projects", "Datastructures", "Algorithms"]
 ---
 
-[github](https://github.com/Larqqa/Advent-of-Code-2020)
+<a href="https://github.com/Larqqa/Advent-of-Code-2020" class="icon">
+  <i class="fab fa-github"></i>
+</a>
 
 I wanted to try out my skills at rapid problem solving and adaptation to new programming languages. I decided to do Advent Of Code with a new language everyday. I picked out 25 different languages, for 25 days of the challenge and got to work. I want to also note that this was my first year of doing Advent Of Code.
 

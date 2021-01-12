@@ -5,8 +5,13 @@ description: "A website that gives you random recipe suggestions."
 tags: ["Projects", "React", "Express", "Node"]
 ---
 
-[github](https://github.com/Larqqa/RESTful-recipes)
-[website](https://random-resepti.herokuapp.com/)
+<a href="https://github.com/Larqqa/RESTful-recipes" class="icon">
+  <i class="fab fa-github"></i>
+</a>
+
+<a href="https://random-resepti.herokuapp.com/" class="icon">
+  <i class="fas fa-laptop"></i>
+</a>
 
 ![RandomRecipe](./RandomRecipe.png)
 
