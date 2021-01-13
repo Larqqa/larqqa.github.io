@@ -1,3 +1,5 @@
+// This snippet provided by: https://www.gatsbyjs.com/blog/2019-01-31-using-react-context-api-with-gatsby/
+
 import React from "react"
 
 const ThemeContext = React.createContext({

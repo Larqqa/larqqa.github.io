@@ -17,7 +17,7 @@ The challenges themselves were sometimes quite tough too, but finding the correc
 
 I found this project to be super fun and rewarding in the end. I got to try out a lot of new languages and have some projects cooking up with some of the new skills and interests I gathered during this project. I think i have found a lot more confidence to try new stuff and also solidified some programming concepts during this ordeal. I got to experience first hand that programming concepts really do carry over from language to language, but paradigms are a different beast.
 
-Full list of languages I used:
+### Full list of languages I used:
 1. C
 2. Rust
 3. Java

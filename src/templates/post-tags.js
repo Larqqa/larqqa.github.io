@@ -12,8 +12,8 @@ const TagList = ({ data, pageContext, location }) => {
   const { currentPage, numPages, tag } = pageContext;
   const isFirst = currentPage === 1;
   const isLast = currentPage === numPages;
-  const prevPage = currentPage - 1 === 1 ? `/tags/${tag}` : `/tags/${tag}/${currentPage - 1}`;
-  const nextPage = `/tags/${tag}/${currentPage + 1}`;
+  const prevPage = currentPage - 1 === 1 ? `/tags/${tag.toLowerCase()}` : `/tags/${tag.toLowerCase()}/${currentPage - 1}`;
+  const nextPage = `/tags/${tag.toLowerCase()}/${currentPage + 1}`;
   const posts = data.allMarkdownRemark.nodes;
 
   return (

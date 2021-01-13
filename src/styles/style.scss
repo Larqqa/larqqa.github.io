@@ -44,9 +44,9 @@ a {
   margin: 0 auto;
   max-width: 1200px;
   padding: 0 pad(large);
-  padding-bottom: 2rem;
   background-color: #efefef;
   position: relative;
+  padding-bottom: 2rem;
 }
 
 :not(pre) > code[class*="language-"], pre[class*="language-"] {
@@ -59,8 +59,8 @@ a {
 
   i {
     transition: color .1s ease-in-out;
-    font-size: 2rem;
-    margin-right: 1rem;
+    font-size: 1.5rem;
+    margin-right: .7rem;
   }
 
   &:hover {
@@ -75,10 +75,16 @@ a {
 @media only screen and (max-width: media(mobile)) {
   .global-wrapper {
     padding: 0 pad();
-    padding-bottom: pad();
+    padding-bottom: 1px;
   }
 
   .theme-toggler {
     margin: pad();
+  }
+}
+
+@media only screen and (min-width: media(mobile)) {
+  .global-wrapper {
+    min-height: 50vh;
   }
 }

@@ -1,6 +1,6 @@
 ---
 title: Gulp & webpack setup for Wordpress development
-date: "2021-01-05"
+date: "2022-01-05"
 tags: ["Wordpress", "Gulp", "Webpack"]
 ---
 

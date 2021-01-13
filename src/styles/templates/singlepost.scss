@@ -14,6 +14,10 @@
     }
   }
 
+  .blog-post {
+    margin-bottom: 2rem;
+  }
+
   footer {
     margin: pad(large) 0;
   }
@@ -49,6 +53,8 @@
   }
 
   .blog-post-nav {
+    margin-top: 2rem;
+
     ul {
       display: flex;
       flex-wrap: wrap;
@@ -70,11 +76,17 @@
       }
     }
 
+    .blog-post {
+      margin-bottom: 1rem;
+    }
+
     .related-posts {
       margin: 0;
     }
 
     .blog-post-nav {
+      margin: 1rem 0;
+
       li:first-child {
         margin-bottom: pad();
       }
