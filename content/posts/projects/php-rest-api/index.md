@@ -15,7 +15,7 @@ tags: ["Projects", "PHP", "React"]
 
 ![RESTAPI](./RESTAPI.png)
 
-This is a simple [REST APIAPI](https://login-backend-rest-api.herokuapp.com/) I made with PHP and React. The API tries to be a microservice for user management. Users can do CRUD operations: register, login, update their account information, and delete their account using the API. This API could for example be used for authenticating users for other applications. The database is mocked with a simple JSON file.
+This is a simple [REST API](https://login-backend-rest-api.herokuapp.com/) I made with PHP and React. The API tries to be a microservice for user management. Users can do CRUD operations: register, login, update their account information, and delete their account using the API. This API could for example be used for authenticating users for other applications. The database is mocked with a simple JSON file.
 
 The main purpose of this project was to recap PHP skills, and trying out developing APIs focused on a single part of a web application. I also wanted to to practice combining APIs with front end applications. The biggest challenges were development of the API and communication between the API and the front end.
 

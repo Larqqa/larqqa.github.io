@@ -17,7 +17,7 @@ html {
 
 h1 {
   font-weight: normal;
-  font-size: 2em;
+  font-size: 2rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -42,11 +42,11 @@ a {
 // GLOBALS
 .global-wrapper {
   margin: 0 auto;
-  max-width: 1200px;
+  max-width: $body-width;
   padding: 0 pad(large);
   background-color: #efefef;
   position: relative;
-  padding-bottom: 2rem;
+  padding-bottom: pad(large);
 }
 
 :not(pre) > code[class*="language-"], pre[class*="language-"] {
@@ -60,7 +60,7 @@ a {
   i {
     transition: color .1s ease-in-out;
     font-size: 1.5rem;
-    margin-right: .7rem;
+    margin-right: pad(small);
   }
 
   &:hover {

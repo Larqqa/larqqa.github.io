@@ -17,6 +17,7 @@
 
     &:last-child {
       margin-right: 0;
+
       .post-list-item {
         background-color: color(bg, orange);
       }
@@ -71,7 +72,7 @@
 
     .post-list {
       flex: 100%;
-      margin: 1rem 0;
+      margin: pad() 0;
       padding: pad();
 
       .heading {

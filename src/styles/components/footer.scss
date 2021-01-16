@@ -1,15 +1,24 @@
+@import '../mixed/variables.scss';
 @import '../mixed/functions.scss';
 
 .footer--main {
   padding: pad(large) pad(large);
   margin: 0 auto;
-  max-width: 1200px;
+  max-width: $body-width;
   background-color: #111;
 
   p {
-    color: #eee;
+    color: color(font, light);
     margin: 0;
     font-size: 12px;
     text-align: center;
+  }
+
+  a {
+    color: color(font, light);
+
+    &:hover {
+      color: color(font, orange);
+    }
   }
 }

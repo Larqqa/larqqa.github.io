@@ -57,7 +57,6 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
   }
 
   const PostNav = () => {
-
     const PostLink = ({link, linkText, rel}) => {
       return (
         link && (

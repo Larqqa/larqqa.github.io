@@ -3,10 +3,10 @@ module.exports = {
     title: 'Larqqa\'s blogfolio',
     author: {
       name: 'Larqqa',
-      summary: 'Hello and welcome to my half blog half portfolio. This is a place where i share some of my favourite projects and some thoughts about developer stuff i have found to be helpful or interesting.',
+      summary: 'Hello and welcome to my blogfolio, it\'s half blog and half portfolio! This is the place where I share some of my favourite projects and thoughts about stuff I have found to be helpful and/or interesting.',
       current: 'Currently employed as a web developer / web admin, working with Wordpress.',
     },
-    description: 'valid and great description',
+    description: 'Larqqa\'s magnificent blogfolio.',
 
     /*siteUrl: 'https://gatsby-starter-blog-demo.netlify.app/',
     social: {
@@ -29,11 +29,7 @@ module.exports = {
       {
         name:'About',
         link:'/about'
-      },
-      // {
-      //   name:'Asteroids',
-      //   link:'/Asteroids'
-      // },
+      }
     ]
   },
   plugins: [

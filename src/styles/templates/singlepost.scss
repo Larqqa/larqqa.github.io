@@ -2,11 +2,11 @@
 
 .single-post {
   header {
-    margin-bottom: 2rem;
+    margin-bottom: pad(large);
 
     h1 {
       margin : 0;
-      font-size: 2rem;
+      font-size: pad(large);
     }
 
     .date {
@@ -15,7 +15,7 @@
   }
 
   .blog-post {
-    margin-bottom: 2rem;
+    margin-bottom: pad(large);
   }
 
   footer {
@@ -25,15 +25,15 @@
   .related-posts {
     display: flex;
     flex-direction: column;
-    margin-top: 1rem;
+    margin-top: pad();
 
     h3 {
       font-weight: normal;
-      margin: 1rem 0;
+      margin: pad() 0;
     }
 
     a {
-      margin: .3rem 0;
+      margin: (pad(small) / 2) 0;
     }
   }
 
@@ -44,16 +44,16 @@
 
     .heading {
       color: color(font);
-      margin: 1rem 0;
+      margin: pad() 0;
     }
 
     li {
-      padding-right: .7rem;
+      padding-right: pad(small);
     }
   }
 
   .blog-post-nav {
-    margin-top: 2rem;
+    margin-top: pad(large);
 
     ul {
       display: flex;
@@ -72,20 +72,24 @@
       margin: pad() 0;
 
       h3 {
-        margin-bottom: .5rem !important;
+        margin-bottom: pad(small) !important;
       }
     }
 
     .blog-post {
-      margin-bottom: 1rem;
+      margin-bottom: pad();
     }
 
     .related-posts {
       margin: 0;
+
+      a {
+        margin: pad(small) 0;
+      }
     }
 
     .blog-post-nav {
-      margin: 1rem 0;
+      margin: pad() 0;
 
       li:first-child {
         margin-bottom: pad();

@@ -11,7 +11,7 @@
 
   .num-wrap {
     a {
-      padding: .5rem;
+      padding: pad(small);
 
       &.active {
         font-weight: bold;

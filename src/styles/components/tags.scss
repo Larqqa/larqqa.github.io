@@ -15,24 +15,26 @@
     padding: 0;
 
     li {
-      padding-right: .7rem;
+      padding-right: pad(small);
 
       a {
         text-decoration: none;
-        background-color: color(bg, blue);
+        background-color: color(link);
         border-radius: 20px;
-        padding: .2rem .7rem;
+        padding: (pad(small) / 2) pad(small);
         display: block;
-        margin: .5rem 0;
+        margin: pad(small) 0;
         transition: background-color .2s ease-in-out;
 
-
-        &:hover {
-          background-color: color(bg, orange);
+        span {
+          color: color(font, light);
+          transition: color .2s ease-in-out;
         }
 
-        span {
-          color: color(font);
+        &:hover {
+          span {
+            color: color(font, orange);
+          }
         }
       }
     }

@@ -6,7 +6,7 @@ $col: #eee;
   background-color: #0c0c0c;
 
   h1, h2, h3, h4, h5, h6 {
-    color:$col;
+    color: $col;
   }
 
   p, li, div, span, i, strong {
@@ -26,6 +26,7 @@ $col: #eee;
   }
 
   .post-list {
+    border: 1px solid color(bg, blue);
     background-color: transparent !important;
 
     .post-list-item h2 a, p, small {
@@ -39,6 +40,8 @@ $col: #eee;
   }
 
   .projects {
+    border: 1px solid color(bg, orange);
+
     .post-list-item h2 a, p, small {
       color: color(bg, orange);
     }
