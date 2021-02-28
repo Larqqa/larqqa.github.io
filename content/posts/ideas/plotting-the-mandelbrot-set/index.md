@@ -27,7 +27,7 @@ $...$
 
 We can quickly start seeing a pattern for how the iteration continues until infinity. We take the result from the previous iteration, and add the complex number $c$ to the result. This boils down to calculating the value of $c^2 + c$ every iteration.
 
-Complex numbers can be expressed in the form $c = a + bi$ where $a$ and $b$ are the real components, and $i$ is the imaginary component. If we think about how this can be used in our function, we can see that the expression $c^2 + c$ can be represented as $(a + bi)^2 + (a + bi)$
+The Mandelbrot set is a set of complex numbers that are composed of real and imaginary numbers. The imaginary unit in an imaginary number is represented by $i$ which satisfies the equation $i = \sqrt{-1}$. Complex numbers can be expressed in the form $c = a + bi$ where $a$ and $b$ are the real components, and $i$ is the imaginary component. If we think about how this can be used in our function, we can see that the expression $c^2 + c$ can be represented as $(a + bi)^2 + (a + bi)$
 
 We can simplify the expression $c^2 = (a + bi)^2$ as follows:
 
@@ -35,9 +35,9 @@ $c^2 = (a + bi)^2$
 
 $c^2 = (a + bi)(a + bi)$
 
-$c^2 = a^2 + abi + abi + b^2$
+$c^2 = a^2 + abi + abi - b^2$
 
-$c^2 = a^2 + 2abi - b2$
+$c^2 = a^2 + 2abi - b^2$
 
 $c^2 = a^2 - b^2 + 2abi$
 
