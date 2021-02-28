@@ -4,6 +4,10 @@ date: "2021-02-28"
 tags: ["Graphics Programming", "Algorithms", "Math"]
 ---
 
+I stumbled upon some [videos of the Mandelbrot set on YouTube](https://www.youtube.com/watch?v=NGMRB4O922I), and I was instantly fascinated by it. The shape of the set is so intriquing, fractals are super cool, and the mathematics behind it sparked an interest in doing something with the set. I decided that I'm going to make some form of a visualizer of the Mandlebrot set, and for that I had to get a grip of the math behind the set, and how that math would translate into code.
+
+This post is about exploring the mathematics behind the Mandelbrot set, and the basic code behind my [Fractal viewer](https://larqqa.github.io/mandelbrot-visualization/).
+
 ## What is the Mandelbrot set?
 The mandelbrot set is the set of complex numbers $c$ for which the function $f_c(z) = z^2 + c$ does not diverge, when iterated from $z = 0$, or remains bounded in absolute value. Its definition is credited to Adrien Douady who named it in tribute to the mathematician Benoit Mandelbrot, a pioneer of fractal geometry. [[1]](https://en.wikipedia.org/wiki/Mandelbrot_set)
 
@@ -35,7 +39,9 @@ $c^2 = (a + bi)^2$
 
 $c^2 = (a + bi)(a + bi)$
 
-$c^2 = a^2 + abi + abi - b^2$
+$c^2 = a^2 + abi + abi + b^2i^2$
+
+$c^2 = a^2 + 2abi + b^2(-1)$
 
 $c^2 = a^2 + 2abi - b^2$
 
@@ -48,6 +54,7 @@ $a = a^2 - b^2 + a$
 $bi = 2abi + bi$
 
 Finally, we need to check for the diverging numbers. The formal definition of the Mandelbrot set states that the of $|z_n|$ remains bounded for all $n > 0$. The Mandelbrot set is contained in a disk with a radius of 2 around the origin. We can use this number to check if the value of $z_n$ stays bounded in the set, or if it blows out towards infinity. So to reiterate, if we get a value where $|z^2| > 2$ we know for certain it is outside of the set.
+![Disk bounds](bounds.png)
 
 Let's look at two examples, $c = 1$ and $c = -1$:
 
@@ -166,7 +173,7 @@ for (let x = 0; x < width; x++) {
 
 		n = n == iterations ? 0 : (n * 255) / iterations;
 
-		pos = (y * width + x) * 4;
+		const pos = (y * width + x) * 4;
 		buffer[pos + 0] = n;
 		buffer[pos + 1] = n;
 		buffer[pos + 2] = n;
