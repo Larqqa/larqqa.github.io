@@ -1,11 +1,10 @@
 import React from "react";
 import { Link, graphql } from "gatsby";
+
 import Layout from "../components/layout";
 import SEO from "../components/seo";
 import Tags from '../components/tags';
 import '../styles/templates/singlepost.scss';
-
-const icon = require('simple-icons/icons/github');
 
 const BlogPostTemplate = ({ data, pageContext, location }) => {
   const post = data.markdownRemark;

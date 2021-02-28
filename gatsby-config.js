@@ -66,6 +66,13 @@ module.exports = {
           'gatsby-remark-prismjs', // code block syntax highlighting
           'gatsby-remark-copy-linked-files', // Copies linked images to root
           // 'gatsby-remark-smartypants', // Smart quotes
+          {
+            // Add any KaTeX options from https://github.com/KaTeX/KaTeX/blob/master/docs/options.md here
+            resolve: 'gatsby-remark-katex',
+            options: {
+              strict: 'ignore'
+            }
+          }
         ],
       },
     },

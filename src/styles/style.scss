@@ -25,9 +25,13 @@ h1, h2, h3, h4, h5, h6 {
   color: color(font);
 }
 
-p, a, li, div, i, strong, span:not(.token){
+p, a, li, div, i, strong {
   font-family: $paragraph;
   color: color(font);
+}
+
+p {
+  line-height: 1.3rem;
 }
 
 a {
@@ -55,7 +59,7 @@ a {
 }
 
 .icon {
-  color: transparent;
+  color: transparent !important;
 
   i {
     transition: color .1s ease-in-out;
@@ -73,6 +77,10 @@ a {
 }
 
 @media only screen and (max-width: media(mobile)) {
+  html {
+    font-size: 110%;
+  }
+
   .global-wrapper {
     padding: 0 pad();
     padding-bottom: 1px;
