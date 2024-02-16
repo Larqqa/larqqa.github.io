@@ -13,22 +13,22 @@ module.exports = {
       twitter: 'kylemathews',
     },*/
 
-    menuLinks:[
+    menuLinks: [
       {
-        name:'Home',
-        link:'/'
+        name: 'Home',
+        link: '/'
       },
       {
-        name:'Blog',
-        link:'/blog'
+        name: 'Blog',
+        link: '/blog'
       },
       {
-        name:'Projects',
-        link:'/tags/projects'
+        name: 'Projects',
+        link: '/tags/projects'
       },
       {
-        name:'About',
-        link:'/about'
+        name: 'About',
+        link: '/about'
       }
     ]
   },
@@ -78,7 +78,47 @@ module.exports = {
     },
     'gatsby-transformer-sharp', // image processing
     'gatsby-plugin-sharp', // image processing
-    'gatsby-plugin-feed', // RSS feed
+    {
+      resolve: `gatsby-plugin-feed`,
+      options: {
+        feeds: [
+          {
+            serialize: ({ query: { site, allMarkdownRemark } }) => {
+              return allMarkdownRemark.nodes.map(node => {
+                return Object.assign({}, node.frontmatter, {
+                  description: node.excerpt,
+                  date: node.frontmatter.date,
+                  url: site.siteMetadata.siteUrl + node.fields.slug,
+                  guid: site.siteMetadata.siteUrl + node.fields.slug,
+                  custom_elements: [{ "content:encoded": node.html }],
+                })
+              })
+            },
+            query: `
+              {
+                allMarkdownRemark(
+                  sort: { order: DESC, fields: [frontmatter___date] },
+                ) {
+                  nodes {
+                    excerpt
+                    html
+                    fields {
+                      slug
+                    }
+                    frontmatter {
+                      title
+                      date
+                    }
+                  }
+                }
+              }
+            `,
+            output: "/rss.xml",
+            title: "Larqqa's RSS Feed",
+          },
+        ],
+      },
+    },
     'gatsby-plugin-sass', // sass processing
     /*{
       resolve: 'gatsby-plugin-manifest',
