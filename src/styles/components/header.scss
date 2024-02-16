@@ -24,5 +24,10 @@
 @media only screen and (max-width: media(mobile)) {
   .global-header {
     text-align: left;
+    margin-bottom: 3rem;
+
+    a .main-heading {
+      font-size: 2.7rem;
+    }
   }
 }
