@@ -36,49 +36,45 @@ const BlogIndex = ({ data, location }) => {
 export default BlogIndex
 
 export const pageQuery = graphql`
-  query {
-    site {
-      siteMetadata {
+query {
+  site {
+    siteMetadata {
+      title
+    }
+  }
+  blog: allMarkdownRemark(
+    limit: 3
+    filter: {isFuture: {eq: false}, frontmatter: {tags: {nin: ["Projects"]}}}
+    sort: {frontmatter: {date: DESC}}
+  ) {
+    nodes {
+      excerpt
+      fields {
+        slug
+      }
+      frontmatter {
+        date(formatString: "MMMM DD, YYYY")
         title
-      }
-    }
-
-    blog: allMarkdownRemark(
-      limit: 3
-      filter: {
-        isFuture: { eq: false }
-        frontmatter: { tags: { nin: ["Projects"] } } }
-      sort: { fields: [frontmatter___date], order: DESC }
-    ) {
-      nodes {
-        excerpt
-        fields {
-          slug
-        }
-        frontmatter {
-          date(formatString: "MMMM DD, YYYY")
-          title
-          description
-        }
-      }
-    }
-
-    projects: allMarkdownRemark(
-      limit: 3
-      filter: { frontmatter: { tags: { in: ["Projects"] } } }
-      sort: { fields: [frontmatter___date], order: DESC }
-    ) {
-      nodes {
-        excerpt
-        fields {
-          slug
-        }
-        frontmatter {
-          date(formatString: "MMMM DD, YYYY")
-          title
-          description
-        }
+        description
       }
     }
   }
+  projects: allMarkdownRemark(
+    limit: 3
+    filter: {frontmatter: {tags: {in: ["Projects"]}}}
+    sort: {frontmatter: {date: DESC}}
+  ) {
+    nodes {
+      excerpt
+      fields {
+        slug
+      }
+      frontmatter {
+        date(formatString: "MMMM DD, YYYY")
+        title
+        description
+      }
+    }
+  }
+}
 `

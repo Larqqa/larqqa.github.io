@@ -13,23 +13,20 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   // Get all markdown blog posts sorted by date
   const allPosts = await graphql(
     `
-      {
-        posts: allMarkdownRemark(
-          sort: { fields: [frontmatter___date], order: DESC }
-          limit: 1000
-        ) {
-          nodes {
-            fields {
-              slug
-            }
-            frontmatter {
-              title
-              tags
-              date
-            }
+    {
+      posts: allMarkdownRemark(sort: {frontmatter: {date: DESC}}, limit: 1000) {
+        nodes {
+          fields {
+            slug
           }
-        },
+          frontmatter {
+            title
+            tags
+            date
+          }
+        }
       }
+    }
     `
   );
 
@@ -93,7 +90,7 @@ exports.createPages = async ({ graphql, actions, reporter }) => {
   // console.log(counts);
 
   // Make tag pages
-  for (const tag in counts){
+  for (const tag in counts) {
     const numPages = Math.ceil(counts[tag] / postsPerPage);
     const kebabTag = kebabCase(tag);
     Array.from({ length: numPages }).forEach((_, i) => {
@@ -139,7 +136,7 @@ exports.createSchemaCustomization = ({ actions, schema }) => {
   actions.createTypes([
     schema.buildObjectType({
       name: 'MarkdownRemark',
-      interfaces: [ 'Node' ],
+      interfaces: ['Node'],
       fields: {
         isFuture: {
           type: 'Boolean!',

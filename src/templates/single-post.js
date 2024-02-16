@@ -38,7 +38,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
   }
 
   const Footer = () => {
-    return(
+    return (
       <footer>
         <Tags tags={tags} />
 
@@ -56,7 +56,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
   }
 
   const PostNav = () => {
-    const PostLink = ({link, linkText, rel}) => {
+    const PostLink = ({ link, linkText, rel }) => {
       return (
         link && (
           <li>
@@ -69,7 +69,7 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
       );
     }
 
-    return(
+    return (
       <nav className="blog-post-nav">
         <ul>
           <PostLink link={previous} linkText="Previous post:" rel="prev" />
@@ -99,40 +99,38 @@ const BlogPostTemplate = ({ data, pageContext, location }) => {
 export default BlogPostTemplate
 
 export const pageQuery = graphql`
-  query BlogPostBySlug($slug: String!) {
-    site {
-      siteMetadata {
-        title
-      }
+query BlogPostBySlug($slug: String!) {
+  site {
+    siteMetadata {
+      title
     }
-    markdownRemark(fields: { slug: { eq: $slug } }) {
-      id
-      excerpt(pruneLength: 160)
-      html
+  }
+  markdownRemark(fields: {slug: {eq: $slug}}) {
+    id
+    excerpt(pruneLength: 160)
+    html
+    frontmatter {
+      title
+      date(formatString: "MMMM DD, YYYY")
+      update(formatString: "MMMM DD, YYYY")
+      description
+    }
+  }
+  morePosts: allMarkdownRemark(
+    filter: {fields: {slug: {ne: $slug}}}
+    limit: 5
+    sort: {frontmatter: {date: DESC}}
+  ) {
+    nodes {
+      fields {
+        slug
+      }
       frontmatter {
         title
-        date(formatString: "MMMM DD, YYYY")
-        update(formatString: "MMMM DD, YYYY")
-        description
-      }
-    }
-    morePosts: allMarkdownRemark(
-      filter: {
-        fields: { slug: { ne: $slug } }
-      }
-      limit: 5
-      sort: { fields: [frontmatter___date], order: DESC }
-    ) {
-      nodes {
-        fields {
-          slug
-        }
-        frontmatter {
-          title
-        }
       }
     }
   }
+}
 `
 
 // Add:

@@ -18,7 +18,7 @@ const TagList = ({ data, pageContext, location }) => {
 
   return (
     <Layout location={location} title={siteTitle} className={`post-list ${tag.toLowerCase()}`}>
-      <SEO title={tag}/>
+      <SEO title={tag} />
       <h1>{tag}</h1>
       <Link to="/blog" itemProp="url">Back to all posts</Link>
       <Posts postData={posts} />
@@ -38,31 +38,29 @@ const TagList = ({ data, pageContext, location }) => {
 export default TagList;
 
 export const pageQuery = graphql`
-  query tagPageQuery($skip: Int!, $limit: Int!, $tag: String!) {
-    site {
-      siteMetadata {
-        title
-      }
+query tagPageQuery($skip: Int!, $limit: Int!, $tag: String!) {
+  site {
+    siteMetadata {
+      title
     }
-    allMarkdownRemark(
-      filter: {
-        isFuture: { eq: false }
-        frontmatter: { tags: { in: [$tag] } } }
-      sort: { fields: [frontmatter___date], order: DESC }
-      limit: $limit
-      skip: $skip
-    ) {
-      nodes {
-        excerpt
-        fields {
-          slug
-        }
-        frontmatter {
-          date(formatString: "MMMM DD, YYYY")
-          title
-          description
-        }
+  }
+  allMarkdownRemark(
+    filter: {isFuture: {eq: false}, frontmatter: {tags: {in: [$tag]}}}
+    sort: {frontmatter: {date: DESC}}
+    limit: $limit
+    skip: $skip
+  ) {
+    nodes {
+      excerpt
+      fields {
+        slug
+      }
+      frontmatter {
+        date(formatString: "MMMM DD, YYYY")
+        title
+        description
       }
     }
   }
+}
 `;

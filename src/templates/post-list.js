@@ -39,39 +39,35 @@ const BlogList = ({ data, pageContext, location }) => {
 export default BlogList;
 
 export const pageQuery = graphql`
-  query blogPageQuery($skip: Int!, $limit: Int!) {
-    site {
-      siteMetadata {
+query blogPageQuery($skip: Int!, $limit: Int!) {
+  site {
+    siteMetadata {
+      title
+    }
+  }
+  allMarkdownRemark(
+    filter: {isFuture: {eq: false}, frontmatter: {tags: {nin: ["Projects"]}}}
+    sort: {frontmatter: {date: DESC}}
+    limit: $limit
+    skip: $skip
+  ) {
+    nodes {
+      excerpt
+      fields {
+        slug
+      }
+      frontmatter {
+        date(formatString: "MMMM DD, YYYY")
         title
-      }
-    }
-    allMarkdownRemark(
-      filter: {
-        isFuture: { eq: false }
-        frontmatter: { tags: { nin: ["Projects"] } } }
-      sort: { fields: [frontmatter___date], order: DESC }
-      limit: $limit
-      skip: $skip
-    ) {
-      nodes {
-        excerpt
-        fields {
-          slug
-        }
-        frontmatter {
-          date(formatString: "MMMM DD, YYYY")
-          title
-          description
-          tags
-        }
-      }
-    }
-    tags: allMarkdownRemark(
-      filter: { isFuture: { eq: false } }
-        limit: 2000) {
-      group(field: frontmatter___tags) {
-        fieldValue
+        description
+        tags
       }
     }
   }
+  tags: allMarkdownRemark(filter: {isFuture: {eq: false}}, limit: 2000) {
+    group(field: {frontmatter: {tags: SELECT}}) {
+      fieldValue
+    }
+  }
+}
 `;
