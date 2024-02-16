@@ -21,7 +21,7 @@
         text-decoration: none;
         background-color: color(link);
         border-radius: 20px;
-        padding: (pad(small) / 2) pad(small);
+        padding: calc(pad(small) / 2) pad(small);
         display: block;
         margin: pad(small) 0;
         transition: background-color .2s ease-in-out;

@@ -5,7 +5,7 @@
     margin-bottom: pad(large);
 
     h1 {
-      margin : 0;
+      margin: 0;
       font-size: pad(large);
     }
 
@@ -33,7 +33,7 @@
     }
 
     a {
-      margin: (pad(small) / 2) 0;
+      margin: calc(pad(small) / 2) 0;
     }
   }
 
