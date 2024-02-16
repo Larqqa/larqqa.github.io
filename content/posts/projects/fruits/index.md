@@ -13,7 +13,7 @@ tags: ["Projects", "Gamedev", "JavaScript"]
   <i class="fas fa-laptop"></i>
 </a>
 
-![Fruits](./Fruits.png)
+![Fruits](./Fruits-example.png)
 
 I saw this cool image of some sneaker product page on Reddit with an isometric cube grid, and immidiately wanted to try making it with CSS. Getting the boxes look just right took a bit of trial and error, but it ended up looking really neat. After finishing the isometric grid with just HTML and CSS, i thought it would make for a cool little game.
 
